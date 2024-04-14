@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="73.548653mm"
+   height="57.657318mm"
+   viewBox="0 0 73.548653 57.657318"
+   version="1.1"
+   id="svg50753"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="u_function.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview50755"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="2.7596614"
+     inkscape:cx="84.793013"
+     inkscape:cy="136.79215"
+     inkscape:window-width="2400"
+     inkscape:window-height="1297"
+     inkscape:window-x="0"
+     inkscape:window-y="29"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs50750">
+    <inkscape:path-effect
+       effect="simplify"
+       id="path-effect44664"
+       is_visible="true"
+       lpeversion="1"
+       steps="1"
+       threshold="0.00569231"
+       smooth_angles="360"
+       helper_size="0"
+       simplify_individual_paths="false"
+       simplify_just_coalesce="false" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect44666"
+       is_visible="true"
+       lpeversion="1" />
+    <marker
+       style="overflow:visible"
+       id="marker36824"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path36822" />
+    </marker>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect41908"
+       is_visible="true"
+       lpeversion="1" />
+    <marker
+       style="overflow:visible"
+       id="marker50621"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path50619" />
+    </marker>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect41912"
+       is_visible="true"
+       lpeversion="1" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect42048"
+       is_visible="true"
+       lpeversion="1" />
+    <inkscape:path-effect
+       effect="simplify"
+       id="path-effect44752"
+       is_visible="true"
+       lpeversion="1"
+       steps="1"
+       threshold="0.00569231"
+       smooth_angles="360"
+       helper_size="0"
+       simplify_individual_paths="false"
+       simplify_just_coalesce="false" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect44756"
+       is_visible="true"
+       lpeversion="1" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-68.714435,-8.2499943)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.22054;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.441078, 0.441078;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 110.96193,19.844774 h -6.25165"
+       id="path44662"
+       inkscape:path-effect="#path-effect44664;#path-effect44666"
+       inkscape:original-d="m 110.96193,19.844774 h -6.25165"
+       inkscape:export-filename="/mnt/data/Documents/Private/u_function.png"
+       inkscape:export-xdpi="149.78151"
+       inkscape:export-ydpi="149.78151" />
+    <g
+       id="path41906">
+      <path
+         style="color:#000000;fill:#000000;-inkscape-stroke:none"
+         d="m 104.67578,13.59375 v 49.484375 h 0.2207 V 13.59375 Z"
+         id="path51839" />
+      <g
+         id="g51829">
+        <g
+           id="path51831">
+          <path
+             style="color:#000000;fill:#000000;fill-rule:evenodd;stroke-width:0.088216pt;-inkscape-stroke:none"
+             d="m 104.78561,14.475289 0.44108,0.44108 -0.44108,-1.54378 -0.44108,1.54378 z"
+             id="path51835" />
+          <path
+             style="color:#000000;fill:#000000;fill-rule:evenodd;-inkscape-stroke:none"
+             d="m 104.78516,13.158203 -0.5586,1.960938 0.5586,-0.560547 0.56054,0.560547 z m 0,0.427735 0.32226,1.128906 -0.32226,-0.322266 -0.041,0.04102 -0.28125,0.28125 z"
+             id="path51837" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="path41910">
+      <path
+         style="color:#000000;fill:#000000;-inkscape-stroke:none"
+         d="m 72.322266,39.845703 v 0.220703 h 65.755854 v -0.220703 z"
+         id="path51853" />
+      <g
+         id="g51843">
+        <g
+           id="path51845">
+          <path
+             style="color:#000000;fill:#000000;fill-rule:evenodd;stroke-width:0.088216pt;-inkscape-stroke:none"
+             d="m 137.19531,39.955458 -0.44108,0.44108 1.54378,-0.44108 -1.54378,-0.44108 z"
+             id="path51849" />
+          <path
+             style="color:#000000;fill:#000000;fill-rule:evenodd;-inkscape-stroke:none"
+             d="m 136.55273,39.394531 0.56055,0.560547 -0.56055,0.560547 1.95899,-0.560547 z m 0.40235,0.238281 1.1289,0.322266 -1.1289,0.322266 0.32422,-0.322266 -0.043,-0.04102 z"
+             id="path51851" />
+        </g>
+      </g>
+    </g>
+    <path
+       style="fill:none;stroke:#bc2122;stroke-width:0.832785;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 136.11911,19.844026 H 110.96193 V 39.993662 H 97.856085 V 60.744794 H 74.054671"
+       id="path42046"
+       inkscape:path-effect="#path-effect42048"
+       inkscape:original-d="m 136.11911,19.844026 c -8.3855,2.16e-4 -25.15718,0 -25.15718,0 0,0 0,20.149636 0,20.149636 0,0 -13.105845,0 -13.105845,0 0,0 0,20.751132 0,20.751132 0,0 -23.801414,0 -23.801414,0"
+       inkscape:export-filename="/mnt/data/Documents/Private/u_function.png"
+       inkscape:export-xdpi="149.78151"
+       inkscape:export-ydpi="149.78151" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.88003px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.122002"
+       x="137.62363"
+       y="44.010868"
+       id="text43976"
+       inkscape:export-filename="/mnt/data/Documents/Private/u_function.png"
+       inkscape:export-xdpi="149.78151"
+       inkscape:export-ydpi="149.78151"><tspan
+         sodipodi:role="line"
+         id="tspan43974"
+         style="stroke-width:0.122002"
+         x="137.62363"
+         y="44.010868">s</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.88003px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.122002"
+       x="100.88062"
+       y="13.656534"
+       id="text44159"
+       inkscape:export-filename="/mnt/data/Documents/Private/u_function.png"
+       inkscape:export-xdpi="149.78151"
+       inkscape:export-ydpi="149.78151"><tspan
+         sodipodi:role="line"
+         id="tspan44157"
+         style="stroke-width:0.122002"
+         x="100.88062"
+         y="13.656534">u</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.22054;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.441078, 0.441078;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 104.78561,60.970006 H 98.533971"
+       id="path44748"
+       inkscape:path-effect="#path-effect44752;#path-effect44756"
+       inkscape:original-d="M 104.78561,60.970006 H 98.533971"
+       inkscape:export-filename="/mnt/data/Documents/Private/u_function.png"
+       inkscape:export-xdpi="149.78151"
+       inkscape:export-ydpi="149.78151" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.88003px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.122002"
+       x="98.867447"
+       y="21.263943"
+       id="text44760"
+       inkscape:export-filename="/mnt/data/Documents/Private/u_function.png"
+       inkscape:export-xdpi="149.78151"
+       inkscape:export-ydpi="149.78151"><tspan
+         sodipodi:role="line"
+         id="tspan44758"
+         style="stroke-width:0.122002"
+         x="98.867447"
+         y="21.263943">+1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.88003px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.122002"
+       x="105.91106"
+       y="62.499474"
+       id="text45180"
+       inkscape:export-filename="/mnt/data/Documents/Private/u_function.png"
+       inkscape:export-xdpi="149.78151"
+       inkscape:export-ydpi="149.78151"><tspan
+         sodipodi:role="line"
+         id="tspan45178"
+         style="stroke-width:0.122002"
+         x="105.91106"
+         y="62.499474">-1</tspan></text>
+  </g>
+</svg>
