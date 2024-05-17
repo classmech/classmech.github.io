@@ -29,7 +29,7 @@ const SHELL_CACHE = "shell-9.1.6--v1--sw/";
 const ASSETS_CACHE = "assets--v1--sw/";
 
 // The cache for regular content, which will be invalidated every time you make a new build.
-const CONTENT_CACHE = "content--2024-04-14T04:14:02-05:00--sw/";
+const CONTENT_CACHE = "content--2024-05-17T11:12:46-05:00--sw/";
 
 // A URL search parameter you can add to external assets to cache them in the service worker.
 const SW_CACHE_SEARCH_PARAM = "sw-cache";
@@ -53,6 +53,7 @@ const SHELL_FILES = [
 
 const STATIC_FILES = [
   /**/"/CNAME",
+  /**/"/assets/files/3d/lec1.blend",
   /**/"/assets/files/3d/screw.stl",
   /**/"/assets/files/Mathematica/11804_Airplane_v2_l2.obj",
   /**/"/assets/files/Mathematica/Debris_Towing.pdf",
@@ -96,11 +97,13 @@ const STATIC_FILES = [
   /**/"/assets/files/data/NL_Data_8.csv",
   /**/"/assets/files/data/NL_Data_9.csv",
   /**/"/assets/files/data/Pokemon.csv",
+  /**/"/assets/files/data/RBI.xlsx",
   /**/"/assets/files/data/Vadim_Yudintsev_0x47C14836_public.asc",
   /**/"/assets/files/data/Weather%20Test%20Data.csv",
   /**/"/assets/files/data/Weather%20Training%20Data.csv",
   /**/"/assets/files/data/Yudintsev_2022.asc",
   /**/"/assets/files/data/advertising.csv",
+  /**/"/assets/files/data/bank.csv",
   /**/"/assets/files/data/data_1.csv",
   /**/"/assets/files/data/data_10.csv",
   /**/"/assets/files/data/data_11.csv",
@@ -160,6 +163,8 @@ const STATIC_FILES = [
   /**/"/assets/files/pdf/bd/BD_4.pdf",
   /**/"/assets/files/pdf/bd/BD_5.pdf",
   /**/"/assets/files/pdf/bd/BD_6.pdf",
+  /**/"/assets/files/pdf/bd/Lab_Report_Template_ERD.docx",
+  /**/"/assets/files/pdf/bd/Lab_Report_Template_ERD.pdf",
   /**/"/assets/files/pdf/bd/exam_paper.pdf",
   /**/"/assets/files/pdf/bd/exam_questions.pdf",
   /**/"/assets/files/pdf/bd/pizza.pdf",
@@ -196,7 +201,14 @@ const STATIC_FILES = [
   /**/"/assets/files/pdf/mechanics-in-space/%D0%9E%D1%80%D0%B1%D0%B8%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%82%D1%80%D0%BE%D1%81%D0%BE%D0%B2%D0%B0%D1%8F_%D1%82%D1%80%D0%B0%D0%BD%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0.pdf",
   /**/"/assets/files/pdf/mechanics-in-space/%D0%A1%D0%BF%D0%BE%D1%81%D0%BE%D0%B1%D1%8B_%D0%B7%D0%B0%D1%85%D0%B2%D0%B0%D1%82%D0%B0_%D0%B8_%D1%83%D0%B2%D0%BE%D0%B4%D0%B0.pdf",
   /**/"/assets/files/pdf/papers/AA_2022.pdf",
+  /**/"/assets/files/pdf/papers/CubeSat.pdf",
+  /**/"/assets/files/pdf/papers/IT_Transport_2024.pdf",
   /**/"/assets/files/pdf/papers/JGCD_2019.pdf",
+  /**/"/assets/files/pdf/papers/Polet_2012.pdf",
+  /**/"/assets/files/pdf/papers/SSAU_2003.pdf",
+  /**/"/assets/files/pdf/papers/SSAU_2010.pdf",
+  /**/"/assets/files/pdf/papers/SSAU_2012.pdf",
+  /**/"/assets/files/pdf/papers/SSAU_2015.pdf",
   /**/"/assets/files/pdf/python/Functional_programming.pdf",
   /**/"/assets/files/pdf/python/IEEE754.pdf",
   /**/"/assets/files/pdf/python/Introduction.pdf",
@@ -378,6 +390,7 @@ const STATIC_FILES = [
   /**/"/assets/img/blog/two-dof-mech-python.png",
   /**/"/assets/img/blog/w3m.png",
   /**/"/assets/img/blog/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_%D0%9A%D0%A0_%D0%9C%D0%B5%D1%85%D0%B0%D0%BD%D0%B8%D0%BA%D0%B0_Python.svg",
+  /**/"/assets/img/blog/%D0%A1%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0_%D0%BE%D0%B1%D0%B5%D0%B7%D0%B2%D0%B5%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F.svg",
   /**/"/assets/img/blog/%D0%B3%D0%B0%D0%B9%D0%BA%D0%B0.gif",
   /**/"/assets/img/blueprint-kerbal-program-rocket-wallpaper.jpg",
   /**/"/assets/img/code-background.jpg",
@@ -537,6 +550,7 @@ const STATIC_FILES = [
   /**/"/assets/img/matlab/tether_model_lab.svg",
   /**/"/assets/img/matlab/u_function.svg",
   /**/"/assets/img/matlab_spring_masses.png",
+  /**/"/assets/img/mbs/2dof-mot-task.svg",
   /**/"/assets/img/mbs/Lagrange_case.png",
   /**/"/assets/img/mbs/Orbital_stage.png",
   /**/"/assets/img/mbs/cw/1.png",
@@ -616,6 +630,8 @@ const STATIC_FILES = [
   /**/"/assets/img/projects/hy-drawer.svg",
   /**/"/assets/img/projects/hy-img.svg",
   /**/"/assets/img/projects/hy-push-state.svg",
+  /**/"/assets/img/python/elliptic-pendulum-animation.gif",
+  /**/"/assets/img/python/elliptic-pendulum-phi-x-plots.png",
   /**/"/assets/img/python/game-life-1.png",
   /**/"/assets/img/python/game-life-2.png",
   /**/"/assets/img/python/game-life-3.png",

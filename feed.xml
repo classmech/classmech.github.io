@@ -1,4 +1,319 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://classmech.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://classmech.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2024-04-14T04:14:02-05:00</updated><id>https://classmech.github.io/feed.xml</id><title type="html">ClassMech</title><subtitle></subtitle><entry><title type="html">Интегрирование уравнений движения системы с двумя степенями свободы в среде Python</title><link href="https://classmech.github.io/blog/mechanics/cae/2024-04-01-two-dof-python/" rel="alternate" type="text/html" title="Интегрирование уравнений движения системы с двумя степенями свободы в среде Python" /><published>2024-04-01T00:00:00-05:00</published><updated>2024-04-01T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/two-dof-python</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2024-04-01-two-dof-python/"><![CDATA[<p>Круглая пластина может вращаться вокруг оси, проходящей через точку \(О_1\) и перпендикулярной плоскости рисунка. В канале пластины движется шарик М, закреплённый на пружине со свободной длиной \(l_0\). Канал, в котором движется шарик, находится на расстоянии 2h = R от оси вращения.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://classmech.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://classmech.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2024-05-17T11:12:46-05:00</updated><id>https://classmech.github.io/feed.xml</id><title type="html">ClassMech</title><subtitle></subtitle><entry><title type="html">Вывод и интегрирование уравнений движения эллиптического мятника в Python (использование sympy, scipy)</title><link href="https://classmech.github.io/blog/python/mechanics/2024-05-12-python-elliptic-pendulum/" rel="alternate" type="text/html" title="Вывод и интегрирование уравнений движения эллиптического мятника в Python (использование sympy, scipy)" /><published>2024-05-12T00:00:00-05:00</published><updated>2024-05-12T00:00:00-05:00</updated><id>https://classmech.github.io/blog/python/mechanics/python-elliptic-pendulum</id><content type="html" xml:base="https://classmech.github.io/blog/python/mechanics/2024-05-12-python-elliptic-pendulum/"><![CDATA[<p>Рассматриваемая механическая система имеет две степени свободы: её конфигурация определяется координатой \(x\)  тела 1 (брусок, движущийся поступательно вдоль оси \($Ox_0\)) и углом отклонения подвеса тела 2 от вертикали \(\phi\). Движение системы происходит в однородном поле силы тяжести.</p>
+
+<p><img src="/assets/img/matlab/elliptic_pendulum.png" alt="" /></p>
+
+<h2 id="вывод-уравнений-движения">Вывод уравнений движения</h2>
+
+<p>Подключение необходимых библиотек:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Массивы и матрицы
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="c1"># Графики
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="c1"># Символьные вычисления
+</span><span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="n">sp</span>
+<span class="c1"># Численное интегрирование дифференциальных уравнений
+</span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">solve_ivp</span>
+</code></pre></div></div>
+
+<h3 id="параметры-системы-и-обобщенные-координаты">Параметры системы и обобщенные координаты</h3>
+
+<p>Уравнения движения системы запишем используя уравнения Лагранжа II-го рода. Для этого необходимо записать выражение для кинетической энергии системы \(T(q_1,\dot q_1,q_2,\dot q_2)\), аналитически продифференцировать его по обобщенной скорости, времени, обобщенной координате:</p>
+
+\[\frac{d}{dt} \frac{\partial T}{\partial \dot q_i} -\frac{\partial T}{\partial q_i} = Q_{i}, \quad i=1,2\]
+
+<p>Уравнения движения рассматриваемой механической системы будут выводиться с использованием библиотеки <a href="https://docs.sympy.org/latest/index.html">sympy</a>. Все переменные и параметры, которые будут входить в уравнения движения, необходимо объявить до их использования при помощи функции <strong>var</strong> или <strong>symbols</strong>.  Рассматриваемая система описывается следующими параметрами:</p>
+<ul>
+  <li>масса тела 1 (\(m_1\));</li>
+  <li>масса тела 2 (\(m_2\));</li>
+  <li>длина подвеса тела 2 (\(l = AB\));</li>
+  <li>ускорение свободного падения (\(g\)).</li>
+</ul>
+
+<p>Таким образом, объявление этих параметров-символов будет иметь вид:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sp</span><span class="p">.</span><span class="n">var</span><span class="p">(</span><span class="s">'m1,m2,l,g'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Также необходимо объявить обобщенные координаты, которые являются функциями времени. Это делается при помощи функции <strong>Function</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span>   <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">Function</span><span class="p">(</span><span class="s">'x'</span><span class="p">)</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">Function</span><span class="p">(</span><span class="s">'phi'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>После объявления параметров и обобщенных координат (неизвестных пока функций времени) можно начать формирование выражений, необходимых для построения уравнений движения.</p>
+
+<h3 id="кинематика-скорости-тел">Кинематика (скорости тел)</h3>
+
+<p>Координатный <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/matrices.html">столбец</a> положения тела 1 в системе координат \(Ox_0y_0\) в sympy определим при помощи объекта типа <a href="(https://docs.sympy.org/latest/tutorials/intro-tutorial/matrices.html)">Матрица</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r1</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>При формировании этого выражения указывается, что обобщенная координата – объявленная ранее  функция x является функцией времени.</p>
+
+<p>Координатный столбец положения тела 2 в системе координат  \(Ox_0y_0\):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r2</span> <span class="o">=</span> <span class="n">r1</span> <span class="o">+</span> <span class="n">l</span><span class="o">*</span><span class="n">sp</span><span class="p">.</span><span class="n">Matrix</span><span class="p">([</span><span class="n">sp</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span><span class="n">sp</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">))])</span>
+</code></pre></div></div>
+
+<p>Координатный столбец вектора скорости тела 1 определим дифференцированием координатного столбца положения тела 1 по времени, для этого используем функцию <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/calculus.html">diff</a>, передав ей дифференцируемое выражение и имя параметра, по которому выполняется дифференцирование:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">v1</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> 
+<span class="n">v1</span>
+</code></pre></div></div>
+
+\[\left[\begin{matrix}\frac{d}{d t} x{\left(t \right)}\\0\end{matrix}\right]\]
+
+<p>Аналогично определим координатный столбец вектора скорости тела 2:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">v2</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">r2</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+<span class="n">v2</span>
+</code></pre></div></div>
+
+\[\displaystyle \left[\begin{matrix}l \cos{\left(\phi{\left(t \right)} \right)} \frac{d}{d t} \phi{\left(t \right)} + \frac{d}{d t} x{\left(t \right)}\\- l \sin{\left(\phi{\left(t \right)} \right)} \frac{d}{d t} \phi{\left(t \right)}\end{matrix}\right]\]
+
+<h3 id="левая-часть-уравнений-лагранжа">Левая часть уравнений Лагранжа</h3>
+
+<p>Кинетическая энергия рассматриваемой системы определяется суммой кинетических энергий тела 1 и тела 2:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">T</span> <span class="o">=</span> <span class="n">m1</span><span class="o">*</span><span class="n">v1</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m2</span><span class="o">*</span><span class="n">v2</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">T</span>
+</code></pre></div></div>
+
+\[\frac{m_{1} \left(\frac{d}{d t} x{\left(t \right)}\right)^{2}}{2} + \frac{m_{2} \left(l^{2} \sin^{2}{\left(\phi{\left(t \right)} \right)} \left(\frac{d}{d t} \phi{\left(t \right)}\right)^{2} + \left(l \cos{\left(\phi{\left(t \right)} \right)} \frac{d}{d t} \phi{\left(t \right)} + \frac{d}{d t} x{\left(t \right)}\right)^{2}\right)}{2}\]
+
+<p>Используя функцию <strong>diff</strong> найдем левую часть уравнений Лагранжа II-го рода для первой обобщенной координаты \(\phi\):</p>
+
+\[\frac{d}{dt} \frac{\partial T}{\partial \dot \phi} -\frac{\partial T}{\partial \phi} = Q_\phi\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">eq1</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">T</span><span class="p">,</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">t</span><span class="p">)</span> <span class="p">),</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="c1"># Упрощаем
+</span><span class="n">eq1</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">eq1</span><span class="p">)</span>
+<span class="n">eq1</span>
+</code></pre></div></div>
+
+\[l m_{2} \left(l \frac{d^{2}}{d t^{2}} \phi{\left(t \right)} + \cos{\left(\phi{\left(t \right)} \right)} \frac{d^{2}}{d t^{2}} x{\left(t \right)}\right)\]
+
+<p>Левая часть уравнения Лагранжа II-го рода для второй обобщенной координаты \(x\):</p>
+
+\[\frac{d}{dt} \frac{\partial T}{\partial \dot x} -\frac{\partial T}{\partial x} = Q_x\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">eq2</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">simplify</span><span class="p">(</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">T</span><span class="p">,</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">t</span><span class="p">)</span> <span class="p">),</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="p">)</span>
+<span class="n">eq2</span>
+</code></pre></div></div>
+
+\[l m_{2} \left(l \frac{d^{2}}{d t^{2}} \phi{\left(t \right)} + \cos{\left(\phi{\left(t \right)} \right)} \frac{d^{2}}{d t^{2}} x{\left(t \right)}\right)\]
+
+<h3 id="обобщенные-силы">Обобщенные силы</h3>
+
+<p>Механическая система в однородном поле силы тяжести, поэтому для определения обобщенных сил удобней использовать выражение для потенциальной энергии системы, определенной из условия того, что уровень y = 0 является уровнем нулевой потенциальной энергии:</p>
+
+\[\Pi = - m_2 g l \cos \phi\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">P</span> <span class="o">=</span> <span class="o">-</span><span class="n">m2</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">r2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Обобщенная сила для первой обобщенной координаты:</p>
+
+\[Q_\phi = - \frac{\partial \Pi}{\partial \phi}\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q1</span> <span class="o">=</span> <span class="o">-</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Обобщенная сила для второй обобщенной координаты:</p>
+
+\[Q_x = - \frac{\partial \Pi}{\partial x}\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q2</span> <span class="o">=</span> <span class="o">-</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="приведение-уравнений-к-форме-коши">Приведение уравнений к форме Коши</h3>
+
+<p>Разрешим полученную систему дифференциальных уравнений (eq1 = Q1, eq2 = Q2) относительно старших производных, используя функцию <a href="https://www.geeksforgeeks.org/python-sympy-solve-method/">solve</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">сauchy_form</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span> <span class="p">(</span><span class="n">eq1</span> <span class="o">-</span> <span class="n">Q1</span><span class="p">,</span> <span class="n">eq2</span> <span class="o">-</span> <span class="n">Q2</span><span class="p">),</span> <span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">t</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">t</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">)))</span>
+<span class="n">сauchy_form</span>
+</code></pre></div></div>
+
+<p>Функция <a href="https://www.geeksforgeeks.org/python-sympy-solve-method/">solve</a>  возвращает решение в виде словаря:</p>
+
+\[\left\{ \frac{d^{2}}{d t^{2}} \phi{\left(t \right)} : - \frac{g m_{1} \sin{\left(\phi{\left(t \right)} \right)}}{l m_{1} - l m_{2} \cos^{2}{\left(\phi{\left(t \right)} \right)} + l m_{2}} - \frac{g m_{2} \sin{\left(\phi{\left(t \right)} \right)}}{l m_{1} - l m_{2} \cos^{2}{\left(\phi{\left(t \right)} \right)} + l m_{2}} - \frac{l m_{2} \sin{\left(\phi{\left(t \right)} \right)} \cos{\left(\phi{\left(t \right)} \right)} \left(\frac{d}{d t} \phi{\left(t \right)}\right)^{2}}{l m_{1} - l m_{2} \cos^{2}{\left(\phi{\left(t \right)} \right)} + l m_{2}}, \  \frac{d^{2}}{d t^{2}} x{\left(t \right)} : \frac{g m_{2} \sin{\left(\phi{\left(t \right)} \right)} \cos{\left(\phi{\left(t \right)} \right)}}{m_{1} - m_{2} \cos^{2}{\left(\phi{\left(t \right)} \right)} + m_{2}} + \frac{l m_{2} \sin{\left(\phi{\left(t \right)} \right)} \left(\frac{d}{d t} \phi{\left(t \right)}\right)^{2}}{m_{1} - m_{2} \cos^{2}{\left(\phi{\left(t \right)} \right)} + m_{2}}\right\}\]
+
+<p>Для численного интегрирования уравнений движения преобразуем эту символьную функцию в функцию числовых аргументов (значений параметров системы и значений обобщенных координат и скоростей), которая будет возвращать вторые производные обобщенных координат. Для это используем функцию <a href="https://docs.sympy.org/latest/modules/utilities/lambdify.html">lambdify</a>.</p>
+
+<p>Сформируем список аргументов этой функции: первые 4 элемента этого списка – параметры системы, оставшиеся 4 элемента — обобщенные координаты и скорости (всего 8 параметров):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">args</span> <span class="o">=</span> <span class="p">(</span> <span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">g</span><span class="p">,</span>   <span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">t</span><span class="p">),</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Создаем функцию 8 аргументов, которая будет вычислять вторые производные обобщенных координат:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">accelerations</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">lambdify</span><span class="p">(</span> <span class="n">args</span><span class="p">,</span> <span class="p">[</span> <span class="n">сauchy_form</span><span class="p">[</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">t</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span> <span class="n">сauchy_form</span><span class="p">[</span><span class="n">sp</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">t</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="p">]</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Проверяем, как работает эта функция</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">accelerations</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">9.81</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="o">&gt;</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.284409988846435</span><span class="p">,</span> <span class="mf">4.282768353189539</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="численное-интегрирование">Численное интегрирование</h3>
+
+<p>Объявим функцию правых частей для численного интегрирования системы двух дифференциальных уравнений второго порядка:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">dydt</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">p</span><span class="p">):</span>            
+    <span class="p">(</span><span class="n">d2phi</span><span class="p">,</span> <span class="n">d2x</span><span class="p">)</span> <span class="o">=</span> <span class="n">accelerations</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">,</span><span class="o">*</span><span class="n">q</span><span class="p">))</span>    
+    <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">d2phi</span><span class="p">,</span> <span class="n">d2x</span><span class="p">)</span>  
+</code></pre></div></div>
+
+<p>Зададим параметры системы, начальные условия и проинтегрируем дифференциальные уравнения её движения:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Параметры системы: m1, m2, l, g
+</span><span class="n">p</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">9.81</span><span class="p">];</span>
+<span class="c1"># Начальные условия phi0, x0, dphi/dt, dx/dt
+</span><span class="n">q0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">];</span>
+
+<span class="n">solution</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">dydt</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">q0</span><span class="p">,</span> 
+                     <span class="n">rtol</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">"LSODA"</span><span class="p">,</span> <span class="n">t_eval</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="графики">Графики</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">solution</span><span class="p">.</span><span class="n">t</span><span class="p">,</span><span class="n">solution</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">);</span> <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'t, c'</span><span class="p">);</span> <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'$\phi$, градус'</span><span class="p">);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">solution</span><span class="p">.</span><span class="n">t</span><span class="p">,</span><span class="n">solution</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]);</span> <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'t, c'</span><span class="p">);</span> <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'x, м'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/python/elliptic-pendulum-phi-x-plots.png" alt="" /></p>
+
+<h2 id="анимация">Анимация</h2>
+
+<p>Дополнительные библиотеки для построения графических примитивов и анимации.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">FuncAnimation</span>
+<span class="kn">import</span> <span class="nn">matplotlib.lines</span> <span class="k">as</span> <span class="n">mlines</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Wedge</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">]);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Основание, по которому скользит первое тело
+</span><span class="n">base</span>    <span class="o">=</span> <span class="n">mlines</span><span class="p">.</span><span class="n">Line2D</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">'k'</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s">'--'</span><span class="p">)</span> 
+<span class="c1"># Подвеска тела 2
+</span><span class="n">thread</span>  <span class="o">=</span> <span class="n">mlines</span><span class="p">.</span><span class="n">Line2D</span><span class="p">([</span><span class="n">q0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">q0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">q0</span><span class="p">[</span><span class="mi">0</span><span class="p">])],[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">q0</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">'r'</span><span class="p">)</span> 
+<span class="c1"># Аннотация (время)
+</span><span class="n">text</span>    <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">'t = 0 c'</span><span class="p">,[</span><span class="mf">1.7</span><span class="p">,</span><span class="mf">0.2</span><span class="p">])</span>
+<span class="c1"># Тело 1 (брусок)
+</span><span class="n">body1</span>   <span class="o">=</span> <span class="n">mlines</span><span class="p">.</span><span class="n">Line2D</span><span class="p">(</span><span class="n">q0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.2</span><span class="p">]),</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">]),</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">'b'</span><span class="p">)</span> 
+<span class="c1"># Тело 2 (шарик)
+</span><span class="n">body2</span>   <span class="o">=</span> <span class="n">Wedge</span><span class="p">([</span><span class="n">q0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">q0</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">q0</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">fc</span> <span class="o">=</span> <span class="s">'b'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>        
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>        
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">body1</span><span class="p">)</span>    
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">body2</span><span class="p">)</span>    
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">ax</span><span class="p">,)</span>
+
+<span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>        
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">solution</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> 
+    <span class="n">x</span>   <span class="o">=</span> <span class="n">solution</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> 
+    <span class="n">t</span>   <span class="o">=</span> <span class="n">solution</span><span class="p">.</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    
+    <span class="n">x1</span> <span class="o">=</span>  <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    <span class="n">y1</span> <span class="o">=</span>  <span class="mi">0</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    
+    <span class="n">thread</span><span class="p">.</span><span class="n">set_xdata</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x1</span><span class="p">])</span>
+    <span class="n">thread</span><span class="p">.</span><span class="n">set_ydata</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">y1</span><span class="p">])</span>
+    
+    <span class="n">body1</span><span class="p">.</span><span class="n">set_xdata</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.2</span><span class="p">]))</span>        
+    <span class="n">body1</span><span class="p">.</span><span class="n">set_ydata</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">]))</span>        
+    
+    <span class="n">body2</span><span class="p">.</span><span class="n">set_center</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">])</span>        
+    
+    <span class="n">text</span><span class="p">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">'t = {:3.2f} c'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>    
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">base</span><span class="p">,</span><span class="n">thread</span><span class="p">,</span><span class="n">body1</span><span class="p">,</span><span class="n">body2</span><span class="p">,</span><span class="n">text</span><span class="p">)</span>
+    
+<span class="n">anim</span> <span class="o">=</span> <span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">get_frame</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">frames</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">solution</span><span class="p">.</span><span class="n">t</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="n">anim</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">'animation.gif'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/python/elliptic-pendulum-animation.gif" alt="" /></p>]]></content><author><name></name></author><category term="python" /><category term="mechanics" /><summary type="html"><![CDATA[Вывод в среде Python уравнений движения эллиптического маятника, используя библиотеку sympy. Численное интегрирование полученных уравнений и построение анимации.]]></summary></entry><entry><title type="html">Пример скрипта для создания анимации в Blender на основе результатов расчётов</title><link href="https://classmech.github.io/blog/mechanics/2024-05-08-blender-script/" rel="alternate" type="text/html" title="Пример скрипта для создания анимации в Blender на основе результатов расчётов" /><published>2024-05-08T00:00:00-05:00</published><updated>2024-05-08T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/blender-script</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/2024-05-08-blender-script/"><![CDATA[<p>В <a href="/assets/files/3d/lec1.blend">проекте Blender</a> создана следующая иерархия объектов:</p>
+<ul>
+  <li>Empty1 (Empty)
+    <ul>
+      <li>Body1 (Mesh)</li>
+      <li>Empty2 (Empty)
+        <ul>
+          <li>Body2 (Mesh)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">bpy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">mathutils</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># Удаление существующей анимации: 
+# выделяем все объекты типа EMPTY (Add -&gt; Empty -&gt; Arrows)
+</span><span class="n">bpy</span><span class="p">.</span><span class="n">ops</span><span class="p">.</span><span class="nb">object</span><span class="p">.</span><span class="n">select_by_type</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">'EMPTY'</span><span class="p">)</span>
+<span class="c1"># Удаляем, связанную с выделенными объектами анимацию
+</span><span class="n">bpy</span><span class="p">.</span><span class="n">ops</span><span class="p">.</span><span class="n">anim</span><span class="p">.</span><span class="n">keyframe_clear_v3d</span><span class="p">()</span>
+<span class="n">bpy</span><span class="p">.</span><span class="n">ops</span><span class="p">.</span><span class="nb">object</span><span class="p">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s">'DESELECT'</span><span class="p">)</span>
+
+<span class="c1"># Формируем список объектов типа Empty по их именам - систем координат (СК)
+</span><span class="n">obj</span> <span class="o">=</span> <span class="p">(</span><span class="n">bpy</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">objects</span><span class="p">[</span><span class="s">'Empty1'</span><span class="p">],</span> <span class="n">bpy</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">objects</span><span class="p">[</span><span class="s">'Empty2'</span><span class="p">])</span>
+
+<span class="c1"># Читаем данные из файла
+</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">'C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">user</span><span class="se">\\</span><span class="s">results.csv'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s">''</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+
+<span class="n">nframes</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nframes</span><span class="p">):</span>            
+        <span class="c1"># Тело 1
+</span>        <span class="n">phi11</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>                        
+        <span class="n">phi12</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>                        
+        <span class="c1"># Матрицы элементарных поворотов СК 1
+</span>        <span class="n">A1</span> <span class="o">=</span> <span class="n">mathutils</span><span class="p">.</span><span class="n">Matrix</span><span class="p">.</span><span class="n">Rotation</span><span class="p">(</span><span class="n">phi11</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'X'</span><span class="p">)</span>
+        <span class="n">A2</span> <span class="o">=</span> <span class="n">mathutils</span><span class="p">.</span><span class="n">Matrix</span><span class="p">.</span><span class="n">Rotation</span><span class="p">(</span><span class="n">phi12</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'Y'</span><span class="p">)</span>
+        <span class="c1"># Матрица сложного поворота 
+</span>        <span class="c1"># преобразование координат из СК 0 в СК 1
+</span>        <span class="n">A01</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span><span class="n">A2</span><span class="p">))</span>
+        <span class="c1"># Сохраняем "кадр" анимации 
+</span>        <span class="c1"># Поворот СК                
+</span>        <span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">matrix_local</span> <span class="o">=</span>  <span class="n">A01</span>        
+        <span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s">'rotation_euler'</span><span class="p">,</span><span class="n">frame</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+        <span class="c1"># Положение СК
+</span>        <span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">location</span> <span class="o">=</span> <span class="n">mathutils</span><span class="p">.</span><span class="n">Vector</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">))</span>    
+        <span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s">'location'</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+                
+        <span class="c1"># Тело 2
+</span>        <span class="n">phi21</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+        <span class="c1"># Матрицы элементарных поворотов СК 2 относительно СК 1 
+</span>        <span class="n">A1</span> <span class="o">=</span> <span class="n">mathutils</span><span class="p">.</span><span class="n">Matrix</span><span class="p">.</span><span class="n">Rotation</span><span class="p">(</span><span class="n">phi21</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'X'</span><span class="p">)</span>
+        <span class="c1"># Матрица сложного поворота из СК 1 в СК 2
+</span>        <span class="n">A12</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A1</span><span class="p">)</span>
+        <span class="c1"># Поворот СК                
+</span>        <span class="n">obj</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">matrix_local</span> <span class="o">=</span>  <span class="n">A12</span>
+        <span class="n">obj</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s">'rotation_euler'</span><span class="p">,</span><span class="n">frame</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+        <span class="c1"># Положение СК
+</span>        <span class="n">obj</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">location</span> <span class="o">=</span> <span class="n">mathutils</span><span class="p">.</span><span class="n">Vector</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>    
+        <span class="n">obj</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s">'location'</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></div>]]></content><author><name></name></author><category term="mechanics" /><summary type="html"><![CDATA[В проекте Blender создана следующая иерархия объектов: Empty1 (Empty) Body1 (Mesh) Empty2 (Empty) Body2 (Mesh) import bpy import math import sys import mathutils import csv import numpy as np # Удаление существующей анимации: # выделяем все объекты типа EMPTY (Add -&gt; Empty -&gt; Arrows) bpy.ops.object.select_by_type(type='EMPTY') # Удаляем, связанную с выделенными объектами анимацию bpy.ops.anim.keyframe_clear_v3d() bpy.ops.object.select_all(action='DESELECT') # Формируем список объектов типа Empty по их именам - систем координат (СК) obj = (bpy.data.objects['Empty1'], bpy.data.objects['Empty2']) # Читаем данные из файла data=np.loadtxt(open('C:\\Users\\user\\results.csv', newline=''), delimiter=',') nframes = data.shape[0] for i in range(nframes): # Тело 1 phi11 = data[i,1] phi12 = data[i,2] # Матрицы элементарных поворотов СК 1 A1 = mathutils.Matrix.Rotation(phi11, 4, 'X') A2 = mathutils.Matrix.Rotation(phi12, 4, 'Y') # Матрица сложного поворота # преобразование координат из СК 0 в СК 1 A01 = np.transpose(np.dot(A1,A2)) # Сохраняем "кадр" анимации # Поворот СК obj[0].matrix_local = A01 obj[0].keyframe_insert(data_path='rotation_euler',frame=i) # Положение СК obj[0].location = mathutils.Vector((0.0,0.0,0.0)) obj[0].keyframe_insert(data_path='location', frame=i) # Тело 2 phi21 = data[i,3] # Матрицы элементарных поворотов СК 2 относительно СК 1 A1 = mathutils.Matrix.Rotation(phi21, 4, 'X') # Матрица сложного поворота из СК 1 в СК 2 A12 = np.transpose(A1) # Поворот СК obj[1].matrix_local = A12 obj[1].keyframe_insert(data_path='rotation_euler',frame=i) # Положение СК obj[1].location = mathutils.Vector((0.0,0.0,-1.0)) obj[1].keyframe_insert(data_path='location', frame=i)]]></summary></entry><entry><title type="html">Модели SimInTech</title><link href="https://classmech.github.io/blog/2024-04-30-simintech-projects-git/" rel="alternate" type="text/html" title="Модели SimInTech" /><published>2024-04-30T00:00:00-05:00</published><updated>2024-04-30T00:00:00-05:00</updated><id>https://classmech.github.io/blog/simintech-projects-git</id><content type="html" xml:base="https://classmech.github.io/blog/2024-04-30-simintech-projects-git/"><![CDATA[<p><a href="https://gitverse.ru/classmech/simintech">Хранилище (репозиторий) на GitVerse c примерами моделей</a>, разработанных в процессе освоения <a href="https://simintech.ru/">SimInTech</a>: файлы проектов со ссылками на их описание.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Хранилище (репозиторий) на GitVerse c примерами моделей, разработанных в процессе освоения SimInTech: файлы проектов со ссылками на их описание.]]></summary></entry><entry><title type="html">Интегрирование уравнений движения системы с двумя степенями свободы в среде Python</title><link href="https://classmech.github.io/blog/mechanics/cae/2024-04-01-two-dof-python/" rel="alternate" type="text/html" title="Интегрирование уравнений движения системы с двумя степенями свободы в среде Python" /><published>2024-04-01T00:00:00-05:00</published><updated>2024-04-01T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/two-dof-python</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2024-04-01-two-dof-python/"><![CDATA[<p>Круглая пластина может вращаться вокруг оси, проходящей через точку \(О_1\) и перпендикулярной плоскости рисунка. В канале пластины движется шарик М, закреплённый на пружине со свободной длиной \(l_0\). Канал, в котором движется шарик, находится на расстоянии 2h = R от оси вращения.</p>
 
 <p>Рассмотрим два режима движения системы:</p>
 <ul>
@@ -1416,624 +1731,4 @@ S(V_{12},v_s,-\mu_s,v_d,-\mu_d) &amp; v_s &lt; V_{12} &lt; -v_d \\
 <ol>
   <li>Гладков Сергей Октябринович, Богданова Софья Борисовна <a href="https://cyberleninka.ru/article/n/k-voprosu-ucheta-sily-soprotivleniya-v-sharnirnoy-tochke-krepleniya-fizicheskogo-mayatnika-i-ee-vliyanie-na-dinamiku-dvizheniya">К вопросу учета силы сопротивления в шарнирной точке крепления физического маятника и ее влияние на динамику движения</a> // Известия вузов. ПНД. 2019. №1.</li>
   <li>Mungan C. E., Lipscombe T. C. <a href="https://www.usna.edu/Users/physics/mungan/_files/documents/Publications/EJP34.pdf">Simple pendulum with speed-independent bearing friction</a> //European Journal of Physics. – 2022. – Т. 43. – №. 4. – С. 045001. DOI 10.1088/1361-6404/ac646a.</li>
-</ol>]]></content><author><name></name></author><category term="mechanics" /><category term="python" /><summary type="html"><![CDATA[Determining the friction torque in the pivot point of a physical pendulum through measuring the time it takes to swing from an initial angle until it comes to a halt. Implementing numerical methods to simulate the dynamics of a physical pendulum in Python.]]></summary></entry><entry><title type="html">Анализ предметной области и создание таблиц на примере базы данных с информацией о выпускных работах</title><link href="https://classmech.github.io/blog/database/2023-04-15-ddl-sql-example/" rel="alternate" type="text/html" title="Анализ предметной области и создание таблиц на примере базы данных с информацией о выпускных работах" /><published>2023-04-15T00:00:00-05:00</published><updated>2023-04-15T00:00:00-05:00</updated><id>https://classmech.github.io/blog/database/ddl-sql-example</id><content type="html" xml:base="https://classmech.github.io/blog/database/2023-04-15-ddl-sql-example/"><![CDATA[<p><a href="/pages/databases/ddl-example/">Пример создания таблиц базы данных с информацией о выпускных квалификационных работах</a>.</p>]]></content><author><name></name></author><category term="database" /><summary type="html"><![CDATA[Пример создания таблиц базы данных с информацией о выпускных квалификационных работах.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/db/student-vkr-er-1.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/db/student-vkr-er-1.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Модель движения летающего стенда возвращаемой ступени РН в SimInTech</title><link href="https://classmech.github.io/blog/mechanics/cae/2023-03-17-jump/" rel="alternate" type="text/html" title="Модель движения летающего стенда возвращаемой ступени РН в SimInTech" /><published>2023-03-17T00:00:00-05:00</published><updated>2023-03-17T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/jump</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2023-03-17-jump/"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#схема-системы" id="markdown-toc-схема-системы">Схема системы</a></li>
-  <li><a href="#уравнения-движения" id="markdown-toc-уравнения-движения">Уравнения движения</a></li>
-  <li><a href="#модель-simintech" id="markdown-toc-модель-simintech">Модель SimInTech</a>    <ul>
-      <li><a href="#структура-модели" id="markdown-toc-структура-модели">Структура модели</a></li>
-      <li><a href="#субмодель-динамической-модели-ступени" id="markdown-toc-субмодель-динамической-модели-ступени">Субмодель динамической модели ступени</a></li>
-      <li><a href="#блок-управления-тягой" id="markdown-toc-блок-управления-тягой">Блок управления тягой</a></li>
-      <li><a href="#блок-управления-углом-поворота-сопла" id="markdown-toc-блок-управления-углом-поворота-сопла">Блок управления углом поворота сопла</a></li>
-      <li><a href="#блок-задающий-программное-изменение-высоты" id="markdown-toc-блок-задающий-программное-изменение-высоты">Блок, задающий программное изменение высоты</a></li>
-      <li><a href="#блок-задающий-программное-изменение-бокового-смещения" id="markdown-toc-блок-задающий-программное-изменение-бокового-смещения">Блок, задающий программное изменение бокового смещения</a></li>
-      <li><a href="#скрипт-модели" id="markdown-toc-скрипт-модели">Скрипт модели</a></li>
-      <li><a href="#графики" id="markdown-toc-графики">Графики</a></li>
-      <li><a href="#зd-визуализация" id="markdown-toc-зd-визуализация">ЗD Визуализация</a></li>
-      <li><a href="#результаты" id="markdown-toc-результаты">Результаты</a></li>
-    </ul>
-  </li>
-</ul>
-
-<h1 id="схема-системы">Схема системы</h1>
-
-<p>Схема системы показана на рисунке 1. Движение стенда (далее ступень) рассматривается относительно инерциальной системы координат \(O X_o Y_o\), связанной с землей. Положение ступени определяется координатами центра масс \(x\) (высота), \(y\) и углом наклона ступени \(\theta\) к вертикали.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/simintech-model.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 1 - Схема системы</p>
-
-<p>Движение ступени происходит под действием силы тяжести \(G\), приложенной в центре масс, силы тяги двигателя \(P\), приложенной в точке \(p\), и аэродинамической силы \(F_a\), которая приложена в точке \(a\) (центр давления). Аэродинамическая сила представлена в виде суммы продольной \(X_a\) и поперечной \(Y_a\) составляющих. Направление силы тяги относительно продольной оси ступени определяется углом поворота сопла двигателя \(\gamma_p\).</p>
-
-<h1 id="уравнения-движения">Уравнения движения</h1>
-
-<p>Уравнения движения ступени построены при следующих допущениях:</p>
-<ol>
-  <li>Рассматривается действие на ступень только поперечной аэродинамической силы \(Y_a\), которая будет определяться горизонтальной скоростью ступени и скоростью ветра.</li>
-  <li>Положение точки приложения аэродинамической силы не изменяется относительно корпуса ступени при развороте ступени: \(ba = x_a\) const. Также не изменяется в процессе движения момент инерции ступени и положение её центра масс относительно корпуса (\(bC = = x_c\) const).</li>
-  <li>Полет происходит на небольшой высоте, гравитационное ускорение остается постоянным.</li>
-  <li>Не учитывается действие на ступень газодинамических сил от струй двигателя, отражающихся от поверхности земли, при движении на небольшой высоте.</li>
-  <li>Динамические свойства системы управления тягой двигателя и вектором тяги не учитываются.</li>
-</ol>
-
-<p>Вертикальное движение ступени определяется тягой двигателя и силой притяжения Земли. Уравнение вертикального движения имеет вид:</p>
-
-\[m \ddot{x} = P \cos(\theta + \gamma_p) - G + Y_a \sin \theta\]
-
-<p>где \(G = m g\) – вес ступени, \(g\) – ускорение свободного падения, \(m\) – масса ступени, \(P\) – тяга двигателя, \(Y_a\) – аэродинамическая сила:</p>
-
-\[Y_a = S_m C_y \frac{\rho (\dot y - w)^2}{2} \text{sgn}(\dot y - w)\]
-
-<p>где \(S_m\) – характерная площадь ступени (площадь Миделя), к которой отнесен аэродинамический коэффициент поперечной силы  \(C_y\), \(w\) – скорость ветра, \(\dot y\) – горизонтальная скорость ступени, \(\rho\) – плотность воздуха.</p>
-
-<p>Горизонтальное движение ступени описывается уравнением:</p>
-
-\[m \ddot{y} = P \sin(\theta + \gamma_p) - Y_a \cos \theta\]
-
-<p>Уравнение движения ступени вокруг центра масс:</p>
-
-\[J_z \ddot{\theta} = P (x_c-x_p) \sin \gamma_p  - Y_a (x_a-x_c)\]
-
-<p>где \(x_a\) – координата x точки приложения аэродинамической силы в базовой системе координат \(b x_b y_b\) ступени, \(x_p\) – координата x точки приложения силы тяги ступени в базовой системе координат, \(x_c\)  – координата x центра масс ступени в базовой системе координат, \(J_z\) – поперечный момент инерции ступени.</p>
-
-<p>Уравнения движения ступени интегрируются совместно с дифференциальным уравнением изменения массы при расходе топлива:</p>
-
-\[\frac{dm}{dt} = - \frac{P}{I_s}\]
-
-<p>где \(I_s\) – удельный импульс двигателя ступени [м/c].</p>
-
-<h1 id="модель-simintech">Модель SimInTech</h1>
-
-<h2 id="структура-модели">Структура модели</h2>
-
-<p>Модель <a href="https://simintech.ru/">SimInTech</a> состоит из четырех блоков (субмоделей):</p>
-<ul>
-  <li>блок динамической модели ступени – “Попрыгунчик”;</li>
-  <li>блок управления тягой двигателя;</li>
-  <li>блок управления углом поворота сопла;</li>
-  <li>блок, задающий программное изменение высоты;</li>
-  <li>блок, задающий программное изменение бокового смещения ступени.</li>
-</ul>
-
-<p><img src="/assets/img/blog/simintech-jump/simintech-jump-1.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 2 - Общий вид модели</p>
-
-<h2 id="субмодель-динамической-модели-ступени">Субмодель динамической модели ступени</h2>
-
-<p>Динамическая модель ступени создана на основе стандартного блока <a href="https://help.simintech.ru/#13_priemy_raboty/3_razrabotka_blokov/1_sredstvami_simintech/sozdanie_svoego_bloka.html">“Субмодель”</a> с дополнительными свойствами (момент инерции, аэродинамический коэффициент, …). В созданной субмодели используется блок <a href="https://help.simintech.ru/#10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0985.html">“Язык программирования”</a>, в котором записаны дифференциальные уравнения движения ступени, используя встроенный <a href="https://help.simintech.ru/#11_yazyk_programmirovaniya/KEY_yazik_programmirovania.html">язык программирования SimInTech</a>. Интегрирование уравнений производится при помощи стандартных блоков типа <a href="https://help.simintech.ru/#10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0027.html">“Интегратор”</a>. На вход субмодели подаются сила тяги двигателя \(P\), угол поворота сопла \(\gamma_p\) и скорость горизонтального ветра \(W\). Выходы субмодели: кинематические параметры ступени (положение и скорость центра масс, угол поворота ступени, её угловя скорость).</p>
-
-<p><img src="/assets/img/blog/simintech-jump/simintech-jump-4.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 3 - Структура субмодели “Попрыгунчик”</p>
-
-<p>Для построения графиков и упрощения экспорта результатов моделирования в текстовый файл (таблица значений кинематических параметров) в проекте используются <a href="https://help.simintech.ru/#13_priemy_raboty/1_modelirovanie/signaly_proekta_baza_signalov_vektorizovannyi_blok.html">сигналы</a>.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/signals.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 4 - Сигналы проекта</p>
-
-<p>Значения в базу сигналов записываются с линий связи субмодели “Попрыгунчик”. Сигналы связываются со значениями с линий связи субмодели при помощи <a href="https://help.simintech.ru/#9_grafika_i_animaciya/5_animacionnaya_sistema/redaktor_sviazey.html">редактора связей</a></p>
-
-<p><img src="/assets/img/blog/simintech-jump/link-editor.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 5 - <a href="https://help.simintech.ru/#9_grafika_i_animaciya/5_animacionnaya_sistema/redaktor_sviazey.html">Редактор связей</a></p>
-
-<p>Код блока <a href="https://help.simintech.ru/#10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0985.html">“Язык программирования”</a> – дифференциальные уравнения:</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Плоская модель движения возвращаемой ступени
-// для отработки посадки
-// "Попрыгунчик"
-// m       - масса
-// P       - тяга
-// w 	   - горизонтальная скорость ветра
-// gamma_p - угол поворота сопла
-// dx, dy  - вертикальная и горизонтальная скорость
-// theta   - угол наклона ступени
-// dtheta  - угловая скорость ступени
-// rho     - плотность воздуха
-</span>
-<span class="n">input</span>  <span class="n">m</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">gamma_P</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">dtheta</span><span class="p">,</span> <span class="n">rho</span><span class="p">;</span>
-<span class="n">output</span> <span class="n">d2x</span><span class="p">,</span> <span class="n">d2y</span><span class="p">,</span> <span class="n">d2theta</span><span class="p">,</span> <span class="n">Fa</span><span class="p">;</span>
-
-<span class="c1">// Аэродинамическая сила
-</span><span class="n">Fa</span>  <span class="p">=</span> <span class="m">0.5</span><span class="p">*</span><span class="n">rho</span><span class="p">*(</span><span class="n">w</span><span class="p">-</span><span class="n">dy</span><span class="p">)^</span><span class="m">2</span><span class="p">*</span><span class="n">Cy</span><span class="p">*</span><span class="n">Sm</span><span class="p">*</span><span class="n">sign</span><span class="p">(</span><span class="n">w</span><span class="p">-</span><span class="n">dy</span><span class="p">);</span> 
-<span class="c1">// Плечо аэродинамической силы
-</span><span class="n">ha</span>  <span class="p">=</span> <span class="n">xa</span><span class="p">-</span><span class="n">xc</span><span class="p">;</span> 
-<span class="c1">// Плечо силы тяги
-</span><span class="n">hp</span>  <span class="p">=</span> <span class="n">xc</span><span class="p">-</span><span class="n">xp</span><span class="p">;</span> 
-<span class="c1">// Уравнения
-</span><span class="n">d2x</span>     <span class="p">=</span> <span class="p">(</span> <span class="n">p</span><span class="p">*</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">+</span><span class="n">gamma_p</span><span class="p">)-</span><span class="n">m</span><span class="p">*</span><span class="n">g</span> <span class="p">+</span> <span class="n">Fa</span><span class="p">*</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="p">)/</span><span class="n">m</span><span class="p">;</span>
-<span class="n">d2y</span>     <span class="p">=</span> <span class="p">(</span> <span class="n">p</span><span class="p">*</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">+</span><span class="n">gamma_p</span><span class="p">)-</span><span class="n">Fa</span><span class="p">*</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="p">)/</span><span class="n">m</span><span class="p">;</span>
-<span class="n">d2theta</span> <span class="p">=</span> <span class="p">(-</span><span class="n">p</span><span class="p">*</span><span class="n">sin</span><span class="p">(</span><span class="n">gamma_p</span><span class="p">)*</span><span class="n">hp</span><span class="p">-</span><span class="n">Fa</span><span class="p">*</span><span class="n">ha</span> <span class="p">)/</span><span class="n">Jz</span><span class="p">;</span> 
-</code></pre></div></div>
-
-<p>Параметр \(g\) – ускорение свободного падения, объявлена в блоке инициализации модели. Другие параметры,  используемые в скрипте блока (Sm, Cy, xc, xp, xa) определены в свойствах субмодели “Попрыгунчик”:</p>
-
-<p><img src="/assets/img/blog/simintech-jump/model-params.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 6 - Параметры субмодели “Попрыгунчик”</p>
-
-<p>Для того, чтобы добавить эти свойства к субмодели необходимо перевести SimInTech в режим разработчика (Меню “Вид” - “Режим разработчика”), в общих свойствах субмодели указать новое наименование типа блока, теперь это не “стандартная” субмодель, а блок типа “TJumpStage”. Процедура создания блоков на основе субмоделей <a href="https://help.simintech.ru/#13_priemy_raboty/3_razrabotka_blokov/1_sredstvami_simintech/sozdanie_svoego_bloka.html">описана в справочной системе SimInTech</a>.</p>
-
-<h2 id="блок-управления-тягой">Блок управления тягой</h2>
-
-<p>Учитывая, что ступень движется с небольшой вертикальной скоростью, тяга двигателя будет близка к весу ступени \(G\). Используемый в блоке управления тяги <a href="https://ru.wikipedia.org/wiki/ПИД-регулятор">ПД-регулятор</a> вычисляет “добавку” к этому весу. В блоке управления тягой сравнивается фактическая высота ступени \(x\) с программным значением высоты \(x_p\) и на основе этой разницы (ошибки) формируется значение тяги:</p>
-
-\[P = G + k_1 e_x + k_2 \dot e_x\]
-
-<p>где \(e_x = x_p - x\).</p>
-
-<p><img src="/assets/img/blog/simintech-jump/simintech-jump-2.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 7 - Структура блока управления тягой двигателя</p>
-
-<h2 id="блок-управления-углом-поворота-сопла">Блок управления углом поворота сопла</h2>
-
-<p>Горизонтальное движение ступени производится за счет наклона её корпуса. Для наклона корпуса используется момент относительно центра масс, создаваемый тягой двигателя при ненулевом угле поворота сопла \(\gamma_p\). В блоке управления углом поворота сопла при возникновении разницы между программным значением горизонтальной координаты ступени \(y_p\) и фактическим значением \(y\) определяется угол наклона ступени при помощи <a href="https://ru.wikipedia.org/wiki/ПИД-регулятор">ПД-регулятора</a>:</p>
-
-\[\theta_{PD} = k_3 e_y - k_4 \dot e_y, \quad e_y = y_p-y\]
-
-<p>При этом максимальный угол поворота ступени ограничивается некоторым предельным значением \(\theta_{max}\):</p>
-
-\[\theta_p = 
-\begin{cases}
-\theta_{PD} &amp; |\theta_{PD}| \leq \theta_{max} \\
-\theta_{max} &amp; |\theta_{PD}| &gt; \theta_{max}
-\end{cases}\]
-
-<p>Полученное значение угла поворота ступени используется как программное значение \(\theta_p\), которое на следующем этапе сравнивается с текущим значением угла \(\theta\). Разница между программным и фактическим значением поступает на вход <a href="https://ru.wikipedia.org/wiki/ПИД-регулятор">ПИД-регулятора</a>, который формирует сигнал угла поворота сопла двигателя. Этот угол также ограничен некоторым предельным значением:</p>
-
-\[\gamma_{PID} = k_5 e_{\theta} + k_6 \dot e_{\theta} + k_7 \int_0^t \dot e_{\theta} d \tau, \quad e_{\theta} = \theta_p-\theta\]
-
-\[\gamma_p = 
-\begin{cases}
-\gamma_{PID} &amp; |\gamma_{PID}| \leq \gamma_{max} \\
-\gamma_{max} &amp; |\gamma_{PID}| &gt; \gamma_{max}
-\end{cases}\]
-
-<p>На вход блока управления углом поворота сопла также поступает горизонтальная скорость блока. При превышении горизонтальной скорости некоторого предельного значения программное значение угла наклона ступени становится равным нулю.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/simintech-jump-3.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 8 - Структура блока управления углом поворота сопла</p>
-
-<h2 id="блок-задающий-программное-изменение-высоты">Блок, задающий программное изменение высоты</h2>
-
-<p>Программа управления высотой имеет вид:</p>
-
-\[x_p = \frac{h_{max}}{2} \left[ 1 + \sin \left( \frac{2\pi}{t_k}t+\frac{3 \pi}{2} \right) \right]\]
-
-<p>где \(t_k\) – конечное время, \(h_{max}\) – максимальная высота.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/simintech-jump-5.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 9 - Структура блока, задающего программное значение высоты</p>
-
-<h2 id="блок-задающий-программное-изменение-бокового-смещения">Блок, задающий программное изменение бокового смещения</h2>
-
-<p>Программа управления боковым перемещение ступени определяется выражением:</p>
-
-\[y_p = 
-\begin{cases}
-0, &amp; t&lt;t_1 \\
-\frac{y_k}{2} \left[ \sin( \frac{t-t_1}{t_2-t_1}\pi-\frac{\pi}{2})+1 \right], &amp; t_1 \leq t \leq t_2 \\
-0, &amp; t&gt;t_2
-\end{cases}\]
-
-<p>где \(t_1 = \Delta t_v\) – продолжительность вертикального участка при взлете ступени, \(t_2\) - t_{k} - \Delta t_v \(начало вертикального участка спуска ступени,\) t_k \(-- конечное время (продолжительность полета),\) y_k $$ – расстояние от точки взлета до точки посадки.</p>
-
-<p>Это программа управления задается в блоке “Язык программирования”:</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Горизонтальное перемещение
-</span><span class="n">output</span> <span class="n">y_p</span><span class="p">;</span>
-<span class="c1">// Начало участка вертикального спуска
-</span><span class="n">t2</span> <span class="p">=</span> <span class="n">endtime</span><span class="p">-</span><span class="n">t_vert</span><span class="p">;</span>
-<span class="c1">// Горизонтальное перемещение
-</span><span class="n">yend</span> <span class="p">=</span> <span class="n">y_end</span><span class="p">;</span>
-                          
-<span class="c1">// Вертикальный участок
-</span><span class="k">if</span> <span class="n">time</span><span class="p">&lt;=</span><span class="n">t_vert</span> <span class="k">then</span> <span class="n">y_p</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
-<span class="c1">// Участок горизонтального перемещения
-</span><span class="k">if</span> <span class="n">time</span><span class="p">&gt;</span><span class="n">t_vert</span> <span class="k">and</span> <span class="n">time</span><span class="p">&lt;=</span><span class="n">t2</span> <span class="k">then</span> <span class="n">y_p</span> <span class="p">=</span> <span class="p">(</span><span class="n">sin</span><span class="p">((</span><span class="n">time</span><span class="p">-</span><span class="n">t_vert</span><span class="p">)*</span><span class="n">pi</span><span class="p">/(</span><span class="n">t2</span><span class="p">-</span><span class="n">t_vert</span><span class="p">)-</span><span class="n">pi</span><span class="p">/</span><span class="m">2</span><span class="p">)*</span><span class="m">0.5</span><span class="p">+</span><span class="m">0.5</span><span class="p">)*</span><span class="n">yend</span><span class="p">;</span>
-<span class="k">if</span> <span class="n">time</span><span class="p">&gt;</span><span class="n">t2</span> <span class="k">then</span> <span class="n">y_p</span> <span class="p">=</span> <span class="n">yend</span><span class="p">;</span>
-</code></pre></div></div>
-
-<h2 id="скрипт-модели">Скрипт модели</h2>
-
-<p>В скрипте модели объявляются переменные, используемые в коде и свойствах блоков.</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">initialization</span>
-	<span class="c1">// Максимальный угол поворота сопла
-</span>	<span class="k">var</span> <span class="n">gamma_max</span> <span class="p">=</span> <span class="m">4</span><span class="p">*</span><span class="n">pi</span><span class="p">/</span><span class="m">180</span><span class="p">;</span>
-	<span class="c1">// Максимальный угол наклона ступени
-</span>	<span class="k">var</span> <span class="n">theta_max</span> <span class="p">=</span> <span class="m">4</span><span class="p">*</span><span class="n">pi</span><span class="p">/</span><span class="m">180</span><span class="p">;</span>
-	<span class="c1">// Продолжительность вертикального участка
-</span>	<span class="k">var</span> <span class="n">t_vert</span>    <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
-	<span class="c1">// Максимальная горизонтальная скорость ступени
-</span>	<span class="k">var</span> <span class="n">v_hor_max</span> <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
-	<span class="c1">// Горизонтальное перемещение ступени 
-</span>	<span class="k">var</span> <span class="n">y_end</span>     <span class="p">=</span> <span class="m">150</span><span class="p">;</span>
-	<span class="c1">// Максимальная высота подъема ступени
-</span>	<span class="k">var</span> <span class="n">h_max</span>     <span class="p">=</span> <span class="m">50</span><span class="p">;</span> 
-<span class="k">end</span>
-</code></pre></div></div>
-
-<h2 id="графики">Графики</h2>
-
-<p>Для того, чтобы не загромождать модель блоками типа <a href="https://help.simintech.ru/#10_biblioteki_blokov/avtomatika/Vyvod_dannyh/1001.html">“Временной график”</a> для построения графиков используется <a href="https://help.simintech.ru/#6_interfejs_programmy/skhemnoe_okno/panel_knopok_bystrogo_dostupa/raschet/DAT_knopka_menedzher_dannyh.html">менеджер данных</a>:</p>
-
-<p><img src="/assets/img/blog/simintech-jump/manager.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 10 - Менеджер данных</p>
-
-<h2 id="зd-визуализация">ЗD Визуализация</h2>
-
-<p>Для визуализации движения блока средствами SimInTech используются блоки из раздела <a href="https://help.simintech.ru/index.html#11_yazyk_programmirovaniya/6_funkcii/3_graficheskie_i_sistemnye/DIR_modul_3d_vizualizacii.html">Визуализация 3D</a> – блоки типа “Просмотрщик” и “Объект”. Один из блоков “Объект” отображает ступень, второй – поверхность неподвижной земли.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/res3D.gif" alt="" /></p>
-
-<p class="figcaption">Рисунок 11 - Визуализация 3D - Просмотрщик</p>
-
-<p>Свойства блока “Объект”, используемого для отображения ступени показаны на рисунке 12. Положение объекта задается выражениями, записанными при помощи сигналов x, y и theta.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/object-3D.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 12 - Свойства блока “Объект” для отображения ступени</p>
-
-<h2 id="результаты">Результаты</h2>
-
-<p>Далее приведены результаты моделирования движения ступени. В соответствии с программой полета ступень поднимается на максимальную высоту 50 метров. Посадка ступени производится на расстоянии 150 метров от места взлета. На рисунке 12 показаны графики изменения высоты и горизонтального перемещения ступени.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/xy.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 13 -  Изменение высоты и горизонтального перемещения ступени</p>
-
-<p>На рисунке 13 показаны графики изменения вертикальной и горизонтальной скорости ступени.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/VxVy.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 14 -  Изменение вертикальной и горизонтальной скорости ступени</p>
-
-<p>На рисунке 15 показаны графики изменения угла поворота ступени и угла поворота сопла двигателя. На рисунке можно увидеть реакцию ступени на воздействие горизонтального ветра.</p>
-
-<p><img src="/assets/img/blog/simintech-jump/theta-gamma.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 15 -  Угол наклона ступени и угол поворота сопла</p>
-
-<p>Видеоиллюстрация результата моделирования движения ступени (Blender 3D):</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tZ2NOIJS1G0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><summary type="html"><![CDATA[Модель иллюстрирует движение летающего стенда для отработки мягкой посадки первой ступени многоразовой ракеты-носителя. При помощи подобного летающего стенда компания SpaceX начиная с 2012 года отрабатывала технологию посадки возвращаемой ступени РН Falcon-9.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/simintech-jump/title.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/simintech-jump/title.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Эффект Джанибекова в SimInTech</title><link href="https://classmech.github.io/blog/mechanics/cae/2022-12-04-simintech-janibekov/" rel="alternate" type="text/html" title="Эффект Джанибекова в SimInTech" /><published>2022-12-04T00:00:00-06:00</published><updated>2022-12-04T00:00:00-06:00</updated><id>https://classmech.github.io/blog/mechanics/cae/simintech-janibekov</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2022-12-04-simintech-janibekov/"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#эффект-джанибекова" id="markdown-toc-эффект-джанибекова">Эффект Джанибекова</a></li>
-  <li><a href="#анализ-устойчивости" id="markdown-toc-анализ-устойчивости">Анализ устойчивости</a>    <ul>
-      <li><a href="#вращение-вокруг-оси-с-максимальным-значением-момента-инерции" id="markdown-toc-вращение-вокруг-оси-с-максимальным-значением-момента-инерции">Вращение вокруг оси с максимальным значением момента инерции</a></li>
-      <li><a href="#вращение-вокруг-оси-с-промежуточным-значением-момента-инерции" id="markdown-toc-вращение-вокруг-оси-с-промежуточным-значением-момента-инерции">Вращение вокруг оси с промежуточным значением момента инерции</a></li>
-    </ul>
-  </li>
-  <li><a href="#модель" id="markdown-toc-модель">Модель</a>    <ul>
-      <li><a href="#блок-динамических-уравнений" id="markdown-toc-блок-динамических-уравнений">Блок динамических уравнений</a></li>
-      <li><a href="#блок-кинематических-уравнений" id="markdown-toc-блок-кинематических-уравнений">Блок кинематических уравнений</a></li>
-      <li><a href="#переход-от-углов-последовательности-131-к-углам-последовательности-232" id="markdown-toc-переход-от-углов-последовательности-131-к-углам-последовательности-232">Переход от углов последовательности 131 к углам последовательности 232</a></li>
-      <li><a href="#скрипт-модели" id="markdown-toc-скрипт-модели">Скрипт модели</a></li>
-    </ul>
-  </li>
-  <li><a href="#ссылки" id="markdown-toc-ссылки">Ссылки</a></li>
-</ul>
-
-<p>Среда динамического моделирования <a href="https://simintech.ru">SimInTech</a> предлагает простой набор функций для визуализации движения моделируемых объектов. В этой статье рассматривается построение модели и визуализации движения гайки-барашка при ее свободном вращении вокруг собственной оси с “промежуточным” моментом инерции. Это движение известно как <a href="https://ru.wikipedia.org/wiki/Эффект_Джанибекова">“Эффект Джанибекова”</a>.</p>
-
-<h2 id="эффект-джанибекова">Эффект Джанибекова</h2>
-
-<p><a href="https://ru.wikipedia.org/wiki/Эффект_Джанибекова">Эффектом Джанибекова</a> называют необычное движение вращающейся вокруг одной из своих осей гайки-барашка, выражающееся в её периодическом быстром перевороте на 180 градусов. Этой яркое явление наблюдал космонавт <a href="https://ru.wikipedia.org/wiki/Джанибеков,_Владимир_Александрович">Владимир Александрович Джанибеков</a> на борту орбитальной стации <a href="https://ru.wikipedia.org/wiki/Салют-7">Салют-7</a> в 1985 году. На рисунке 1 показано движение гайки-барашка, построенное при помощи описываемой далее модели в среде динамического моделирования <a href="https://simintech.ru">SimInTech</a>.</p>
-
-<iframe width="800" height="450" src="https://www.youtube.com/embed/Ha8oHDutwQQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-<p class="figcaption">Рисунок 1 - Неустойчивое движение гайки-барашка</p>
-
-<p>Вокруг этого явления возникло множество различных безумных теорий, например, встречалось объяснение этого эффекта “на основании философии Дуализма Диалектики Абсолютного Парадокса” (все буквы, конечно, заглавные), однако этот эффект описывается в рамках классической механики. Вращение гайки-барашка вокруг оси с промежуточным или средним моментом инерции, например вокруг собственной оси Y, если значения главных моментов инерции удовлетворяют условиям \(J_z &lt; J_y &lt; J_x\),  является неустойчивым, что и приводит к наблюдаемому перевороту гайки. Некоторой аналогией движения гайки является поведение физического маятника,  выведенного небольшим возмущением из неустойчивого (верхнего) положения равновесия.</p>
-
-<p><img src="/assets/img/blog/jan-simintech-pendulum.gif" alt="" /></p>
-
-<p class="figcaption">Рисунок 2 - Движение физического маятника</p>
-
-<p>Мятник будет совершать размашистые колебания с амплитудой чуть меньше 180 градусов, подходя к точке неустойчивого равновесия то слева то справа, надолго “зависая” в этом положении. Нижнее устойчивое положение маятник будет проходить с большой скоростью. Подобным же образом ведет себя гайка, но гайка, в отличие от маятника, имеет устойчивые и неустойчивые движения, а не положения, поэтому у гайки длительные движения в окрестности неустойчивоой оси Y сменяются быстрыми переворотами на 180 градусов.</p>
-
-<h2 id="анализ-устойчивости">Анализ устойчивости</h2>
-
-<p>Рассмотрим движение твердого тела, которое имеет три различных главных момента инерции, при этом обозначения <a href="https://prosopromat.ru/faq/voprosy-faq/vopros-o-glavnyx-centralnyx-osyax-inercii-secheniya.html">главных центральных осей</a> тела выбраны так, чтобы выполнялись условия \(J_z \leq  J_y \leq  J_x\).</p>
-
-<p><img src="/assets/img/blog/jan-simintech-object.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 3 - Система координат, связанная с гайкой</p>
-
-<h3 id="вращение-вокруг-оси-с-максимальным-значением-момента-инерции">Вращение вокруг оси с максимальным значением момента инерции</h3>
-
-<p>Предположим, что тело вращающется вокруг главной оси с максимальным моментом инерции – $Cx$, с угловой скоростью \(\omega_0 = \text{const}\). Пусть проекции угловой скорости на все собственные оси получили малые возмущения, которые обозначим как \(\delta_x\), \(\delta_y\) и \(\delta_z\) соответственно:</p>
-
-\[\omega_x = \omega_0 + \delta_x, \; \ \omega_y = 0+\delta_y, \; \omega_z = 0 + \delta_z.\]
-
-<p>Уравнения движения тела в возмущениях имеют вид:</p>
-
-\[\left\{
-\begin{aligned}
-	&amp; J_x \dot \delta_x - (J_y-J_z) \delta_y \delta_z = 0, \\
-	&amp; J_y \dot \delta_y - (J_z-J_x) \delta_z (\omega_0 + \delta_x) = 0, \\
-	&amp; J_z \dot \delta_z - (J_x-J_y) \delta_y (\omega_0 + \delta_x) = 0. \\
-\end{aligned}
-\right.\]
-
-<p>Раскрывая скобки и пренебрегая произведениями малых отклонений (малыми второго порядка), получим:</p>
-
-\[\left\{
-\begin{aligned}
-	&amp; J_x \dot \delta_x = 0, \\
-	&amp; J_y \dot \delta_y - (J_z-J_x) \delta_z \omega_0 = 0, \\
-	&amp; J_z \dot \delta_z - (J_x-J_y) \delta_y \omega_0 = 0. \\
-\end{aligned}
-\right.\]
-
-<p>Из 1-го уравнения следует, что</p>
-
-\[\delta_x = \text{const}.\]
-
-<p>Из 2-го и 3-го уравнений можно получить два независимых линейных дифференциальных уравнения второго порядка:</p>
-
-\[J_y \ddot \delta_y - \omega_0^2 \frac{(J_z-J_x) (J_x-J_y)}{J_z}\delta_y = 0.\]
-
-\[J_z \ddot \delta_z - \omega_0^2 \frac{(J_z-J_x) (J_x-J_y)}{J_y}\delta_z = 0.\]
-
-<p>Вид решений последних двух линейных дифференциальных уравнений зависит от знака множителя при \(\delta_y\) и \(\delta_z\). При \(J_z&lt;J_y&lt;J_x\):</p>
-
-\[\omega_0^2 \frac{(J_x-J_z) (J_x-J_y)}{J_y J_z} &gt; 0,\]
-
-<p>следовательно решения будут иметь вид:</p>
-
-\[\delta_y = a_y \sin (\lambda t + \varepsilon_y), \quad \delta_z = a_z \sin (\lambda t + \varepsilon_z)\]
-
-<p>Т.е. отклонения \(\delta_y\) и \(\delta_z\) не будут возрастать и вращение вокруг оси \(Cx\) будет устойчивым. Подобным образом показывается устойчивость вращения тела вокруг главной оси с минимальным моментом инерции \(Cz\).</p>
-
-<h3 id="вращение-вокруг-оси-с-промежуточным-значением-момента-инерции">Вращение вокруг оси с промежуточным значением момента инерции</h3>
-
-<p>Теперь предположим, что тело вращается вокруг оси \(Cy\) с промежуточным значением момента инерции. Рассмотрим устойчивость такого движения при небольших возмущениях проекций угловой скорости:</p>
-
-\[\omega_x = \delta_x, \; \ \omega_y = \omega_0+\delta_y, \; \omega_z = \delta_z.\]
-
-<p>Уравнения движения тела имеют вид:</p>
-
-\[\left\{
-\begin{aligned}
-	&amp; J_x \dot \delta_x - (J_y-J_z) (\omega_0 + \delta_y) \delta_z = 0, \\
-	&amp; J_y \dot \delta_y - (J_z-J_x) \delta_z \delta_x = 0, \\
-	&amp; J_z \dot \delta_z - (J_x-J_y) \delta_x (\omega_0 + \delta_y) = 0. \\
-\end{aligned}
-\right.\]
-
-<p>Пренебрегая малыми второго порядка, получим:</p>
-
-\[\left\{
-\begin{aligned}
-	&amp; J_x \dot \delta_x - (J_z-J_x) \delta_z \omega_0 = 0, \\
-	&amp; J_y \dot \delta_y = 0, \\
-	&amp; J_z \dot \delta_z - (J_x-J_y) \delta_x \omega_0 = 0. \\
-\end{aligned}
-\right.\]
-
-<p>Из 2-го уравнения следует: \(\delta_y = \text{const}\). Из 1-го и 3-го уравнений:</p>
-
-\[\ddot \delta_x + \omega_0^2 \frac{(J_z-J_y) (J_x-J_y)}{J_x J_z} \delta_x = 0.\]
-
-\[\ddot \delta_z + \omega_0^2 \frac{(J_z-J_y) (J_x-J_y)}{J_x J_z} \delta_z = 0.\]
-
-<p>При \(J_z&lt;J_y&lt;J_x\):</p>
-
-\[\omega_0^2 \frac{(J_z-J_y) (J_x-J_y)}{J_x J_z} &lt; 0,\]
-
-<p>следовательно решения для возмущений будут иметь вид:</p>
-
-\[\delta_x = C_1 e^{\lambda t} + C_2 e^{- \lambda t}, \quad \delta_y = C_3 e^{\lambda t} + C_4 e^{- \lambda t}\]
-
-<p>Мы видим, что возмущения неограниченно возрастают, поэтому вращение вокруг оси \(y_2\) будет неустойчиво.</p>
-
-<p>Полученные уравнения показывают только устойчивость или неустойчивость движения твердого тела при вращении вокруг одной из собcтвенных осей и не описывают само движение при перевороте гайки. Среда моделирования <a href="https://simintech.ru">SimInTech</a> позволит нам не только убедиться в неустойчивости движения вокруг оси с промежуточным моментом инерции, построив графики изменения угловой скорости гайки, но и “увидеть” это движение при помощи модуля 3D-визуализации.</p>
-
-<h2 id="модель">Модель</h2>
-
-<p>Общий вид модели в <a href="https://simintech.ru">SimInTech</a> показан на рисунке 3.</p>
-
-<p><img src="/assets/img/blog/jan-simintech-model.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 5 - Модель</p>
-
-<p>Главным блоком модели вляется новый блок “Гайка (XZ’X’’)”, созданный на основе субмодели. Этот блок может использоваться для моделирования движения твердого тела вокруг центра масс в углах Эйлера. На вход блока подаётся вектор внешнего момента, который в этой задаче равен нулю, и массив значений главных моментов инерции объекта-гайки. Выходными сигналами блока являются вектор проекций угловой скорости гайки на собственные оси [wx, wy, wz] и вектор углов поворота связанной с гайкой системы координат по отношению к неподвижной системе. Угловое положение системы координат, связанной с гайкой, определяется углами Эйлера последовательности поворотов XZ’X’’. Структура блока показа на следующем рисунке:</p>
-
-<p><img src="/assets/img/blog/jan-simintech-screw.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 6 - Модель блока “Гайка (XZ’X’’)”</p>
-
-<p>В блоке “Гайка (XZ’X’’)” используются блоки-интеграторы, начальные условия которых (начальная угловая скорость и начальные значения углов Эйлера) заданы в свойствах блока “Гайка (XZ’X’’)”:</p>
-
-<p><img src="/assets/img/blog/jan-simintech-body-prop.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 7 - Свойства блока “Гайка (XZ’X’’)”</p>
-
-<p>Для того, чтобы добавить эти свойства к субмодели необходимо перевести SimInTech в режим разработчика (Меню “Вид” - “Режим разработчика”), в общих свойствах субмодели “Гайка” указать новое наименование типа блока, теперь это не “стандартная” субмодель, а блок типа “ТвердоеТело131”. Таким образом на основе субмодели создается новый блок со своими уникальными свойствами.</p>
-
-<p><img src="/assets/img/blog/jan-simintech-submodel-type.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 8 - Задание типа блока</p>
-
-<h3 id="блок-динамических-уравнений">Блок динамических уравнений</h3>
-
-<p>В блоке “Динамические уравнения” в явном виде на встроенном языке программирования записываются динамические уравнения Эйлера в проекциях на главные центральные оси тела:</p>
-
-\[\left\{
-\begin{aligned}
-	&amp; J_x \dot \omega_x - (J_z-J_x) \omega_y \omega_z = M_x, \\
-	&amp; J_y \dot \omega_y - (J_z-J_x) \omega_z \omega_x = M_y, \\
-	&amp; J_z \dot \omega_z - (J_x-J_y) \omega_x \omega_y = M_z. \\
-\end{aligned}
-\right.\]
-
-<p>В рассматриваемом случае движение тела происходит “по-инерции”, поэтому все проекции внешнего момента на собственные оси равны нулю \(M_x = M_y = M_z = 0\). Ниже приведен код блока “динамические уравнения” (блок “<a href="https://help.simintech.ru/index.html#10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0985.html">Язык программирования</a>” из раздела “<a href="https://help.simintech.ru/index.html#10_biblioteki_blokov/avtomatika/DIR_dinamicheskie.html">Динамические</a>”):</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Динамические уравнения Эйлера 
-// в главных центральных осях
-// Входы :
-// Torque - Вектор момента в главных центральных осях [Нм]
-// J      - Главные моменты инерции [кгм2]
-// w      - угловые скорости в проекциях на главные оси [1/с]
-</span><span class="n">input</span> <span class="n">Torque</span><span class="p">[</span><span class="m">3</span><span class="p">],</span> <span class="n">J</span><span class="p">[</span><span class="m">3</span><span class="p">],</span> <span class="n">w</span><span class="p">[</span><span class="m">3</span><span class="p">];</span>
-<span class="c1">// Выходы :
-// dw     - Вектор угловых ускорений [1/с2]
-</span><span class="n">output</span> <span class="n">dw</span><span class="p">[</span><span class="m">3</span><span class="p">];</span>
-
-<span class="n">dw</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">=</span> <span class="p">(</span><span class="n">Torque</span><span class="p">[</span><span class="m">1</span><span class="p">]+(</span><span class="n">J</span><span class="p">[</span><span class="m">2</span><span class="p">]-</span><span class="n">J</span><span class="p">[</span><span class="m">3</span><span class="p">])*</span><span class="n">w</span><span class="p">[</span><span class="m">2</span><span class="p">]*</span><span class="n">w</span><span class="p">[</span><span class="m">3</span><span class="p">])/</span><span class="n">J</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
-<span class="n">dw</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="p">=</span> <span class="p">(</span><span class="n">Torque</span><span class="p">[</span><span class="m">2</span><span class="p">]+(</span><span class="n">J</span><span class="p">[</span><span class="m">3</span><span class="p">]-</span><span class="n">J</span><span class="p">[</span><span class="m">1</span><span class="p">])*</span><span class="n">w</span><span class="p">[</span><span class="m">3</span><span class="p">]*</span><span class="n">w</span><span class="p">[</span><span class="m">1</span><span class="p">])/</span><span class="n">J</span><span class="p">[</span><span class="m">2</span><span class="p">];</span>
-<span class="n">dw</span><span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="p">=</span> <span class="p">(</span><span class="n">Torque</span><span class="p">[</span><span class="m">3</span><span class="p">]+(</span><span class="n">J</span><span class="p">[</span><span class="m">1</span><span class="p">]-</span><span class="n">J</span><span class="p">[</span><span class="m">2</span><span class="p">])*</span><span class="n">w</span><span class="p">[</span><span class="m">1</span><span class="p">]*</span><span class="n">w</span><span class="p">[</span><span class="m">2</span><span class="p">])/</span><span class="n">J</span><span class="p">[</span><span class="m">3</span><span class="p">];</span>
-</code></pre></div></div>
-
-<p>На вход блока подаётся вектор проекций угловой скорости тела, на выходе получается вектор проекций угловых ускорений тела (правая часть дифференциальных уранвений).</p>
-
-<h3 id="блок-кинематических-уравнений">Блок кинематических уравнений</h3>
-
-<p>Кинематические уравнения связывают производные параметров, определяющих ориентацию базиса, связанного с твердым телом по отношению к неподвижному базису, с проекциями угловых скоростей. В рассматриваемой задаче используется система углов Эйлера последовательности XZ’X’’, т.е. из исходного положения, когда связанный с телом базис совпадает с неподвижным базисом, угловое положение первого определяется тремя последовательными поворотами:</p>
-
-<ol>
-  <li>вокруг оси \(Cx_2\) на угол прецессии \(\psi\);</li>
-  <li>вокруг оси \(Cz_2\) на угол нутации \(\vartheta\);</li>
-  <li>вокруг оси \(Cx_2\) на угол собственного вращения \(\varphi\).</li>
-</ol>
-
-<p><img src="/assets/img/blog/jan-simintech-CS.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 9 - Углы XZ’X’’</p>
-
-<p>Кинематические уравнения для рассматриваемой последовательности поворотов:</p>
-
-\[\left\{
-\begin{aligned}
-\dot \psi &amp; = \frac{\omega_z \sin \varphi - \omega_y \cos \varphi}{\sin \vartheta}, \\
-\dot \vartheta &amp; = \omega_z cos \varphi + \omega_y \sin \varphi, \\
-\dot \varphi &amp; = \omega_x + \frac{\omega_y \cos \varphi - \omega_z \sin \varphi}{\tan \vartheta} 
-\end{aligned}
-\right.\]
-
-<p>Блок кинематических уравнений написан также на встроенном языке программирования (блок “<a href="https://help.simintech.ru/index.html#10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0985.html">Язык программирования</a>” из раздела “<a href="https://help.simintech.ru/index.html#10_biblioteki_blokov/avtomatika/DIR_dinamicheskie.html">Динамические</a>”):</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Кинематические уравнения для последовательности поворотов 131
-</span><span class="n">input</span>  <span class="n">w</span><span class="p">[</span><span class="m">3</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">];</span>
-<span class="n">output</span> <span class="n">da</span><span class="p">[</span><span class="m">3</span><span class="p">];</span>
-
-<span class="n">da</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">=</span> <span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="m">3</span><span class="p">]*</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">])-</span><span class="n">w</span><span class="p">[</span><span class="m">2</span><span class="p">]*</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">]))/</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">2</span><span class="p">]);</span>
-<span class="n">da</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="p">=</span> <span class="n">w</span><span class="p">[</span><span class="m">3</span><span class="p">]*</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">])+</span><span class="n">w</span><span class="p">[</span><span class="m">2</span><span class="p">]*</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">]);</span>
-<span class="n">da</span><span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="p">=</span> <span class="n">w</span><span class="p">[</span><span class="m">1</span><span class="p">]+</span><span class="n">w</span><span class="p">[</span><span class="m">2</span><span class="p">]*</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">])/</span><span class="n">tg</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">2</span><span class="p">])-</span><span class="n">w</span><span class="p">[</span><span class="m">3</span><span class="p">]*</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">])/</span><span class="n">tg</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">2</span><span class="p">]);</span>
-</code></pre></div></div>
-
-<h3 id="переход-от-углов-последовательности-131-к-углам-последовательности-232">Переход от углов последовательности 131 к углам последовательности 232</h3>
-
-<p>В модуле 3D-визуализации SimInTech <a href="https://help.simintech.ru/index.html#11_yazyk_programmirovaniya/6_funkcii/3_graficheskie_i_sistemnye/modul_3d_vizualizacii/viewer3dsetlcsangles.html">ориентация объекта в пространстве также задается тремя углами Эйлера</a>, определяющими ориентацию связанного с телом базиса по отношению к неподвижному базису, но используется последовательность <strong>YZ’Y’‘</strong>, т.е. первый поворот выполняется вокруг оси Y на угол прецессии, второй поворот вокруг новой оси Z (поэтому она обозначается как Z’) на угол нутации и третий поворот  на угол собственного вращения вокруг оси Y’’.</p>
-
-<p class="note">К сожалению, <a href="https://help.simintech.ru/index.html#11_yazyk_programmirovaniya/6_funkcii/3_graficheskie_i_sistemnye/DIR_modul_3d_vizualizacii.html">в справке</a> описан только этот способ определения ориентации тела в модуле 3D-визуализации, поэтому если в разрабатываемой модели используется другой набор углов, как в рассматриваемом случае, или вместо углов используются катернионы или направляющие косинусы, то для визуализации движения необходимо выполнять пересчет используемых параметров в углы последовательности YZ’Y’’.</p>
-
-<p>Для преобразования одного набора углов Эйлера в другой используется субмодель “Углы 131 в 232”, структура которой показана на следующем рисунке.</p>
-
-<p><img src="/assets/img/blog/jan-simintech-131-232.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 10 - Блок преобразования углов последовательности XZ’X’’ в последовательность YZ’Y’’</p>
-
-<p>На вход субмодели поступает массив (вектор) углов последовательности XZ’X’’ (или 131). Внутри субмодели по значениям углов формируются матрицы поворота вокруг оси X на угол прецессии:</p>
-
-\[A_x(\psi) = \begin{bmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; \cos \psi &amp; -\sin \psi \\ 0 &amp; \sin \psi &amp; \cos \psi \end{bmatrix}\]
-
-<p>вокруг оси Z на угол прецессии:</p>
-
-\[A_z(\vartheta) = \begin{bmatrix} \cos \vartheta &amp; -\sin \vartheta &amp; 0 \\ \sin \vartheta &amp; \cos \vartheta &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix}\]
-
-<p>и вокруг оси X на угол собственного вращения</p>
-
-\[A_x(\varphi) = \begin{bmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; \cos \varphi &amp; -\sin \varphi \\ 0 &amp; \sin \varphi &amp; \cos \varphi \end{bmatrix}\]
-
-<p>Матрицы перемножаются в прямом порядке:</p>
-
-\[A = A_x(\psi) \cdot A_z(\vartheta) \cdot A_x(\varphi)\]
-
-<p>В результате перемножения трех матриц элементарных поворотов получается матрица направляющих косинусов базиса связанного с телом по отношению к неподвижному базису.</p>
-
-<p>Матрица направляющих косинусов поступает на вход субмодели DCM-A232, которая написана на встроенном языке программирования. В субмодели <a href="http://www.eecs.qmul.ac.uk/~gslabaugh/publications/euler.pdf">определяются углы последовательности 232 по элементам полученной матрицы направляющих косинусов</a>. Ниже приведён код субмодели DCM-A232:</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Вычисление углов последовательности 232
-// по элементам матрицы направляющих косинусов
-</span><span class="n">input</span>  <span class="n">u</span><span class="p">[</span><span class="m">3</span><span class="p">,</span><span class="m">3</span><span class="p">];</span>
-<span class="n">output</span> <span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">];</span>
-
-<span class="c1">// Для каждого угла есть два решения
-</span><span class="n">a21</span> <span class="p">=</span>  <span class="n">arccos</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">]);</span>
-<span class="n">a22</span> <span class="p">=</span>  <span class="m">2</span><span class="p">*</span><span class="n">pi</span><span class="p">-</span><span class="n">a21</span><span class="p">;</span>
-
-<span class="n">a31</span> <span class="p">=</span>  <span class="n">atan2</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="m">2</span><span class="p">][</span><span class="m">3</span><span class="p">]/</span><span class="n">sin</span><span class="p">(</span><span class="n">a21</span><span class="p">),</span><span class="n">u</span><span class="p">[</span><span class="m">2</span><span class="p">][</span><span class="m">1</span><span class="p">]/</span><span class="n">sin</span><span class="p">(</span><span class="n">a21</span><span class="p">));</span>
-<span class="n">a32</span> <span class="p">=</span>  <span class="n">atan2</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="m">2</span><span class="p">][</span><span class="m">3</span><span class="p">]/</span><span class="n">sin</span><span class="p">(</span><span class="n">a22</span><span class="p">),</span><span class="n">u</span><span class="p">[</span><span class="m">2</span><span class="p">][</span><span class="m">1</span><span class="p">]/</span><span class="n">sin</span><span class="p">(</span><span class="n">a22</span><span class="p">));</span>
-
-<span class="n">a11</span> <span class="p">=</span>  <span class="n">atan2</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="m">3</span><span class="p">][</span><span class="m">2</span><span class="p">]/</span><span class="n">sin</span><span class="p">(</span><span class="n">a21</span><span class="p">),-</span><span class="n">u</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="m">2</span><span class="p">]/</span><span class="n">sin</span><span class="p">(</span><span class="n">a21</span><span class="p">));</span>
-<span class="n">a12</span> <span class="p">=</span>  <span class="n">atan2</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="m">3</span><span class="p">][</span><span class="m">2</span><span class="p">]/</span><span class="n">sin</span><span class="p">(</span><span class="n">a22</span><span class="p">),-</span><span class="n">u</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="m">2</span><span class="p">]/</span><span class="n">sin</span><span class="p">(</span><span class="n">a22</span><span class="p">));</span>
-
-<span class="c1">// Выбираем первое... 
-</span><span class="n">a</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">=</span> <span class="n">a11</span><span class="p">;</span>
-<span class="n">a</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="p">=</span> <span class="n">a21</span><span class="p">;</span>
-<span class="n">a</span><span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="p">=</span> <span class="n">a31</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>Найденные углы передаются на выход субмодели “Углы 131 в 232”. С выхода  значения углов записываются в базу сигналов: переменные A1, A2, A3 соответсенно, которые были предварительно объявленны в редакторе сигналов (меню “Сервис” → “Сигналы”):</p>
-
-<p><img src="/assets/img/blog/jan-simintech-signals.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 11 - Сигналы A1, A2, A3</p>
-
-<p>Для записи сигналов используется блок <a href="https://help.simintech.ru/#10_biblioteki_blokov/avtomatika/Signaly/1021.html">“Запись в список сигналов”</a>:</p>
-
-<p><img src="/assets/img/blog/jan-simintech-signals-write.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 12 - Свойства блока “Запись в список сигналов”</p>
-
-<h3 id="скрипт-модели">Скрипт модели</h3>
-
-<p>В скрипте модели в блоке инициализации задаются значения главных моментов инерции гайки, создается окно 3D-визуализации, загружается объект - гайка из файла <a href="/assets/files/3d/screw.stl">screw.stl</a>.</p>
-
-<p><img src="/assets/img/blog/jan-simintech-script-button.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 13 - Редактор скрипта модели</p>
-
-<p>Вне блока инициализации записаны две строчки кода, которые будут вызываться на каждом шаге интегрирования. Функция <a href="https://help.simintech.ru/index.html#11_yazyk_programmirovaniya/6_funkcii/3_graficheskie_i_sistemnye/modul_3d_vizualizacii/viewer3dsetlcsangles.html">Viewer3DSetLCSAngles</a> поворачивает гайку на углы Эйлера, полученные на шаге интегрирования, функция <a href="https://help.simintech.ru/index.html#11_yazyk_programmirovaniya/6_funkcii/3_graficheskie_i_sistemnye/modul_3d_vizualizacii/viewer3dsetlcsposition.html">Viewer3DSetLCSPosition</a> перемещает центр масс гайки вдоль оси x имитируя её движение после схода с винта.</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">initialization</span>
-     <span class="k">var</span> <span class="n">Jx</span> <span class="p">=</span> <span class="m">2000</span><span class="p">;</span>
-     <span class="k">var</span> <span class="n">Jy</span> <span class="p">=</span> <span class="m">4000</span><span class="p">;</span>
-     <span class="k">var</span> <span class="n">Jz</span> <span class="p">=</span> <span class="m">6000</span><span class="p">;</span>
-
-     <span class="n">Id</span>  <span class="p">=</span> <span class="n">Viewer3DCreate</span><span class="p">;</span>
-     <span class="n">OId</span> <span class="p">=</span> <span class="n">Viewer3DPlotObject</span><span class="p">(</span><span class="n">Id</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="p">[</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">],</span> <span class="p">[</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">],</span> <span class="err">"</span><span class="n">screw</span><span class="p">.</span><span class="n">stl</span><span class="err">"</span><span class="p">);</span>
-     <span class="n">Viewer3DShowObjectAxes</span><span class="p">(</span><span class="n">Id</span><span class="p">,</span> <span class="n">OId</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>    
-<span class="k">end</span>
-
-<span class="n">Viewer3DSetLCSAngles</span><span class="p">(</span><span class="n">Id</span><span class="p">,</span> <span class="n">OId</span><span class="p">,</span> <span class="n">A1</span><span class="p">*</span><span class="m">180</span><span class="p">/</span><span class="n">pi</span><span class="p">,</span> <span class="n">A2</span><span class="p">*</span><span class="m">180</span><span class="p">/</span><span class="n">pi</span><span class="p">,</span> <span class="n">A3</span><span class="p">*</span><span class="m">180</span><span class="p">/</span><span class="n">pi</span><span class="p">);</span>
-<span class="n">Viewer3DSetLCSPosition</span><span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="n">oID</span><span class="p">,</span> <span class="p">-</span><span class="m">0.2</span><span class="p">+</span><span class="m">0.05</span><span class="p">*</span><span class="n">time</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
-</code></pre></div></div>
-
-<p>Перед запуском модели необходимо в настройках “Параметры расчета” на закладке “Синхронизация” поставить галочку “Синхронизировать с реальным временем”.</p>
-
-<p><img src="/assets/img/blog/jan-simintech-params-sim.png" alt="" /></p>
-
-<p><img src="/assets/img/blog/jan-simintech-sync.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 14 - Синхронизация скорости расчёта с реальным временем</p>
-
-<p>После запуска модели появится окно “Модуль 3D Визуализации SimInTech”, в котором будет показано движение гайки. Графики изменения проекций вектора угловой скорости гайки на собственные оси показаны на рисунке 15.</p>
-
-<p><img src="/assets/img/blog/jan-simintech-wxwywz.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 15 - Угловые скорости гайки</p>
-
-<h2 id="ссылки">Ссылки</h2>
-
-<ol>
-  <li><a href="http://www.eecs.qmul.ac.uk/~gslabaugh/publications/euler.pdf">Й. Виттенбург, Динамика систем тел</a>, М.: Наука, 1980.</li>
-  <li><a href="http://www.eecs.qmul.ac.uk/~gslabaugh/publications/euler.pdf">Gregory G. Slabaugh. Computing Euler angles from a rotation matrix</a></li>
-</ol>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><summary type="html"><![CDATA[Модель и визуализация движения в SimInTech гайки-барашка при её вращении вокруг оси с промежуточным моментом инерции, известного как "Эффект Джанибекова".]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/jan-simintech-object.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/jan-simintech-object.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+</ol>]]></content><author><name></name></author><category term="mechanics" /><category term="python" /><summary type="html"><![CDATA[Determining the friction torque in the pivot point of a physical pendulum through measuring the time it takes to swing from an initial angle until it comes to a halt. Implementing numerical methods to simulate the dynamics of a physical pendulum in Python.]]></summary></entry></feed>
