@@ -1,4 +1,762 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://classmech.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://classmech.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2024-05-17T11:12:46-05:00</updated><id>https://classmech.github.io/feed.xml</id><title type="html">ClassMech</title><subtitle></subtitle><entry><title type="html">Вывод и интегрирование уравнений движения эллиптического мятника в Python (использование sympy, scipy)</title><link href="https://classmech.github.io/blog/python/mechanics/2024-05-12-python-elliptic-pendulum/" rel="alternate" type="text/html" title="Вывод и интегрирование уравнений движения эллиптического мятника в Python (использование sympy, scipy)" /><published>2024-05-12T00:00:00-05:00</published><updated>2024-05-12T00:00:00-05:00</updated><id>https://classmech.github.io/blog/python/mechanics/python-elliptic-pendulum</id><content type="html" xml:base="https://classmech.github.io/blog/python/mechanics/2024-05-12-python-elliptic-pendulum/"><![CDATA[<p>Рассматриваемая механическая система имеет две степени свободы: её конфигурация определяется координатой \(x\)  тела 1 (брусок, движущийся поступательно вдоль оси \($Ox_0\)) и углом отклонения подвеса тела 2 от вертикали \(\phi\). Движение системы происходит в однородном поле силы тяжести.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://classmech.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://classmech.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-08-18T07:24:38-05:00</updated><id>https://classmech.github.io/feed.xml</id><title type="html">ClassMech</title><subtitle></subtitle><entry><title type="html">Модель стандартной атмосферы для среды динамического моделирования SimInTech</title><link href="https://classmech.github.io/blog/cae/2025-08-17-simintec-standard-atmosphere/" rel="alternate" type="text/html" title="Модель стандартной атмосферы для среды динамического моделирования SimInTech" /><published>2025-08-17T00:00:00-05:00</published><updated>2025-08-17T00:00:00-05:00</updated><id>https://classmech.github.io/blog/cae/simintec-standard-atmosphere</id><content type="html" xml:base="https://classmech.github.io/blog/cae/2025-08-17-simintec-standard-atmosphere/"><![CDATA[<p>Модель стандартной атмосферы по ГОСТ 4401-81 для среды динамического моделирования “SimInTech” для диапазона геометрической высоты от -2 до 400 км. В отличие от стандартного блока “Параметры стандартной атмосферы (ГОСТ 4401-81)” библиотеки “Динамика ЛА” представленная здесь модель (блок) может использоваться для определения плотности воздуха, скорости звука, температуры и давления для высоты от -2 до 400 км. Стандартный блок корректно определяет параметры атмосферы до 80 км.</p>
+
+<p><a href="https://gitverse.ru/classmech/gost_4401-81_simintech">Репозитарий проекта на gitverse</a>.</p>]]></content><author><name></name></author><category term="cae" /><category term="simintech" /><summary type="html"><![CDATA[Модель стандартной атмосферы по ГОСТ 4401-81 для среды динамического моделирования "SimInTech" для диапазона геометрической высоты от -2 до 400 км]]></summary></entry><entry><title type="html">Модель эффекта Джанибекова в Wolfram Mathematica</title><link href="https://classmech.github.io/blog/mechanics/2025-04-23-janibekov-effect-in-wolfram-mathematica/" rel="alternate" type="text/html" title="Модель эффекта Джанибекова в Wolfram Mathematica" /><published>2025-04-23T00:00:00-05:00</published><updated>2025-04-23T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/janibekov-effect-in-wolfram-mathematica</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/2025-04-23-janibekov-effect-in-wolfram-mathematica/"><![CDATA[<ul>
+  <li><a href="/assets/files/Mathematica/Janibekov-effect.nb">Файл Wolfram Mathematica</a></li>
+  <li><a href="/assets/files/3d/screw.stl">3D-модель гайки-барашка (stl)</a></li>
+</ul>
+
+<p><img src="/assets/files/Mathematica/Janibekov-effect.gif" alt="" /></p>
+
+<p>Динамические уравнения Эйлера</p>
+
+<div class="language-mathematica highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">eq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="nv">Jx</span><span class="w"> </span><span class="nv">wx</span><span class="o">'</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="nv">Jy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Jz</span><span class="p">)</span><span class="w"> </span><span class="nv">wy</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nv">wz</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="o">,</span><span class="w">
+   </span><span class="nv">Jy</span><span class="w"> </span><span class="nv">wy</span><span class="o">'</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="nv">Jz</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Jx</span><span class="p">)</span><span class="w"> </span><span class="nv">wx</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nv">wz</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="o">,</span><span class="w">
+   </span><span class="nv">Jz</span><span class="w"> </span><span class="nv">wz</span><span class="o">'</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="nv">Jx</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">Jy</span><span class="p">)</span><span class="w"> </span><span class="nv">wy</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nv">wx</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w">
+   </span><span class="p">}</span><span class="o">;</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Кинематические уравнения для углов последовательности XZ’X’’</p>
+
+<div class="language-mathematica highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
+</span><span class="nv">kinematicEq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="err">ψ</span><span class="o">'</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="nv">wz</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nb">Sin</span><span class="p">[</span><span class="err">φ</span><span class="p">[</span><span class="nv">t</span><span class="p">]]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">wy</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nb">Cos</span><span class="p">[</span><span class="nv">\[CurlyPhi]</span><span class="p">[</span><span class="nv">t</span><span class="p">]])</span><span class="o">/</span><span class="w">
+     </span><span class="nb">Sin</span><span class="p">[</span><span class="nv">\[CurlyTheta]</span><span class="p">[</span><span class="nv">t</span><span class="p">]]</span><span class="o">,</span><span class="w">
+   </span><span class="nv">\[CurlyTheta]</span><span class="o">'</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> 
+    </span><span class="nv">wz</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nb">Cos</span><span class="p">[</span><span class="nv">\[CurlyPhi]</span><span class="p">[</span><span class="nv">t</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">wy</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nb">Sin</span><span class="p">[</span><span class="nv">\[CurlyPhi]</span><span class="p">[</span><span class="nv">t</span><span class="p">]]</span><span class="o">,</span><span class="w">
+   </span><span class="nv">\[CurlyPhi]</span><span class="o">'</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> 
+    </span><span class="nv">wx</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nv">wy</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nb">Cos</span><span class="p">[</span><span class="nv">\[CurlyPhi]</span><span class="p">[</span><span class="nv">t</span><span class="p">]]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">wz</span><span class="p">[</span><span class="nv">t</span><span class="p">]</span><span class="w"> </span><span class="nb">Sin</span><span class="p">[</span><span class="nv">\[CurlyPhi]</span><span class="p">[</span><span class="nv">t</span><span class="p">]])</span><span class="o">/</span><span class="w">
+      </span><span class="nb">Tan</span><span class="p">[</span><span class="nv">\[CurlyTheta]</span><span class="p">[</span><span class="nv">t</span><span class="p">]]</span><span class="w">
+   </span><span class="p">}</span><span class="o">;</span><span class="w">
+</span></code></pre></div></div>]]></content><author><name></name></author><category term="mechanics" /><category term="mathematica" /><summary type="html"><![CDATA[Численное интегрирование уравнений пространственного движения твёрдого тела вокруг неподвижной точки и его визуализация в Wolfram Mathematica]]></summary></entry><entry><title type="html">Моделирования движения механизма с двумя степенями свободы</title><link href="https://classmech.github.io/blog/mechanics/cae/2024-11-09-simintech-course-work/" rel="alternate" type="text/html" title="Моделирования движения механизма с двумя степенями свободы" /><published>2024-11-09T00:00:00-06:00</published><updated>2024-11-09T00:00:00-06:00</updated><id>https://classmech.github.io/blog/mechanics/cae/simintech-course-work</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2024-11-09-simintech-course-work/"><![CDATA[<p><a href="https://gitverse.ru/classmech/simintech/content/master/Курсовая_ТМ">Пример модели механизма с двумя степенями свободы</a> из заданий для курсовой работы кафедры теоретической механики Самарского университета.</p>]]></content><author><name></name></author><category term="mechanics" /><category term="CAE" /><category term="simintech" /><summary type="html"><![CDATA[SimInTech-проект моделирования движения механизма с двумя степенями свободы]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/simintech-course-work.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/simintech-course-work.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Модель движения маятника с точкой подвеса на колесе</title><link href="https://classmech.github.io/blog/mechanics/cae/2024-10-24-wheel-pendulum/" rel="alternate" type="text/html" title="Модель движения маятника с точкой подвеса на колесе" /><published>2024-10-24T00:00:00-05:00</published><updated>2024-10-24T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/wheel-pendulum</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2024-10-24-wheel-pendulum/"><![CDATA[<p>Рассмотрим движение физического маятника с точкой подвеса шарнирно закрепленной в центре колеса (точка С). Колесо может катиться без проскальзывания  по прямой линии на горизонтальной плоскости.</p>
+
+<p>Эта механическая система имеет две степени свободы: её положение определяется углом поворота колеса \(\varphi\) и углом отклонения маятника от вертикали – \(\beta\). Координата центра масс колеса относительно неподвижной системы координат Oxy, расположенной на плоскости, будет определяться произведением радиуса колеса \(r\) на угол его поворота \(\varphi\) с противоположным знаком (рисунок 1).</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/mech.svg" alt="" /></p>
+
+<p class="figcaption">Рисунок 1 - Схема механизма</p>
+
+<p>Движение механизма описывается следующей системой дифференциальных уравнений второго порядка:</p>
+
+\[\left\{
+\begin{aligned}
+    &amp; \dot \omega a_{11} + \ddot \beta a_{12} \cos \beta  = a_{12} \dot{\beta}^2 \sin \beta - L \\
+    &amp; \dot \omega a_{12} \cos \beta + \ddot{\beta} a_{22} = L + m g b \sin \beta \\
+\end{aligned}
+\right.\]
+
+<p>где \(a_{11} = m_1 r^2+J_1\), \(a_{12} = m_2 r l\), \(a_{22} = J_2\), \(m_1\,J_1\) – масса и момент инерции колеса относительно его центра C, \(r\) – радиус колеса, \(m_2,\,J_2\) – масса и момент инерции маятника относительно точки закрепления С, \(L\) – момент привода, который стремится повернуть маятник против часовой стрелки, а колесо в противоположном направлении.</p>
+
+<p class="note" title="Источник">Уравнения движения маятника приведены в монографии: Формальский А. М. Управление движением неустойчивых объектов.  М.: Физматлит, 2012.</p>
+
+<h2 id="модель-simintech">Модель SimInTech</h2>
+
+<h3 id="параметры-модели-глобальные-переменные">Параметры модели (глобальные переменные)</h3>
+
+<p>Создадим новый проект “Файл”→”Новый проект”→”Схема модели общего вида”.</p>
+
+<p>Параметры (константы) механической системы зададим в <a href="https://help.simintech.ru/#6_interfejs_programmy/skhemnoe_okno/panel_knopok_bystrogo_dostupa/sloi/DAT_knopka_skript.html">скрипте проекта</a>. Для открытия скрипта проекта необходимо нажать на кнопку “Скрипт” на панели инструментов окна проекта (рисунок 2).</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/toolbar.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 2 - Панель инструментов проекта</p>
+
+<p>В редакторе кода (скрипта проекта) создадим секцию инициализации и определим значения параметров механической системы. Секция инициализации выполнятся один раз при запуске проекта:</p>
+
+<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">initialization</span>
+	<span class="c1">// Радиус колеса
+</span>	<span class="n">r</span> <span class="p">=</span> <span class="m">0.25</span><span class="p">;</span>
+	<span class="c1">// Длина стержня
+</span>	<span class="n">l</span> <span class="p">=</span> <span class="m">1.0</span><span class="p">;</span>
+	<span class="c1">// Масса колеса
+</span>	<span class="n">m1</span> <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
+	<span class="c1">// Масса груза		
+</span>	<span class="n">m2</span> <span class="p">=</span> <span class="m">5</span><span class="p">;</span>
+	<span class="c1">// Момент инерции колеса
+</span>	<span class="n">J1</span> <span class="p">=</span> <span class="m">0.5</span><span class="p">*</span><span class="n">m1</span><span class="p">*</span><span class="n">r</span><span class="p">^</span><span class="m">2</span><span class="p">;</span>
+	<span class="c1">// Момент инерции груза относительно оси вращения
+</span>	<span class="n">J2</span> <span class="p">=</span> <span class="n">m2</span><span class="p">*</span><span class="n">l</span><span class="p">^</span><span class="m">2</span><span class="p">;</span>	
+	<span class="c1">// Ускорение силы тяжести
+</span>	<span class="n">g</span> <span class="p">=</span> <span class="m">9.81</span><span class="p">;</span>
+	<span class="c1">// Начальный угол поворота
+</span>	<span class="n">beta0</span> <span class="p">=</span> <span class="m">0.7</span><span class="p">;</span>	            	
+<span class="k">end</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="модель-механизма">Модель механизма</h3>
+
+<p>Модель механизма построим при помощи блока <a href="https://help.simintech.ru/index_frames.html?q=/10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0985.html">“Язык программирования”</a> из библиотеки <a href="https://help.simintech.ru/index_frames.html?q=/10_biblioteki_blokov/avtomatika/DIR_dinamicheskie.html">“Динамические”</a>. После помещения блока на схему проекта необходимо дважды начать левую кнопку мыши, чтобы открылся редактор кода блока. В блоке при помощи директивы input объявлены входные переменные: угол поворота маятника от вертикали (beta), угловая скорость вращения маятника (dbeta), угол поворота колеса (phi), угловая скорость колеса (w) и момент привода (Torque). Выходные переменные блока (output) – это угловое ускорением маятника (d2beta) и угловое ускорение колеса (dw):</p>
+
+<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">input</span> 	<span class="n">beta</span><span class="p">,</span> <span class="n">dbeta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">Torque</span><span class="p">;</span>
+<span class="n">output</span>  <span class="n">d2beta</span><span class="p">,</span><span class="n">dw</span><span class="p">;</span>                 
+</code></pre></div></div>
+
+<p>В блоке формируется матрица коэффициентов при старших производных системы дифференциальных уравнений движения механизма (матрица масс), матрица правых частей, производится решение системы линейный уравнений относительной старших производных при помощи функции <a href="https://help.simintech.ru/index_frames.html?q=/11_yazyk_programmirovaniya/6_funkcii/1_vektornye_i_matrichnye/lsolve.html">lsolve</a>:</p>
+
+<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Коэффициенты матрицы масс
+</span><span class="n">a11</span> <span class="p">=</span> <span class="n">m1</span><span class="p">*(</span><span class="n">r</span><span class="p">*</span><span class="n">r</span><span class="p">+</span><span class="n">rho</span><span class="p">*</span><span class="n">rho</span><span class="p">)+</span><span class="n">m2</span><span class="p">*</span><span class="n">r</span><span class="p">*</span><span class="n">r</span><span class="p">;</span>
+<span class="n">a12</span> <span class="p">=</span> <span class="n">m2</span><span class="p">*</span><span class="n">r</span><span class="p">*</span><span class="n">l</span><span class="p">;</span>
+<span class="n">a21</span> <span class="p">=</span> <span class="n">a12</span><span class="p">;</span>
+<span class="n">a22</span> <span class="p">=</span> <span class="n">m2</span><span class="p">*</span><span class="n">r</span><span class="p">*</span><span class="n">r</span><span class="p">;</span>                   
+<span class="c1">// Коэффициенты столбца правой части
+</span><span class="n">b1</span>  <span class="p">=</span> <span class="p">-</span><span class="n">Torque</span><span class="p">+</span><span class="n">a12</span><span class="p">*</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span><span class="p">)*</span><span class="n">dbeta</span><span class="p">^</span><span class="m">2</span><span class="p">;</span>
+<span class="n">b2</span>  <span class="p">=</span> <span class="p">+</span><span class="n">Torque</span><span class="p">+</span><span class="n">m2</span><span class="p">*</span><span class="n">g</span><span class="p">*</span><span class="n">l</span><span class="p">*</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span><span class="p">);</span>
+<span class="c1">// Матрица масс 
+</span><span class="n">A</span> <span class="p">=</span> <span class="p">[[</span><span class="n">a12</span><span class="p">*</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span><span class="n">a11</span><span class="p">],[</span><span class="n">a22</span><span class="p">,</span><span class="n">a12</span><span class="p">*</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">)]];</span>
+<span class="c1">// Матрица правой части
+</span><span class="n">B</span> <span class="p">=</span> <span class="p">[</span><span class="n">b1</span><span class="p">,</span><span class="n">b2</span><span class="p">];</span>
+<span class="c1">// Ускорения
+</span><span class="n">da</span> <span class="p">=</span> <span class="n">lsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">);</span>
+<span class="c1">// Ускорения записываем в переменные, объявленные в секции output
+</span><span class="n">d2beta</span> <span class="p">=</span> <span class="n">da</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+<span class="n">dw</span>     <span class="p">=</span> <span class="n">da</span><span class="p">[</span><span class="m">2</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Таким образом, при помощи блока <a href="https://help.simintech.ru/index_frames.html?q=/10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0985.html">“Язык программирования”</a> построена функция, описывающая правую часть системы дифференциальных уравнений движения механизма в форме Коши: на вход блока подаются углы и угловые скорости, на выходе формируются угловые ускорения колеса и маятника:</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/mechanism.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 3 - Функция правых частей системы дифференциальных уравнений механизма</p>
+
+<h3 id="интегрирование">Интегрирование</h3>
+
+<p>Сигналы с выходов блока <a href="https://help.simintech.ru/index_frames.html?q=/10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0985.html">“Язык программирования”</a> подадим на <a href="https://help.simintech.ru/index_frames.html?q=/10_biblioteki_blokov/avtomatika/Dinamicheskie/DAT_0027.html">блоки-интеграторы</a>, на выходах которых в результате интегрирования формируются угловая скорость, угол поворота маятника, угловая скорость и угол поворота колеса.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/integrators.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 4 - Интегрирование сигналов с выходов блока “Язык программирования”</p>
+
+<p>Сигналы с выходов интеграторов записываются в память (блоки <a href="https://help.simintech.ru/index_frames.html?q=/10_biblioteki_blokov/avtomatika/Substruktury/1008.html">“В память”</a> библиотеки “Субструктуры”) для того чтобы не загромождать схему системы пересекающимися соединительными линиями. Блок <a href="https://help.simintech.ru/index_frames.html?q=/10_biblioteki_blokov/avtomatika/Substruktury/1008.html">“В память”</a> предназначен для соединения одной части схемы с другой, находящейся в произвольном месте проекта. Установка блока на линию связи соответствует установке именованной метки на блок-схеме. После чего, помеченный сигнал может быть использован в произвольном месте проекта с помощью блока <a href="https://help.simintech.ru/index_frames.html?q=/10_biblioteki_blokov/avtomatika/Substruktury/1009.html">“Из памяти”</a>.</p>
+
+<p>В свойствах второго интегратора на выходе d2beta зададим начальный угол поворота маятника beta0, объявленный в скрипте инициализации проекта (рисунок 5).</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/integrators2.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 5 - Начальные условия интегрирования (свойства блока-интегратора)</p>
+
+<p>В параметрах остальных блоков-интеграторов в качестве начальных условий указаны нули (это значения “по-умолчанию”), т.е. в начальный момент времени маятник отклонён на угол beta0, при этом угол  поворота колеса, его угловая скорость и угловая скорость самого мятника равны нулю .</p>
+
+<p>Схема модели свободного движения маятника при нулевом внешнем моменте имеет показана на рисунке 6. На вход “torque” модели дифференциальных уравнений подан постоянный нулевой сигнал.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/mechanism2.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 6 - Модель механизма</p>
+
+<h3 id="сигналы-проекта">Сигналы проекта</h3>
+
+<h4 id="создание-сигналов">Создание сигналов</h4>
+
+<p>При помощи <a href="https://help.simintech.ru/index_frames.html?q=/13_priemy_raboty/1_modelirovanie/signaly_proekta_baza_signalov_vektorizovannyi_blok.html">редактора сигналов проекта</a> (Главное меню → Сервис → Сигналы) создадим четыре глобальные переменные, в которые будем записывать кинематические параметры маятника: углы поворота и угловые скорости колеса и маятника. Эти сигналы нам понадобятся для построения графиков кинематических параметров механизма и для визуализации его движения.</p>
+
+<p class="note" title="Сигналы">Под <a href="https://help.simintech.ru/#13_priemy_raboty/1_modelirovanie/signaly_proekta_baza_signalov_vektorizovannyi_blok.html">сигналами в SimInTech понимаются</a> глобальные параметры проекта или группы проектов, которые создаются тремя способами: при помощи таблицы сигналов проекта, путем объявления и задания сигналов в скрипте проекта с помощью внутреннего языка программирования или с помощью базы данных проекта, если необходим обмен данными между несколькими проектами в рамках пакета проектов.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/signals.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 7 - Сигналы проекта</p>
+
+<h4 id="связь-сигналов-с-динамическими-переменными-блоков-модели">Связь сигналов с динамическими переменными блоков модели</h4>
+
+<p>После создания списка сигналов откроем <a href="https://help.simintech.ru/index_frames.html?q=/13_priemy_raboty/1_modelirovanie/signaly_proekta_baza_signalov_vektorizovannyi_blok.html">редактор связей</a> (Главное меню → Сервис → Связи…), при помощи которого установим связь между кинематическими параметрами и созданными ранее глобальными переменными – сигналами проекта.</p>
+
+<p>После открытия редактора связей, не закрывая его, в окне модели выделим второй блок интегратор (рисунок 8), на вход которого поступает производная угла поворота маятника \(\dot beta\), а на выходе формируется угол \(\beta\). В левой нижней области списка сигналов блока “Интегратор” появятся переменная  fdif, обозначающая то, то поступает на вход блока (первая производная угла \(\dot \beta\)), и xdiff – то, что формируется на выходе блока – результат интегрирования (\(\beta\)). Левой кнопкой мыши схватим строчку xdiff и перетащим её в свободную строчку столбца “Источник”.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/connection1.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 8 - Связь сигналов с параметрами блока (выбор блока)</p>
+
+<p>Далее откроем вкладку “Сигнал” редактора связей. Здесь будет показан список ранее созданных сигналов проекта. Левой кнопкой мыши схватим строку beta и перетащим её в столбец “Приёмник”, как показано на рисунке 9. Таким образом мы указали, что результат интегрирования блока “Integrator_2” будет в процессе моделирования автоматически записываться в глобальную переменную (“сигнал проекта”) beta. Подобным образом необходимо связать все оставшиеся сигналы проекта.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/connection2.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 9 - Связь сигналов с параметрами блока (выбор сигнала)</p>
+
+<h3 id="графики-сигналов">Графики сигналов</h3>
+
+<p>Для построения графиков изменения угла поворота маятника \(\beta\) откроем <a href="https://help.simintech.ru/index_frames.html?q=/21_postroenie_grafikov_i_vyvod_raschetnyx_dannyx/grafiki/DAT_kak_sozdat_grafik.html">менеджер данных</a> (рисунок 10) и, нажав правую кнопку мыши, добавим в раздел “Графики” новый “Временной график”.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/manager.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 10 - Менеджер данных</p>
+
+<p>В контекстном меню созданного временного графика, выберем “Добавить” и “Параметр”, указав в качестве имени параметра сигнал проекта  beta.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/graph-parameter.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 11 - Добавить параметр</p>
+
+<p>Аналогичным образом создадим временные графики для всех определенных ранее сигналов проекта, связанных с параметрами модели.</p>
+
+<h3 id="результаты-моделирования">Результаты моделирования</h3>
+
+<p>На рисунке 12 показано изменение угла поворота маятника при его свободном движении после запуска процесса моделирования движения механизма. Как следует из рисунка 12, в своём свободном движении при заданных начальных условиях маятник совершает колебаний вокруг устойчивого положения равновесия \(\beta = \pi\).</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/fig-beta.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 12 - Угол поворота маятника</p>
+
+<h3 id="система-управления">Система управления</h3>
+
+<h4 id="управление-углом-beta">Управление углом \(\beta\)</h4>
+
+<p>Добавим в модель системы управления, которая будет удерживать маятник в неустойчивом положении равновесия \(\beta = 0\). Сигнал момента, формируемого системой управления, определим как линейную комбинацию угла \(\beta\) и его производной:</p>
+
+\[M_\beta = - k_1 [(\beta-\beta_p) + k_2 (\dot{\beta}-\dot{\beta}_p)]\]
+
+<p>Т.е. управляющий момент \(M_\beta\)  будет тем больше по модулю, чем больше отклонение (ошибка) угла и угловой скорости от требуемого (программного) значения \(\beta_p = 0\), \(\dot{\beta}_p = 0\). Знак минус в выражении момента означает, что знак момента будет противоположен знаку отклонения угла \(\beta\) от вертикального положения и знаку отклонения угловой скорости от нуля. Коэффициенты \(k_1\) и \(k_2\) – коэффициенты усиления отклонений. Выбор этих параметров – это отдельная задача теории автоматического управления, которая здесь не рассматривается.</p>
+
+<p>На рисунке 13 приведен график изменения угла поворота маятника при действии определенного выше момента \(M_\beta\) c \(k_1 = 60\) Нм/рад и \(k_2 = 9\) Нм*с/рад: при этих коэффициентах в течение 2 секунд мятник возвращается и удерживается системой управления в нулевом положении.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/fig-beta2.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 13 - Угол поворота маятника при управлении</p>
+
+<h4 id="управление-углом-varphi">Управление углом \(\varphi\)</h4>
+
+<p>При действии управляющего момента \(M_\beta\) движение самого колеса не контролируется, поэтому после стабилизации углового положения маятника колесо продолжит движение с некоторой скоростью. Это иллюстрирует рисунок 14, где показан график изменения угловой скорости колеса.</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/fig-w.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 14 - Угловая скорость вращения колеса</p>
+
+<p>Добавим управление, которое будет возвращать колесо в начало координат. Для этого к управляющему моменту \(M_\beta\) добавим еще один момент, значение которого будет пропорционально отклонению угла поворота колеса \(\varphi\)  и его угловой скорости \(\omega = \dot{\varphi}\) от нулевого значения. Поскольку колесо катится без проскальзывания, нулевое значение угла \(\varphi\) будет соответствовать его положению  \(x = - r \varphi\) в начале координат (рисунок 1):</p>
+
+\[M_\varphi = - [k_3 (\varphi-\varphi_p) + k_4 (\dot{\varphi}-\dot{\varphi}_p)]\]
+
+<p>где \(\varphi_p = \dot{\varphi}_p = 0\) – программные значения угла поворота и угловой скорости колеса.</p>
+
+<p>Схема модели будет иметь вид:</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/wheel-model.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 15 - Схема модели</p>
+
+<p>На рисунках 16 и 17 показаны графики изменения угла поворота маятника и угловой скорости колеса при действии управляющего момента</p>
+
+\[M_u = M_\beta + M_\varphi.\]
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/fig-beta3.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 16 - Изменение угла поворота маятника</p>
+
+<p><img src="/assets/img/blog/simintech-pendulum-wheel/fig-w3.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 17 - Изменение угловой скорости колеса</p>
+
+<p>Работа управляющего момента показана на следующем видео:</p>
+
+<iframe width="720" height="405" src="https://rutube.ru/play/embed/372d6fbe0938d1a08b05ff77c2aa9085/?p=GIjg2NRaHxzazvODRIn6Yw" frameborder="0" allow="clipboard-write; autoplay" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+
+<p><a href="https://gitverse.ru/classmech/simintech/content/master/pendulum_wheel">Проект на GitVerse.</a></p>]]></content><author><name></name></author><category term="mechanics" /><category term="CAE" /><category term="simintech" /><summary type="html"><![CDATA[Построение в среде динамического моделирования SimInTech модели движения маятника с подвижной точкой подвеса, закрепленной на колесе.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/simintech-pendulum-wheel/slide.jpg" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/simintech-pendulum-wheel/slide.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Пример вывода уравнений движения системы тел методом Кейна</title><link href="https://classmech.github.io/blog/mechanics/cae/matlab/2024-08-15-kane-3d/" rel="alternate" type="text/html" title="Пример вывода уравнений движения системы тел методом Кейна" /><published>2024-08-15T00:00:00-05:00</published><updated>2024-08-15T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/matlab/kane-3d</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/matlab/2024-08-15-kane-3d/"><![CDATA[<h1 id="метод-кейна">Метод Кейна</h1>
+
+<p>Метод разработан в 1961 проф. Т. Кейном (Стэндфорский университет) (Kane, T.R., Dynamics of nonholonomic systems, J. App. Mech., 28, 574, 1961). Метод основан на принципе Даламбера-Лагранжа и ориентирован на машинное формирование уравнений движения. При выводе уравнений движения используются вспомогательные векторные величины, которые здесь будут называться частными линейными \(\mathbf v_{ik}\) и угловыми скоростями \(\boldsymbol \omega_{ik}\). Эти величины являются векторными множителями, стоящими перед обобщенными скоростями в выражениях для линейных и угловых скоростей тел механической системы. Например, скорость материальной точки на плоскости, положение которой определяется двумя координатами x и y, в декартовой системе координат можно представить как:</p>
+
+\[\mathbf v = \mathbf{e}_x \dot{x} + \mathbf{e}_y \dot{y}\]
+
+<p>В этом выражении частными линейными скоростями будут единичные векторы \(\mathbf{e}_x\) и \(\mathbf{e}_x\).</p>
+
+<p>При вращении твердого тела вокруг неподвижной точки частными угловыми скоростями будет орты связанной с телом системы координат \(\mathbf{e}_x^c, \mathbf{e}_y^c, \mathbf{e}_z^c\), поскольку угловая скорость тела будет определяться выражением</p>
+
+\[\boldsymbol{\omega} = \mathbf{e}_x^c \omega_x + \mathbf{e}_y^c \omega_y + \mathbf{e}_z^c \omega_z\]
+
+<p>Рассмотрим движение несвободной системы материальных точек. Движение каждой точки определяется внешней силой и силой реакции:</p>
+
+\[m_k \mathbf a_k = \mathbf F_k + \mathbf R_k, \quad k=1,\ldots,n.\]
+
+<p>После умножения каждого уравнения на соответствующее виртуальное перемещение \(\delta \mathbf r_k\) и сложения всех уравнений, для идеальных связей получим общее уравнение динамики:</p>
+
+\[\sum_{k=1}^N \left(\mathbf F_k - m_k \mathbf a_k \right)\cdot \delta \mathbf r_k + \sum_{k=1}^N \underbrace{\mathbf R_k \cdot \delta \mathbf r_k}_{0} = 0.\]
+
+<p>Подставляя вариации радиус-вектора \(\mathbf r_k(q_1,\ldots,q_n)\) в обобщённых координатах:</p>
+
+\[\delta \mathbf r_k =  \sum_{i=1}^n \frac{\partial \mathbf r_k}{\partial q_i} \delta q_i.\]
+
+<p>получим</p>
+
+\[\sum_{k=1}^N \left(\mathbf F_k - m_k \mathbf a_k \right)\cdot \sum_{i=1}^n \frac{\partial \mathbf r_k}{\partial q_i} \delta q_i  = 0.\]
+
+<p>После изменения порядка суммирования:</p>
+
+\[\sum_{i=1}^n \sum_{k=1}^N \left(\mathbf F_k \cdot \frac{\partial \mathbf r_k}{\partial q_i} - m_k \mathbf a_k \cdot \frac{\partial \mathbf r_k}{\partial q_i} \right) \delta q_i = 0.\]
+
+<p>и с учётом независимости вариаций обобщённых координат:</p>
+
+\[\sum_{k=1}^N \left(\mathbf F_k \cdot \frac{\partial \mathbf r_k}{\partial q_i} - m_k \mathbf a_k \cdot \frac{\partial \mathbf r_k}{\partial q_i} \right)= 0, \quad i=1,\ldots,n.\]
+
+<p>Частная производная вектора скорости точки по обобщенной скорости имеет вид:</p>
+
+\[\frac{\partial \mathbf v_k}{\partial \dot q_i} = \frac{\partial {\mathbf r_k}}{\partial {q}_i} = \mathbf u_{ki}.\]
+
+<p>и называется частной скоростью:</p>
+
+\[\mathbf u_{ki} = \frac{\partial \mathbf v_k}{\partial \dot q_i}\]
+
+<p>Подставляя</p>
+
+\[\frac{\partial {\mathbf r_k}}{\partial {q}_j} = \frac{\partial \mathbf v_k}{\partial \dot q_j}\]
+
+<p>в уравнения движения</p>
+
+\[\sum_{k=1}^N \left(\mathbf F_k \cdot \frac{\partial \mathbf r_k}{\partial q_i} - m_k \mathbf a_k \cdot \frac{\partial \mathbf r_k}{\partial q_i} \right)= 0, \quad i=1,\ldots,n.\]
+
+<p>получим</p>
+
+\[\sum_{k=1}^N \left(\mathbf F_k \cdot \frac{\partial \mathbf v_k}{\partial \dot q_i} - m_k \mathbf a_k \cdot \frac{\partial \mathbf v_k}{\partial \dot q_i} \right)= 0, \quad i=1,\ldots,n.\]
+
+<p>или</p>
+
+\[\sum_{k=1}^N \left(\mathbf F_k \cdot \mathbf u_{ki} - m_k \mathbf a_k \cdot \mathbf u_{ki} \right)= 0, \quad i=1,\ldots,n.\]
+
+<p>Обозначив обобщенные активные силы \(Q_i\) и силы инерции \(Q_i^*\):</p>
+
+\[Q_i = \sum_{k=1}^{N} \mathbf F_k \cdot \mathbf u_{ki}, \quad
+  Q_i^* = - \sum_{k=1}^{N} m_k \mathbf a_k \cdot \mathbf u_{ki}\]
+
+<p>уравнения</p>
+
+\[\sum_{k=1}^N \left(\mathbf F_k \cdot \mathbf u_{ki} - m_k \mathbf a_k \cdot \mathbf u_{ki} \right)= 0, \quad i=1,\ldots,n.\]
+
+<p>принимают вид:</p>
+
+\[Q_i + Q_i^* = 0.\]
+
+<h3 id="алгоритм">Алгоритм</h3>
+
+<ol>
+  <li>Выбираются обобщенные координаты \(q_1,q_2\ldots,q_n\).</li>
+  <li>Определяются скорости тел, которые  могут быть как производные обобщенных координат, так и их линейными комбинациями (например, угловые скорости для твердого тела).</li>
+  <li>Определяются выражения для векторов скоростей точек приложения сил.</li>
+  <li>Определяются выражения для векторов скоростей центров масс тел.</li>
+  <li>Определяются выражения для векторов угловых скоростей тел.</li>
+  <li>Определяются векторы линейных ускорений тел системы и их угловые ускорения.</li>
+  <li>Определяются частные линейные и угловые скорости для точек приложения сил, центров масс тел.</li>
+  <li>Определяются силы и моменты (активные и инерционные).</li>
+  <li>Вычисляются скалярные произведения сил, моментов и частных скоростей.</li>
+</ol>
+
+<h1 id="пример">Пример</h1>
+
+<h2 id="схема-системы">Схема системы</h2>
+
+<p>Используя метод Кейна, построим модель движения механической системы с четырьмя степенями свободы, представленной на рисунке 1. Система состоит из двух стержней связанных шарнирами. Первый стержень при помощи сферического шарнира связан с неподвижным основанием, второй стержень соединяется с первым при помощи цилиндрического шарнира.</p>
+
+<p>Движение механизма происходит под действием силы тяжести, действующей отрицательном направлении оси \(Oz_0\).</p>
+
+<p><img src="/assets/img/blog/kane-two-bodies-model.png" alt="" /></p>
+
+<p class="figcaption">Рисунок 1 - Схема механизма</p>
+
+<p>Положение шарниров задано координатными столбцами векторов \(\mathbf{c}_{11}^{(1)}\), \(\mathbf{c}_{12}^{(1)}\), \(\mathbf{c}_{22}^{(2)}\):</p>
+
+<ul>
+  <li>вектор \(\mathbf{c}_{11}\) соединяет центр масс тела 1 и шарнирную точку (О) первого шарнира;</li>
+  <li>вектор \(\mathbf{c}_{12}\) соединяет центр масс тела 1 и шарнирную точку (А) второго шарнира;</li>
+  <li>вектор \(\mathbf{c}_{22}\) соединяет центр масс тела 2 и шарнирную точку (А) второго шарнира.</li>
+</ul>
+
+<h2 id="кинематические-соотношения">Кинематические соотношения</h2>
+
+<p>Положение системы определим столбцом обобщенных координат:</p>
+
+\[\mathbf q = [\alpha_1,\alpha_2,\alpha_3,\alpha_4]^T\]
+
+<p>Первые три угла определяют ориентацию базиса \(C_1 x_1 y_1 z_1\), связанного с телом 1 относительно неподвижного базиса \(O x_0 y_0 z_0\). Для определения ориентации используется последовательность XY’Z’’ (углы Брайнта). Матрица преобразования координат из базиса \(C_1 x_1 y_1 z_1\) в базис \(O x_0 y_0 z_0\) определяется выражением:</p>
+
+\[\mathbf{A}^{01} = \mathbf{A}_{x}(\alpha_1) \mathbf{A}_{y}(\alpha_2) \mathbf{A}_{z}(\alpha_3)\]
+
+<p>Угол \(\alpha_4\) определяет ориентацию тела 2 относительно тела 1. Вращение тела 2 относительно тела 1 происходит вокруг общей оси \(y\), поэтому матрица преобразования координат из базиса \(C_2 x_2 y_2 z_2\), связанного со вторым телом в базис \(C_1 x_1 y_1 z_1\), будет иметь вид:</p>
+
+\[\mathbf{A}^{12} = \mathbf{A}_{y}(\alpha_4)\]
+
+<p>Сформируем столбец скоростей системы, но не из обобщенных скоростей, а из проекций угловых скоростей тела 1 на его связанные оси и производной угла поворота второго тела относительно первого.</p>
+
+\[\mathbf{u}=\left[\omega_x^{\left(1\right)},\omega_y^{\left(1\right)},\omega_z^{\left(1\right)},{\dot{\alpha}}_4\right]^T\]
+
+<p>Эта особенность метода Кейна позволяет упростить вывод уравнений движения системы.</p>
+
+<h3 id="скорость-и-ускорение-центра-масс-тела-1">Скорость и ускорение центра масс тела 1</h3>
+
+<p>Вектор скорости центра масс первого тела определяется выражением:</p>
+
+\[\vec{V}_1  = \vec{\omega}_1 \times (-\vec{c}_{11}).\]
+
+<p>Координатная форма этого выражения в неподвижной СК \(A_1 x_0 y_0 z_0\) будет иметь вид:</p>
+
+\[\mathbf{V}_1^{(0)}=\mathbf{A}^{01}{\widetilde{\mathbf{\omega}}}_1^{(1)}\ \left(-\mathbf{c}_{11}^{\left(1\right)}\right)=\mathbf{A}^{01}{\widetilde{\mathbf{c}}}_{11}^{\left(1\right)}\mathbf{\omega}_1^{(1)}=\left[\begin{matrix}\mathbf{A}^{01}{\widetilde{\mathbf{c}}}_{11}^{\left(1\right)}&amp;\mathbf{0}_3\\\end{matrix}\right]\mathbf{u}=\mathbf{Q}_{V1}^{(0)}\mathbf{u}\]
+
+<p>Оператор тильда используется для матричной записи векторного произведения и преобразует координатный столбец вектора в кососимметрическую матрицу:</p>
+
+\[\tilde{\mathbf a} = 
+  \begin{bmatrix}
+  0 &amp; -a_z &amp; a_y \\
+  a_z &amp; 0 &amp; -a_x \\
+ -a_y &amp; a_x &amp; 0
+  \end{bmatrix}, \quad \mathbf a \times \mathbf b = \tilde{\mathbf a} \mathbf b\]
+
+<p>Матрица \(\mathbf{Q}_{V1}^{(0)}\) имеет размерность \(3\times n\), где \(n\) – число степеней свободы системы. Каждый столбец этой матрицы представляет собой частную скорость центра масс тела 1, например, первый вектор \(\mathbf{u}_{11}\) можно получить следующим образом:</p>
+
+\[\mathbf{u}_{11} = \mathbf{Q}_{V1}^{(0)} \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}.\]
+
+<p>Координатный столбец ускорения центра масс получим, продифференцировав выражение для скорости:</p>
+
+\[\mathbf{a}_1^{(0)} = \mathbf{Q}_{V1}^{(0)} \dot{\mathbf{u}} + \dot{\mathbf{Q}}_{V1}^{(0)} \dot{\mathbf{u}}\]
+
+<p>Производная матрицы частных векторов:</p>
+
+\[\dot{\mathbf{Q}}_{V1}^{(0)} = \begin{bmatrix} \mathbf{A}^{01} \tilde{\boldsymbol \omega}_1^((1) ) \tilde{\mathbf c}_{11}^{(1)} &amp;  \mathbf{0}_3 \end{bmatrix}\]
+
+<p>где \({0}_3\) – столбец нулей \(3 \times 1\).</p>
+
+<h3 id="угловая-и-скорость-ускорение-тела-1">Угловая и скорость ускорение тела 1</h3>
+
+<p>Координатный столбец вектора угловой скорости первого тела в проекциях на собственные оси будет определяться выражением</p>
+
+\[\boldsymbol{\omega}_1^{(1)} = \begin{pmatrix} \mathbf{E}_{3} &amp; \mathbf{0}_3 \end{pmatrix} \mathbf{u} = \mathbf{Q}_{w1}^{(1)} \mathbf{u}\]
+
+<p>Матрица \(\mathbf{Q}_{w1}^{(1)}\) как и матрица \(\mathbf{Q}_{V1}^{(0)}\) имеет размерность \(3\times n\), где \(n\). Каждый столбец матрицы представляет собой частную угловую скорость тела 1.</p>
+
+<p>Угловое ускорение тела 1</p>
+
+\[\boldsymbol{\varepsilon}_1^{(1)} = \mathbf{Q}_{w1}^{(1)} \dot{\mathbf{u}} + \dot{\mathbf{Q}}_{w1}^{(1)} \mathbf{u}\]
+
+<p>Матрица  \(\mathbf{Q}_{w1}^{(1)}\) не зависит от времени, поэтому \(\dot{\mathbf{Q}}_{V1}^{(0)} = 0\).</p>
+
+<h3 id="скорость-и-ускорение-центра-масс-тела-2">Скорость и ускорение центра масс тела 2</h3>
+
+<p>Вектор скорости центра масс второго тела представляет собой сумму скорости движения второго тела вместе с первым и скорости второго тела относительно первого:</p>
+
+\[\vec{V}_2  = \vec{V}_{2}^e + \vec{V}_{2}^r = \vec{\omega}_1 \times (-\vec{c}_{11}+\vec{c}_{12}-\vec{c}_{22})\]
+
+<p>В координатной матричной форме это выражение имеет вид:</p>
+
+\[\mathbf{V}_2^{\left(0\right)}=\mathbf{A}^{01}{\widetilde{\mathbf{\omega}}}_1^{\left(1\right)}\ \left(-\mathbf{c}_{11}^{\left(1\right)}+\mathbf{c}_{12}^{\left(1\right)}-\mathbf{A}^{12}\mathbf{c}_{22}^{\left(2\right)}\right)+\mathbf{A}^{01}\mathbf{A}^{12}\left(-{\widetilde{\mathbf{e}}}_y\mathbf{c}_{22}^{\left(2\right)}\right){\dot{\alpha}}_4\]
+
+<p>где \(\mathbf{e}_y  = [0,1,0]\) – единичный вектор оси y – оси вращения второго тела относительно первого.</p>
+
+<p>Изменим порядок векторного произведения для того, чтобы вынести координатный столбец угловой скорости первого тела в правую часть выражения:</p>
+
+\[\mathbf{V}_2^{\left(0\right)} = -\mathbf{A}^{01}\left(-{\widetilde{\mathbf{c}}}_{11}^{\left(1\right)}+{\widetilde{\mathbf{c}}}_{12}^{\left(1\right)}-\widetilde{\mathbf{A}^{12}\mathbf{c}_{22}^{\left(2\right)}}\right)\mathbf{\omega}_1^{\left(1\right)}+\mathbf{A}^{01}\mathbf{A}^{12}{\widetilde{\mathbf{c}}}_{22}^{\left(2\right)}\mathbf{e}_y{\dot{\alpha}}_4\]
+
+<p>и введем матрицу частных скоростей тела 2 \(\mathbf{Q}_{V2}^{(0)}\):</p>
+
+\[\mathbf{V}_2^{\left(0\right)} = \left[-\begin{matrix}\mathbf{A}^{01}\left(-{\widetilde{\mathbf{c}}}_{11}^{\left(1\right)}+{\widetilde{\mathbf{c}}}_{12}^{\left(1\right)}-\widetilde{\mathbf{A}^{12}\mathbf{c}_{22}^{\left(2\right)}}\right)&amp;\mathbf{A}^{01}\mathbf{A}^{12}{\widetilde{\mathbf{c}}}_{22}^{\left(2\right)}\mathbf{e}_y\\\end{matrix}\right]\mathbf{u}=\mathbf{Q}_{V2}^{(0)}\mathbf{u}\]
+
+<p>Продифференцируем выражение для \(\mathbf{V}_2^{\left(0\right)}\) для определения ускорения центра масс тела 2:</p>
+
+\[\mathbf{a}_1^{(0)}=\mathbf{Q}_{V1}^{(0)}\dot{\mathbf{u}}+{\dot{\mathbf{Q}}}_{V1}^{(0)}\mathbf{u}\]
+
+<p>где \({\dot{\mathbf{Q}}}_{V1}^{(0)}\) – производная матрицы \(\mathbf{Q}_{V2}^{(0)}\):</p>
+
+\[{\dot{\mathbf{Q}}}_{V2}^{(0)}=
+\begin{bmatrix}
+-\mathbf{A}^{01}{\widetilde{\mathbf{\omega}}}_1^{\left(1\right)}\left(-{\widetilde{\mathbf{c}}}_{11}^{\left(1\right)}+{\widetilde{\mathbf{c}}}_{12}^{\left(1\right)}-\widetilde{\mathbf{A}^{12}\mathbf{c}_{22}^{\left(2\right)}}\right)+\mathbf{A}^{01}\widetilde{\left(\mathbf{A}^{12}{\widetilde{\mathbf{\Omega}}}_2^{\left(2\right)}\mathbf{c}_{22}^{\left(2\right)}\right)} &amp;
+\mathbf{A}^{01}{\widetilde{\mathbf{\omega}}}_1^{\left(1\right)}\mathbf{A}^{12}{\widetilde{\mathbf{c}}}_{22}^{\left(2\right)}\mathbf{e}_y+\mathbf{A}^{01}\mathbf{A}^{12}{\widetilde{\mathbf{\Omega}}}_2^{\left(2\right)}{\widetilde{\mathbf{c}}}_{22}^{\left(2\right)}\mathbf{e}_y
+\end{bmatrix}\]
+
+<h3 id="угловая-скорость-и-ускорение-второго-тела">Угловая скорость и ускорение второго тела</h3>
+
+<p>Угловая скорость тела 2 определяется угловой скоростью тела 1 (\(\vec{\omega}_1\)) и угловой скоростью тела 2 относительно тела 1 (\(\vec{\Omega}_2\)):</p>
+
+\[\vec{\omega}_2 = \vec{\omega}_1 + \vec{\Omega}_2.\]
+
+<p>В матричной координатной форме это выражение имеет вид (в системе координат тела 2):</p>
+
+\[\boldsymbol{\omega}_2^{(2)}=\left[\left(\mathbf{A}^{12}\right)^T\mathbf{E}_\mathbf{3}\ \ \ \mathbf{e}_y\right]\dot{\mathbf{u}}=\mathbf{Q}_{w2}^{(2)}\mathbf{u}\]
+
+<p>Координатный столбец углового ускорения тела 2 определим дифференцированием выражения для \(\boldsymbol{\omega}_2^{(2)}\):</p>
+
+\[\boldsymbol{\varepsilon}_2^{(2)}=\mathbf{Q}_{w2}^{(2)}\dot{\mathbf{u}}+{\dot{\mathbf{Q}}}_{w2}^{(2)}\mathbf{u}\]
+
+<p>где</p>
+
+\[{\dot{\mathbf{Q}}}_{w2}^{(2)}=\left[\left(\mathbf{A}^{12}{\widetilde{\mathbf{\Omega}}}_2^{\left(2\right)}\right)^T\mathbf{E}_\mathbf{3}\ \ \ \mathbf{0}_3\right]\]
+
+<h2 id="силы">Силы</h2>
+
+<p>Движение механической системы  происходит под действием силы тяжести, действующей отрицательном направлении оси \(Oz_0\). Координатные столбцы сил, действующих на тела 1 и 2 в неподвижном базисе:</p>
+
+\[\mathbf{F}_1^{(0)} = [0,0,-m_1 g]^T, \quad \mathbf{F}_2^{(0)} = [0,0,-m_2 g]^T\]
+
+<h2 id="уравнения-движения">Уравнения движения</h2>
+
+<p>Сила инерции первого тела определяется выражением:</p>
+
+\[\boldsymbol{\Phi}_1 = - m_1 \mathbf{a}_1 = - m_1 [ \mathbf{Q}_{V1}^{(0)} \dot{\mathbf{u}} + \dot{\mathbf{Q}}_{V1}^{(0)} \mathbf{u} ]\]
+
+<p>Это выражение необходимо умножить скалярно на соответствующие частные скорости центра масс первого тела. Учитывая, что необходимые частные скорости это столбцы матрицы \(\mathbf{Q}_{V1}^{(0)}\), скалярное произведение можно записать в матричном виде следующим образом</p>
+
+\[\mathbf{Q}_{v1} = \begin{bmatrix}
+  \mathbf{u}_{11} \cdot \boldsymbol{\Phi}_1  \\
+  \mathbf{u}_{12} \cdot \boldsymbol{\Phi}_1  \\
+  \mathbf{u}_{13} \cdot \boldsymbol{\Phi}_1  \\
+  \mathbf{u}_{14} \cdot \boldsymbol{\Phi}_1  \\
+  \end{bmatrix} =   
+  (\mathbf{Q}_{V1}^{(0)})^T \left\{- m_1 \left( \mathbf{Q}_{V1}^{(0)} \dot{\mathbf{u}} + \dot{\mathbf{Q}}_{V1}^{(0)} \mathbf{u} \right) \right\}\]
+
+<p>Главный момент сил инерции тела 1</p>
+
+\[\mathbf M_{c1}^{\Phi} = - \mathbf{J}_1 \boldsymbol{\varepsilon}_1^{(1)} - \boldsymbol{\omega_1}^{(1)} \times \mathbf{J}_1 \boldsymbol{\omega}_1^{(1)}\]
+
+<p>скалярно умножается на частные угловые скорости тела 1:</p>
+
+\[\mathbf{Q}_{w1} = 
+  \begin{bmatrix}
+  \mathbf{w}_{11} \cdot \mathbf M_{c1}^{\Phi}  \\
+  \mathbf{w}_{12} \cdot \mathbf M_{c1}^{\Phi}  \\
+  \mathbf{w}_{13} \cdot \mathbf M_{c1}^{\Phi}  \\
+  \mathbf{w}_{14} \cdot \mathbf M_{c1}^{\Phi}  \\
+  \end{bmatrix} = 
+  (\mathbf{Q}_{w1}^{(1)})^T \left[- \mathbf{J}_1 (\mathbf{Q}_{w1}^{(1)} \dot{\mathbf{u}} + \dot{\mathbf{Q}}_{w1}^{(1)} \mathbf{u}) - \boldsymbol{\omega_1}^{(1)} \times \mathbf{J}_1 \boldsymbol{\omega}_1^{(1)} \right]\]
+
+<p>Аналогичные выражения определяются для тела 2</p>
+
+\[\mathbf{Q}_{v2} = \begin{bmatrix}
+  \mathbf{u}_{21} \cdot \boldsymbol{\Phi}_2  \\
+  \mathbf{u}_{22} \cdot \boldsymbol{\Phi}_2  \\
+  \mathbf{u}_{23} \cdot \boldsymbol{\Phi}_2  \\
+  \mathbf{u}_{24} \cdot \boldsymbol{\Phi}_2  \\
+  \end{bmatrix} =   
+  (\mathbf{Q}_{V2}^{(0)})^T \left\{- m_2 \left( \mathbf{Q}_{V2}^{(0)} \dot{\mathbf{u}} + \dot{\mathbf{Q}}_{V2}^{(0)} \mathbf{u} \right) \right\}\]
+
+\[\mathbf{Q}_{w2} = 
+  \begin{bmatrix}
+  \mathbf{w}_{21} \cdot \mathbf M_{c1}^{\Phi}  \\
+  \mathbf{w}_{22} \cdot \mathbf M_{c1}^{\Phi}  \\
+  \mathbf{w}_{23} \cdot \mathbf M_{c1}^{\Phi}  \\
+  \mathbf{w}_{24} \cdot \mathbf M_{c1}^{\Phi}  \\
+  \end{bmatrix} = 
+  (\mathbf{Q}_{w2}^{(2)})^T \left[- \mathbf{J}_2 (\mathbf{Q}_{w2}^{(2)} \dot{\mathbf{u}} + \dot{\mathbf{Q}}_{w2}^{(2)} \mathbf{u}) - \boldsymbol{\omega}_2^{(2)} \times \mathbf{J}_2 \boldsymbol{\omega}_2^{(2)} \right]\]
+
+<p>Далее определяются обобщенные силы. Поскольку силы приложены в центрах масс тел, векторы этих сил скалярно умножаются на соответствующие частные линейные скорости центров масс:</p>
+
+\[\mathbf{F}_{v1} = (\mathbf{Q}_{V1}^{(0)})^T \mathbf{F}_1\]
+
+\[\mathbf{F}_{v2} = (\mathbf{Q}_{V2}^{(0)})^T \mathbf{F}_2\]
+
+<p>Сложив полученные обобщённые силы</p>
+
+\[\mathbf Q_{v1} + \mathbf Q_{v2} + \mathbf Q_{w1} + \mathbf Q_{w2} +\mathbf Q_{v1} + \mathbf{F}_{v1} + \mathbf{F}_{v2} = 0,\]
+
+<p>и выделив слагаемые с производной координатного столбца скорости, получим систему дифференциальных уравнений в матричной форме относительно \(\dot{\mathbf{u}}\):</p>
+
+\[\mathbf{Q}_{v1} + \mathbf{Q}_{v2} + \mathbf{Q}_{w1} + \mathbf{Q}_{w1} + \mathbf{F}_{v1} + \mathbf{F}_{v2} = 0\]
+
+\[\begin{aligned}
+&amp; \sum_{i=1}^{2}{\left\{-m_i\left[\mathbf{Q}_{Vi}^{\left(0\right)}\right]^T\mathbf{Q}_{Vi}^{\left(0\right)}-\left[\mathbf{Q}_{wi}^{\left(i\right)}\right]^T\mathbf{J}_i^{\left(i\right)}\mathbf{Q}_{wi}^{\left(i\right)}\right\}\dot{\mathbf{u}}} = \\ 
+&amp; = \sum_{i=1}^{2}{m_i\left[\mathbf{Q}_{Vi}^{\left(0\right)}\right]^T{\dot{\mathbf{Q}}}_{Vi}^{\left(0\right)}\mathbf{u}} + \sum_{i=1}^{2}{\left[\mathbf{Q}_{wi}^{\left(i\right)}\right]^T\left[\mathbf{J}_i^{\left(i\right)}{\dot{\mathbf{Q}}}_{wi}^{\left(i\right)}\mathbf{u}+{\widetilde{\mathbf{\omega}}}_i^{\left(i\right)}\mathbf{J}_i^{\left(i\right)}\mathbf{\omega}_i^{\left(i\right)}\right]\ } - \sum_{i=1}^{2}{\left(\mathbf{Q}_{Vi}^{\left(0\right)}\right)^T\mathbf{F}_i} 
+\end{aligned}\]
+
+<p>Эти уравнения интегрируются совместно кинематическими уравнениями, связывающими производные углов с угловыми скоростями:</p>
+
+\[\dot{\alpha}_1 = \sec \alpha_2 (\omega_{1x}^{(1)} \cos \alpha_3 - \omega_{1y}^{(1)} \sin \alpha_3),\]
+
+\[\dot{\alpha}_2 = \omega_{1x}^{(1)} \sin \alpha_3 + \omega_{1y}^{(1)} \cos \alpha_3,\]
+
+\[\dot{\alpha}_3 = \tan \alpha_2 (\omega_{1y}^{(1)} \sin \alpha_3 - \omega_{1x}^{(1)} \cos \alpha_3) + \omega_{1z}^{(1)}.\]
+
+<h2 id="matlab-код">MATLAB-код</h2>
+
+<h3 id="главный-файл-скрипт">Главный файл-скрипт</h3>
+
+<div class="language-matlab highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">clear</span> <span class="nb">all</span><span class="p">;</span> <span class="nb">clc</span><span class="p">;</span>
+
+<span class="c1">% Матрицы тензоров инерции тел в главных центральных осях</span>
+<span class="n">p</span><span class="o">.</span><span class="n">J1</span> <span class="o">=</span> <span class="nb">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">;</span>
+<span class="n">p</span><span class="o">.</span><span class="n">J2</span> <span class="o">=</span> <span class="nb">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">;</span>
+<span class="c1">% Шарнирные векторы</span>
+<span class="n">p</span><span class="o">.</span><span class="n">c11</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+<span class="n">p</span><span class="o">.</span><span class="n">c12</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+<span class="n">p</span><span class="o">.</span><span class="n">c22</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+<span class="c1">% Массы тел</span>
+<span class="n">p</span><span class="o">.</span><span class="n">m1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">p</span><span class="o">.</span><span class="n">m2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="c1">% Ускорение свободного падения</span>
+<span class="n">p</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="mf">9.807</span><span class="p">;</span>
+
+<span class="c1">% Начальные условия</span>
+<span class="n">q0</span> <span class="o">=</span> <span class="p">[</span><span class="nb">pi</span><span class="p">/</span><span class="mi">4</span><span class="p">;</span><span class="nb">pi</span><span class="p">/</span><span class="mi">4</span><span class="p">;</span><span class="nb">pi</span><span class="p">/</span><span class="mi">4</span><span class="p">;</span><span class="nb">pi</span><span class="p">/</span><span class="mi">4</span><span class="p">;</span>  <span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="c1">% Относительная погрешность</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="nb">odeset</span><span class="p">(</span><span class="s1">'RelTol'</span><span class="p">,</span><span class="mf">1e-7</span><span class="p">);</span>
+<span class="c1">% Запуск процесса интегрирования</span>
+<span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="nb">ode113</span><span class="p">(</span><span class="o">@</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">)</span> <span class="n">dqdt_kane</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">p</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="n">q0</span><span class="p">,</span><span class="n">opt</span><span class="p">);</span>
+
+<span class="c1">% Графики</span>
+<span class="nb">close</span> <span class="nb">all</span><span class="p">;</span>
+<span class="nb">figure</span><span class="p">;</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">(:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="mi">180</span><span class="p">/</span><span class="nb">pi</span><span class="p">);</span>
+<span class="nb">legend</span><span class="p">(</span><span class="s1">'\alpha_1'</span><span class="p">,</span><span class="s1">'\alpha_2'</span><span class="p">,</span><span class="s1">'\alpha_3'</span><span class="p">,</span><span class="s1">'\alpha_4'</span><span class="p">);</span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s1">'t, c'</span><span class="p">);</span> 
+<span class="nb">ylabel</span><span class="p">(</span><span class="s1">'\alpha_i, градус'</span><span class="p">);</span>
+
+<span class="nb">figure</span><span class="p">;</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">(:,</span><span class="mi">5</span><span class="p">:</span><span class="mi">8</span><span class="p">)</span><span class="o">*</span><span class="mi">180</span><span class="p">/</span><span class="nb">pi</span><span class="p">);</span>
+<span class="nb">legend</span><span class="p">(</span><span class="s1">'\omega_{1x}'</span><span class="p">,</span><span class="s1">'\omega_{1y}'</span><span class="p">,</span><span class="s1">'\omega_{1z}'</span><span class="p">,</span><span class="s1">'d\alpha_4/dt'</span><span class="p">);</span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s1">'t, c'</span><span class="p">);</span> 
+<span class="nb">ylabel</span><span class="p">(</span><span class="s1">'Угловые скорости, ...^o/c'</span><span class="p">);</span>
+
+</code></pre></div></div>
+
+<h3 id="функция-правых-частей">Функция правых частей</h3>
+
+<div class="language-matlab highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span> <span class="n">dq</span> <span class="o">=</span> <span class="n">dqdt_kane</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+
+<span class="n">dq</span> <span class="o">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">% Матрицы элементарных поворотов</span>
+<span class="n">Ax</span> <span class="o">=</span> <span class="o">@</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">;</span> <span class="mi">0</span> <span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="mi">0</span> <span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)];</span>
+<span class="n">Ay</span> <span class="o">=</span> <span class="o">@</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">[</span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="mi">0</span> <span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">;</span> <span class="o">-</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="mi">0</span> <span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)];</span>
+<span class="n">Az</span> <span class="o">=</span> <span class="o">@</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">[</span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="mi">0</span><span class="p">;</span> <span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="mi">0</span><span class="p">;</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">];</span>
+<span class="c1">% Единичные векторы осей</span>
+<span class="n">ex</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">ey</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">1</span><span class="p">;</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">ez</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">1</span><span class="p">];</span>
+<span class="n">e0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="c1">% Матрица-столбец скоростей</span>
+<span class="n">u</span>  <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">5</span><span class="p">:</span><span class="mi">8</span><span class="p">);</span>
+
+<span class="c1">% Матрица преобразования координат из 1 в 0</span>
+<span class="n">A01</span> <span class="o">=</span> <span class="n">Ax</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">Ay</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">Az</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
+<span class="c1">% Матрица преобразования координат из 2 в 1</span>
+<span class="n">A12</span> <span class="o">=</span> <span class="n">Ay</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+<span class="c1">% Матрица преобразования координат из 2 в 0</span>
+<span class="n">A02</span> <span class="o">=</span> <span class="n">A01</span><span class="o">*</span><span class="n">A12</span><span class="p">;</span>
+
+<span class="c1">% Угловая скорость тела 1</span>
+<span class="n">w1_1</span>  <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">);</span>
+<span class="c1">% Относительная угловая скорость тела 2 относительно тела 1 в СК 2</span>
+<span class="n">Ow1_2</span> <span class="o">=</span> <span class="n">ey</span><span class="o">*</span><span class="n">q</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">% Абсолютная угловая скорость тела 2 в СК 2</span>
+<span class="n">w2_2</span>  <span class="o">=</span> <span class="n">A12</span><span class="o">'*</span><span class="n">w1_1</span><span class="o">+</span><span class="n">Ow1_2</span><span class="p">;</span>
+
+<span class="c1">% Частные линейные скорости центра масс С1 в 0</span>
+<span class="n">Q1V_0</span>  <span class="o">=</span> <span class="p">[</span><span class="n">A01</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c11</span><span class="p">)</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+<span class="c1">% Производная Q1V_0</span>
+<span class="n">dQ1V_0</span> <span class="o">=</span> <span class="p">[</span><span class="n">A01</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">w1_1</span><span class="p">)</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c11</span><span class="p">)</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+
+<span class="c1">% Частные линейные скорости центра масс С2 в 0</span>
+<span class="n">Q2V_0</span>  <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">A01</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">tilde</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c11</span><span class="p">)</span><span class="o">+</span><span class="n">tilde</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c12</span><span class="p">)</span><span class="o">-</span><span class="n">tilde</span><span class="p">(</span><span class="n">A12</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">c22</span><span class="p">))</span> <span class="n">A01</span><span class="o">*</span><span class="n">A12</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c22</span><span class="p">)</span><span class="o">*</span><span class="n">ey</span><span class="p">];</span>
+<span class="n">dQ2V_0</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">A01</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">w1_1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">tilde</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">c11</span><span class="p">)</span><span class="o">+</span><span class="n">tilde</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c12</span><span class="p">)</span><span class="o">-</span><span class="n">tilde</span><span class="p">(</span><span class="n">A12</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">c22</span><span class="p">))</span><span class="o">+</span><span class="n">A01</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">A12</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">Ow1_2</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">c22</span><span class="p">),</span><span class="k">...</span>
+          <span class="n">A01</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">w1_1</span><span class="p">)</span><span class="o">*</span><span class="n">A12</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c22</span><span class="p">)</span><span class="o">*</span><span class="n">ey</span><span class="o">+</span><span class="n">A01</span><span class="o">*</span><span class="n">A12</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">Ow1_2</span><span class="p">)</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c22</span><span class="p">)</span><span class="o">*</span><span class="n">ey</span><span class="p">];</span>
+
+<span class="c1">% Частные угловые скорости 1 в 0 не нужны </span>
+<span class="n">Q1w_1</span>  <span class="o">=</span> <span class="p">[</span><span class="nb">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>   <span class="nb">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+<span class="n">dQ1w_1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+
+<span class="c1">% Частные угловые скорости 2 в 0 не нужны </span>
+<span class="n">Q2w_2</span>  <span class="o">=</span> <span class="p">[</span><span class="n">A12</span><span class="o">'*</span><span class="nb">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="n">ey</span><span class="p">];</span>
+<span class="n">dQ2w_2</span> <span class="o">=</span> <span class="p">[(</span><span class="n">A12</span><span class="o">*</span><span class="n">tilde</span><span class="p">(</span><span class="n">Ow1_2</span><span class="p">))</span><span class="o">'*</span><span class="nb">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+
+<span class="c1">% Силы тяжести</span>
+<span class="n">F1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">m1</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">g</span><span class="p">];</span>
+<span class="n">F2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">m2</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">g</span><span class="p">];</span>
+
+<span class="c1">% Матрица масс</span>
+<span class="n">M</span> <span class="o">=</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">m1</span><span class="o">*</span><span class="p">(</span><span class="n">Q1V_0</span><span class="s1">')*Q1V_0-p.m2*(Q2V_0'</span><span class="p">)</span><span class="o">*</span><span class="n">Q2V_0</span><span class="o">-</span><span class="p">(</span><span class="n">Q1w_1</span><span class="s1">')*(p.J1*Q1w_1)-(Q2w_2'</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">J2</span><span class="o">*</span><span class="n">Q2w_2</span><span class="p">;</span>
+
+<span class="c1">% Матрица правых частей</span>
+<span class="n">B</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">m1</span><span class="o">*</span><span class="p">(</span><span class="n">Q1V_0</span><span class="s1">')*dQ1V_0*u-(Q1w_1'</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">J1</span><span class="o">*</span><span class="n">dQ1w_1</span><span class="o">*</span><span class="n">u</span><span class="o">+</span><span class="n">tilde</span><span class="p">(</span><span class="n">w1_1</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">J1</span><span class="o">*</span><span class="n">w1_1</span><span class="p">)</span><span class="o">-</span><span class="k">...</span>
+       <span class="n">p</span><span class="o">.</span><span class="n">m2</span><span class="o">*</span><span class="p">(</span><span class="n">Q2V_0</span><span class="s1">')*dQ2V_0*u-(Q2w_2'</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">J2</span><span class="o">*</span><span class="n">dQ2w_2</span><span class="o">*</span><span class="n">u</span><span class="o">+</span><span class="n">tilde</span><span class="p">(</span><span class="n">w2_2</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">J2</span><span class="o">*</span><span class="n">w2_2</span><span class="p">)</span><span class="o">+</span><span class="k">...</span>
+       <span class="p">(</span><span class="n">Q1V_0</span><span class="s1">')*F1+(Q2V_0'</span><span class="p">)</span><span class="o">*</span><span class="n">F2</span>  <span class="p">);</span>
+
+<span class="c1">% Решаем СЛУ относительно старших производных (угловых ускорений)</span>
+<span class="n">du</span> <span class="o">=</span> <span class="n">M</span><span class="p">\</span><span class="n">B</span><span class="p">;</span>
+
+<span class="c1">% Кинематические уравнения</span>
+<span class="c1">% Производные углов</span>
+<span class="n">dq</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="nb">sec</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="nb">cos</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">-</span><span class="n">q</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">3</span><span class="p">)));</span>
+<span class="n">dq</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">+</span><span class="n">q</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="nb">cos</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
+<span class="n">dq</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="nb">tan</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">-</span><span class="n">q</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="nb">cos</span><span class="p">(</span><span class="n">q</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span><span class="o">+</span><span class="n">q</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+<span class="n">dq</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">% Угловые ускорения</span>
+<span class="n">dq</span><span class="p">(</span><span class="mi">5</span><span class="p">:</span><span class="mi">8</span><span class="p">)</span> <span class="o">=</span> <span class="n">du</span><span class="p">;</span>
+
+<span class="k">end</span>
+</code></pre></div></div>]]></content><author><name></name></author><category term="mechanics" /><category term="CAE" /><category term="matlab" /><summary type="html"><![CDATA[Derivation of the equations of spatial motion for a system of two bodies using the Kane method.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/kane-two-bodies-model_cover.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/kane-two-bodies-model_cover.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Уравнения относительного орбитального движения</title><link href="https://classmech.github.io/blog/mechanics/2024-07-21-relative_orbital_motion/" rel="alternate" type="text/html" title="Уравнения относительного орбитального движения" /><published>2024-07-21T00:00:00-05:00</published><updated>2024-07-21T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/relative_orbital_motion</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/2024-07-21-relative_orbital_motion/"><![CDATA[<h2 id="система-координат">Система координат</h2>
+
+<p>Рассматривается движение космического аппарата (КА) относительно орбитальной станции, движущейся по круговой или эллиптической орбите. Положение КА относительно станции определяется в орбитальной подвижной системе координат \(Ox_oy_oz_o\), связанной с центром масс станции. Ось \(Ox_o\) направлена по направлению  радиус вектора станции относительно центра Земли (\(\vec r\)), ось \(Oy_o\)  лежит в плоскости орбиты станции и направлена в направлении орбитального движения, ось \(Oz_o\) дополняет систему координат \(Ox_oy_oz_o\) до правой.</p>
+
+<p><img src="/assets/img/mechanics-in-space/relative-orbital.svg" alt="" /></p>
+
+<h2 id="нелинейные-уравнения-для-эллиптической-орбиты-станции">Нелинейные уравнения для эллиптической орбиты станции</h2>
+
+<p>Нелинейные уравнения движения КА относительно станции при движении станции по эллиптической орбите имею следующий вид:</p>
+
+\[\left\{
+\begin{aligned}
+&amp; \ddot x - 2 \dot{\vartheta} \dot y - \ddot{\vartheta} y - \dot{\vartheta}^2 x = - \frac{\mu(r+x)}{[(r+x)^2+y^2+z^2]^{3/2}} + \frac{\mu}{r^2} \\
+&amp; \ddot y + \dot{\vartheta} \dot x + \ddot{\vartheta} x - \dot{\vartheta}^2 y = - \frac{\mu y}{[(r+x)^2+y^2+z^2]^{3/2}}\\
+&amp; \ddot z = - \frac{\mu z}{[(r+x)^2+y^2+z^2]^{3/2}}
+\end{aligned}
+\right.\]
+
+<p>где \(x, y, z\) – координаты КА относительно станции (проекции вектора \(\rho\) на оси орбитальной подвижной системы координат станции), \(\mu\) – гравитационный параметр Земли. Угол истинной аномалии станции \(\dot \vartheta\) и расстояние от станции до центра Земли \(r\), определяются дифференциальными уравнениями движения станции по эллиптической орбите:</p>
+
+\[\ddot \vartheta = -\frac{2 \dot r \dot \vartheta}{r}, \quad \ddot{r} = r \dot{\vartheta}^2 - \frac{\mu}{r^2}.\]
+
+<p>Функция правых частей на языке MATLAB</p>
+
+<div class="language-matlab highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span> <span class="n">dq</span> <span class="o">=</span> <span class="n">nonlinear_relative_orbital</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">r</span>       <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>     <span class="c1">% расстояние до притягивающего центра</span>
+    <span class="n">theta</span>   <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>     <span class="c1">% угол истинной аномалии станции</span>
+    <span class="n">rho</span>     <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">);</span>   <span class="c1">% относительные координаты</span>
+    <span class="n">dr</span>      <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>     <span class="c1">% dr/dt</span>
+    <span class="n">dtheta</span>  <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>     <span class="c1">% угловая скорость орбитального движения</span>
+    <span class="n">v</span>       <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">);</span>  <span class="c1">% относительная скорость</span>
+    
+    <span class="c1">% Уравнения движения станции</span>
+    <span class="n">d2r</span>     <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="n">dtheta</span><span class="o">^</span><span class="mi">2</span><span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">mu</span><span class="p">/(</span><span class="n">r</span><span class="o">^</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">d2theta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">dr</span><span class="o">*</span><span class="n">dtheta</span><span class="p">/</span><span class="n">r</span><span class="p">;</span>
+    
+    <span class="n">rm</span>      <span class="o">=</span> <span class="nb">sqrt</span><span class="p">((</span><span class="n">r</span><span class="o">+</span><span class="n">rho</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">^</span><span class="mi">2</span><span class="o">+</span><span class="n">rho</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="o">+</span><span class="n">rho</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">);</span>
+    
+    <span class="n">d2x</span>     <span class="o">=</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">mu</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="n">rho</span><span class="p">(</span><span class="mi">1</span><span class="p">))/</span><span class="n">rm</span><span class="o">^</span><span class="mi">3</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">mu</span><span class="p">/</span><span class="n">r</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">dtheta</span><span class="o">*</span><span class="n">v</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">d2theta</span><span class="o">*</span><span class="n">rho</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">dtheta</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">rho</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">d2y</span>     <span class="o">=</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">mu</span><span class="o">*</span><span class="n">rho</span><span class="p">(</span><span class="mi">2</span><span class="p">)/</span><span class="n">rm</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">dtheta</span><span class="o">*</span><span class="n">v</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">d2theta</span><span class="o">*</span><span class="n">rho</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">dtheta</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">rho</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">d2z</span>     <span class="o">=</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">mu</span><span class="o">*</span><span class="n">rho</span><span class="p">(</span><span class="mi">3</span><span class="p">)/</span><span class="n">rm</span><span class="o">^</span><span class="mi">3</span><span class="p">;</span>
+    
+    <span class="n">dq</span> <span class="o">=</span> <span class="p">[</span><span class="n">dr</span><span class="p">;</span><span class="n">dtheta</span><span class="p">;</span><span class="n">v</span><span class="p">;</span><span class="n">d2r</span><span class="p">;</span><span class="n">d2theta</span><span class="p">;</span><span class="n">d2x</span><span class="p">;</span><span class="n">d2y</span><span class="p">;</span><span class="n">d2z</span><span class="p">];</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="нелинейные-уравнения-относительного-движения-для-круговой-орбиты-станции">Нелинейные уравнения относительного движения для круговой орбиты станции</h2>
+
+<p>При движении станции по круговой орбите \(\dot{\vartheta} = n_0 = \text{const}, \, \ddot{\vartheta}  = 0, \, r = a_0 = \text{const}\) уравнения упрощаются:</p>
+
+\[\left\{
+\begin{aligned}
+&amp; \ddot x - 2 n_0 \dot y - n^2_0 x = - \frac{\mu(a_0+x)}{[(a_0+x)^2+y^2+z^2]^{3/2}} + \frac{\mu}{a_0^2} \\
+&amp; \ddot y + n_0 \dot x - n^2_0 y = - \frac{\mu y}{[(a_0+x)^2+y^2+z^2]^{3/2}}\\
+&amp; \ddot z = - \frac{\mu z}{[(a_0+x)^2+y^2+z^2]^{3/2}}
+\end{aligned}
+\right.\]
+
+<h2 id="линеаризованные-уравнения-для-круговой-орбиты">Линеаризованные уравнения для круговой орбиты</h2>
+
+<p>Для малого в сравнении с радиусом орбиты расстояния между станцией и КА (\(\rho &lt;&lt; a_0\)) приведенные выше можно линеаризовать и приводятся к простому виду:</p>
+
+\[\left\{
+\begin{aligned}
+&amp; \ddot x - 2 n_0 \dot y - 3 n^2_0 x = 0 \\
+&amp; \ddot y + 2 n_0 \dot x =  0 \\
+&amp; \ddot z + n_0^2 z  = 0
+\end{aligned}
+\right.\]
+
+<p>Эти уравнения  могут быть проинтегрированный аналитически:</p>
+
+\[\begin{aligned}
+&amp; x = x_0 (4 - 3\cos n_0t) + \frac{1}{n_0} \left[ \dot x_0 \sin n_0 t + 2 \dot y_0 (1-\cos n_0t) \right],\\
+&amp; y  =  y_0 + \left[ 6x_0+\frac{4\dot y_0}{n_0}\right] \sin n_0 t + \frac{2 \dot x_0}{n}(\cos n_0 t-1) -\left[ 6n_0 x_0+3 \dot y_0\right]t,\\
+&amp; z  = \frac{z_0}{n_0} \sin n_0 t + z_0 \cos n_0 t.
+\end{aligned}\]
+
+<h3 id="источники-и-ссылки">Источники и ссылки</h3>
+
+<ol>
+  <li>Alfriend K.T. et al. Spacecraft formation flying: Dynamics, control and navigation // Spacecraft Formation Flying: Dynamics, control and navigation. 2009.</li>
+  <li><a href="/pages/mechanics-in-space/relative-orbital-motion/">Относительное орбитальное движение 1</a>.</li>
+  <li><a href="https://classmech.ru/pages/matlab/lab_hill_frame/">Относительное орбитальное движение 2</a></li>
+</ol>]]></content><author><name></name></author><category term="mechanics" /><category term="matlab" /><summary type="html"><![CDATA[Система координат Рассматривается движение космического аппарата (КА) относительно орбитальной станции, движущейся по круговой или эллиптической орбите. Положение КА относительно станции определяется в орбитальной подвижной системе координат \(Ox_oy_oz_o\), связанной с центром масс станции. Ось \(Ox_o\) направлена по направлению радиус вектора станции относительно центра Земли (\(\vec r\)), ось \(Oy_o\) лежит в плоскости орбиты станции и направлена в направлении орбитального движения, ось \(Oz_o\) дополняет систему координат \(Ox_oy_oz_o\) до правой. Нелинейные уравнения для эллиптической орбиты станции Нелинейные уравнения движения КА относительно станции при движении станции по эллиптической орбите имею следующий вид: \[\left\{ \begin{aligned} &amp; \ddot x - 2 \dot{\vartheta} \dot y - \ddot{\vartheta} y - \dot{\vartheta}^2 x = - \frac{\mu(r+x)}{[(r+x)^2+y^2+z^2]^{3/2}} + \frac{\mu}{r^2} \\ &amp; \ddot y + \dot{\vartheta} \dot x + \ddot{\vartheta} x - \dot{\vartheta}^2 y = - \frac{\mu y}{[(r+x)^2+y^2+z^2]^{3/2}}\\ &amp; \ddot z = - \frac{\mu z}{[(r+x)^2+y^2+z^2]^{3/2}} \end{aligned} \right.\] где \(x, y, z\) – координаты КА относительно станции (проекции вектора \(\rho\) на оси орбитальной подвижной системы координат станции), \(\mu\) – гравитационный параметр Земли. Угол истинной аномалии станции \(\dot \vartheta\) и расстояние от станции до центра Земли \(r\), определяются дифференциальными уравнениями движения станции по эллиптической орбите: \[\ddot \vartheta = -\frac{2 \dot r \dot \vartheta}{r}, \quad \ddot{r} = r \dot{\vartheta}^2 - \frac{\mu}{r^2}.\] Функция правых частей на языке MATLAB function dq = nonlinear_relative_orbital(t,q,p) r = q(1); % расстояние до притягивающего центра theta = q(2); % угол истинной аномалии станции rho = q(3:5); % относительные координаты dr = q(6); % dr/dt dtheta = q(7); % угловая скорость орбитального движения v = q(8:10); % относительная скорость % Уравнения движения станции d2r = r*dtheta^2-p.mu/(r^2); d2theta = -2*dr*dtheta/r; rm = sqrt((r+rho(1))^2+rho(2)^2+rho(3)^2); d2x = -p.mu*(r+rho(1))/rm^3 + p.mu/r^2 + 2*dtheta*v(2) + d2theta*rho(2) + dtheta^2*rho(1); d2y = -p.mu*rho(2)/rm^3 - 2*dtheta*v(1) - d2theta*rho(1) + dtheta^2*rho(2); d2z = -p.mu*rho(3)/rm^3; dq = [dr;dtheta;v;d2r;d2theta;d2x;d2y;d2z]; end Нелинейные уравнения относительного движения для круговой орбиты станции При движении станции по круговой орбите \(\dot{\vartheta} = n_0 = \text{const}, \, \ddot{\vartheta} = 0, \, r = a_0 = \text{const}\) уравнения упрощаются: \[\left\{ \begin{aligned} &amp; \ddot x - 2 n_0 \dot y - n^2_0 x = - \frac{\mu(a_0+x)}{[(a_0+x)^2+y^2+z^2]^{3/2}} + \frac{\mu}{a_0^2} \\ &amp; \ddot y + n_0 \dot x - n^2_0 y = - \frac{\mu y}{[(a_0+x)^2+y^2+z^2]^{3/2}}\\ &amp; \ddot z = - \frac{\mu z}{[(a_0+x)^2+y^2+z^2]^{3/2}} \end{aligned} \right.\] Линеаризованные уравнения для круговой орбиты Для малого в сравнении с радиусом орбиты расстояния между станцией и КА (\(\rho &lt;&lt; a_0\)) приведенные выше можно линеаризовать и приводятся к простому виду: \[\left\{ \begin{aligned} &amp; \ddot x - 2 n_0 \dot y - 3 n^2_0 x = 0 \\ &amp; \ddot y + 2 n_0 \dot x = 0 \\ &amp; \ddot z + n_0^2 z = 0 \end{aligned} \right.\] Эти уравнения могут быть проинтегрированный аналитически: \[\begin{aligned} &amp; x = x_0 (4 - 3\cos n_0t) + \frac{1}{n_0} \left[ \dot x_0 \sin n_0 t + 2 \dot y_0 (1-\cos n_0t) \right],\\ &amp; y = y_0 + \left[ 6x_0+\frac{4\dot y_0}{n_0}\right] \sin n_0 t + \frac{2 \dot x_0}{n}(\cos n_0 t-1) -\left[ 6n_0 x_0+3 \dot y_0\right]t,\\ &amp; z = \frac{z_0}{n_0} \sin n_0 t + z_0 \cos n_0 t. \end{aligned}\] Источники и ссылки Alfriend K.T. et al. Spacecraft formation flying: Dynamics, control and navigation // Spacecraft Formation Flying: Dynamics, control and navigation. 2009. Относительное орбитальное движение 1. Относительное орбитальное движение 2]]></summary></entry><entry><title type="html">Вывод и интегрирование уравнений движения эллиптического мятника в Python (использование sympy, scipy)</title><link href="https://classmech.github.io/blog/python/mechanics/2024-05-12-python-elliptic-pendulum/" rel="alternate" type="text/html" title="Вывод и интегрирование уравнений движения эллиптического мятника в Python (использование sympy, scipy)" /><published>2024-05-12T00:00:00-05:00</published><updated>2024-05-12T00:00:00-05:00</updated><id>https://classmech.github.io/blog/python/mechanics/python-elliptic-pendulum</id><content type="html" xml:base="https://classmech.github.io/blog/python/mechanics/2024-05-12-python-elliptic-pendulum/"><![CDATA[<p>Рассматриваемая механическая система имеет две степени свободы: её конфигурация определяется координатой \(x\)  тела 1 (брусок, движущийся поступательно вдоль оси \($Ox_0\)) и углом отклонения подвеса тела 2 от вертикали \(\phi\). Движение системы происходит в однородном поле силы тяжести.</p>
 
 <p><img src="/assets/img/matlab/elliptic_pendulum.png" alt="" /></p>
 
@@ -248,7 +1006,7 @@
 <span class="n">anim</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">'animation.gif'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><img src="/assets/img/python/elliptic-pendulum-animation.gif" alt="" /></p>]]></content><author><name></name></author><category term="python" /><category term="mechanics" /><summary type="html"><![CDATA[Вывод в среде Python уравнений движения эллиптического маятника, используя библиотеку sympy. Численное интегрирование полученных уравнений и построение анимации.]]></summary></entry><entry><title type="html">Пример скрипта для создания анимации в Blender на основе результатов расчётов</title><link href="https://classmech.github.io/blog/mechanics/2024-05-08-blender-script/" rel="alternate" type="text/html" title="Пример скрипта для создания анимации в Blender на основе результатов расчётов" /><published>2024-05-08T00:00:00-05:00</published><updated>2024-05-08T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/blender-script</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/2024-05-08-blender-script/"><![CDATA[<p>В <a href="/assets/files/3d/lec1.blend">проекте Blender</a> создана следующая иерархия объектов:</p>
+<p><img src="/assets/img/python/elliptic-pendulum-animation.gif" alt="" /></p>]]></content><author><name></name></author><category term="python" /><category term="mechanics" /><summary type="html"><![CDATA[The derivation of the equations of motion for an elliptical pendulum using the Python programming language and the sympy library is presented. The obtained equations are numerically integrated and an animation is created.]]></summary></entry><entry><title type="html">Пример скрипта для создания анимации в Blender на основе результатов расчётов</title><link href="https://classmech.github.io/blog/mechanics/2024-05-08-blender-script/" rel="alternate" type="text/html" title="Пример скрипта для создания анимации в Blender на основе результатов расчётов" /><published>2024-05-08T00:00:00-05:00</published><updated>2024-05-08T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/blender-script</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/2024-05-08-blender-script/"><![CDATA[<p>В <a href="/assets/files/3d/lec1.blend">проекте Blender</a> создана следующая иерархия объектов:</p>
 <ul>
   <li>Empty1 (Empty)
     <ul>
@@ -280,7 +1038,7 @@
 </span><span class="n">obj</span> <span class="o">=</span> <span class="p">(</span><span class="n">bpy</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">objects</span><span class="p">[</span><span class="s">'Empty1'</span><span class="p">],</span> <span class="n">bpy</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">objects</span><span class="p">[</span><span class="s">'Empty2'</span><span class="p">])</span>
 
 <span class="c1"># Читаем данные из файла
-</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">'C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">user</span><span class="se">\\</span><span class="s">results.csv'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s">''</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s">'C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">user</span><span class="se">\\</span><span class="s">results.csv'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
 
 <span class="n">nframes</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nframes</span><span class="p">):</span>            
@@ -313,7 +1071,7 @@
         <span class="c1"># Положение СК
 </span>        <span class="n">obj</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">location</span> <span class="o">=</span> <span class="n">mathutils</span><span class="p">.</span><span class="n">Vector</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>    
         <span class="n">obj</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">keyframe_insert</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s">'location'</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
-</code></pre></div></div>]]></content><author><name></name></author><category term="mechanics" /><summary type="html"><![CDATA[В проекте Blender создана следующая иерархия объектов: Empty1 (Empty) Body1 (Mesh) Empty2 (Empty) Body2 (Mesh) import bpy import math import sys import mathutils import csv import numpy as np # Удаление существующей анимации: # выделяем все объекты типа EMPTY (Add -&gt; Empty -&gt; Arrows) bpy.ops.object.select_by_type(type='EMPTY') # Удаляем, связанную с выделенными объектами анимацию bpy.ops.anim.keyframe_clear_v3d() bpy.ops.object.select_all(action='DESELECT') # Формируем список объектов типа Empty по их именам - систем координат (СК) obj = (bpy.data.objects['Empty1'], bpy.data.objects['Empty2']) # Читаем данные из файла data=np.loadtxt(open('C:\\Users\\user\\results.csv', newline=''), delimiter=',') nframes = data.shape[0] for i in range(nframes): # Тело 1 phi11 = data[i,1] phi12 = data[i,2] # Матрицы элементарных поворотов СК 1 A1 = mathutils.Matrix.Rotation(phi11, 4, 'X') A2 = mathutils.Matrix.Rotation(phi12, 4, 'Y') # Матрица сложного поворота # преобразование координат из СК 0 в СК 1 A01 = np.transpose(np.dot(A1,A2)) # Сохраняем "кадр" анимации # Поворот СК obj[0].matrix_local = A01 obj[0].keyframe_insert(data_path='rotation_euler',frame=i) # Положение СК obj[0].location = mathutils.Vector((0.0,0.0,0.0)) obj[0].keyframe_insert(data_path='location', frame=i) # Тело 2 phi21 = data[i,3] # Матрицы элементарных поворотов СК 2 относительно СК 1 A1 = mathutils.Matrix.Rotation(phi21, 4, 'X') # Матрица сложного поворота из СК 1 в СК 2 A12 = np.transpose(A1) # Поворот СК obj[1].matrix_local = A12 obj[1].keyframe_insert(data_path='rotation_euler',frame=i) # Положение СК obj[1].location = mathutils.Vector((0.0,0.0,-1.0)) obj[1].keyframe_insert(data_path='location', frame=i)]]></summary></entry><entry><title type="html">Модели SimInTech</title><link href="https://classmech.github.io/blog/2024-04-30-simintech-projects-git/" rel="alternate" type="text/html" title="Модели SimInTech" /><published>2024-04-30T00:00:00-05:00</published><updated>2024-04-30T00:00:00-05:00</updated><id>https://classmech.github.io/blog/simintech-projects-git</id><content type="html" xml:base="https://classmech.github.io/blog/2024-04-30-simintech-projects-git/"><![CDATA[<p><a href="https://gitverse.ru/classmech/simintech">Хранилище (репозиторий) на GitVerse c примерами моделей</a>, разработанных в процессе освоения <a href="https://simintech.ru/">SimInTech</a>: файлы проектов со ссылками на их описание.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Хранилище (репозиторий) на GitVerse c примерами моделей, разработанных в процессе освоения SimInTech: файлы проектов со ссылками на их описание.]]></summary></entry><entry><title type="html">Интегрирование уравнений движения системы с двумя степенями свободы в среде Python</title><link href="https://classmech.github.io/blog/mechanics/cae/2024-04-01-two-dof-python/" rel="alternate" type="text/html" title="Интегрирование уравнений движения системы с двумя степенями свободы в среде Python" /><published>2024-04-01T00:00:00-05:00</published><updated>2024-04-01T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/two-dof-python</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2024-04-01-two-dof-python/"><![CDATA[<p>Круглая пластина может вращаться вокруг оси, проходящей через точку \(О_1\) и перпендикулярной плоскости рисунка. В канале пластины движется шарик М, закреплённый на пружине со свободной длиной \(l_0\). Канал, в котором движется шарик, находится на расстоянии 2h = R от оси вращения.</p>
+</code></pre></div></div>]]></content><author><name></name></author><category term="mechanics" /><summary type="html"><![CDATA[В проекте Blender создана следующая иерархия объектов: Empty1 (Empty) Body1 (Mesh) Empty2 (Empty) Body2 (Mesh) import bpy import math import sys import mathutils import csv import numpy as np # Удаление существующей анимации: # выделяем все объекты типа EMPTY (Add -&gt; Empty -&gt; Arrows) bpy.ops.object.select_by_type(type='EMPTY') # Удаляем, связанную с выделенными объектами анимацию bpy.ops.anim.keyframe_clear_v3d() bpy.ops.object.select_all(action='DESELECT') # Формируем список объектов типа Empty по их именам - систем координат (СК) obj = (bpy.data.objects['Empty1'], bpy.data.objects['Empty2']) # Читаем данные из файла data=np.loadtxt('C:\\Users\\user\\results.csv', delimiter=',') nframes = data.shape[0] for i in range(nframes): # Тело 1 phi11 = data[i,1] phi12 = data[i,2] # Матрицы элементарных поворотов СК 1 A1 = mathutils.Matrix.Rotation(phi11, 4, 'X') A2 = mathutils.Matrix.Rotation(phi12, 4, 'Y') # Матрица сложного поворота # преобразование координат из СК 0 в СК 1 A01 = np.transpose(np.dot(A1,A2)) # Сохраняем "кадр" анимации # Поворот СК obj[0].matrix_local = A01 obj[0].keyframe_insert(data_path='rotation_euler',frame=i) # Положение СК obj[0].location = mathutils.Vector((0.0,0.0,0.0)) obj[0].keyframe_insert(data_path='location', frame=i) # Тело 2 phi21 = data[i,3] # Матрицы элементарных поворотов СК 2 относительно СК 1 A1 = mathutils.Matrix.Rotation(phi21, 4, 'X') # Матрица сложного поворота из СК 1 в СК 2 A12 = np.transpose(A1) # Поворот СК obj[1].matrix_local = A12 obj[1].keyframe_insert(data_path='rotation_euler',frame=i) # Положение СК obj[1].location = mathutils.Vector((0.0,0.0,-1.0)) obj[1].keyframe_insert(data_path='location', frame=i)]]></summary></entry><entry><title type="html">Модели SimInTech</title><link href="https://classmech.github.io/blog/2024-04-30-simintech-projects-git/" rel="alternate" type="text/html" title="Модели SimInTech" /><published>2024-04-30T00:00:00-05:00</published><updated>2024-04-30T00:00:00-05:00</updated><id>https://classmech.github.io/blog/simintech-projects-git</id><content type="html" xml:base="https://classmech.github.io/blog/2024-04-30-simintech-projects-git/"><![CDATA[<p><a href="https://gitverse.ru/classmech/simintech">Хранилище (репозиторий) на GitVerse c примерами моделей</a>, разработанных в процессе освоения <a href="https://simintech.ru/">SimInTech</a>: файлы проектов со ссылками на их описание.</p>]]></content><author><name></name></author><category term="simintech" /><summary type="html"><![CDATA[Хранилище (репозиторий) на GitVerse c примерами моделей, разработанных в процессе освоения SimInTech: файлы проектов со ссылками на их описание.]]></summary></entry><entry><title type="html">Интегрирование уравнений движения системы с двумя степенями свободы в среде Python</title><link href="https://classmech.github.io/blog/mechanics/cae/2024-04-01-two-dof-python/" rel="alternate" type="text/html" title="Интегрирование уравнений движения системы с двумя степенями свободы в среде Python" /><published>2024-04-01T00:00:00-05:00</published><updated>2024-04-01T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/two-dof-python</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2024-04-01-two-dof-python/"><![CDATA[<p>Круглая пластина может вращаться вокруг оси, проходящей через точку \(О_1\) и перпендикулярной плоскости рисунка. В канале пластины движется шарик М, закреплённый на пружине со свободной длиной \(l_0\). Канал, в котором движется шарик, находится на расстоянии 2h = R от оси вращения.</p>
 
 <p>Рассмотрим два режима движения системы:</p>
 <ul>
@@ -942,793 +1700,4 @@
 
 <p><img src="/assets/img/blog/two-dof-mech-python-TPE.png" alt="" /></p>
 
-<p>График иллюстрирует сохранение полной энергии системы, что свидетельствует о корректности построенной модели механической системы с двумя степенями свободны.</p>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><summary type="html"><![CDATA[Пример интегрирования в среде Python уравнений движения механической системы с двумя степенями свободы на примере курсовой работы "Исследование движения точки и механической системы" курса теоретической механики Самарского университета]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/two-dof-mech-python.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/two-dof-mech-python.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Модель системы обезвешивания в SimInTech</title><link href="https://classmech.github.io/blog/mechanics/cae/2024-03-09-simintech-ground-test-model/" rel="alternate" type="text/html" title="Модель системы обезвешивания в SimInTech" /><published>2024-03-09T00:00:00-06:00</published><updated>2024-03-09T00:00:00-06:00</updated><id>https://classmech.github.io/blog/mechanics/cae/simintech-ground-test-model</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2024-03-09-simintech-ground-test-model/"><![CDATA[<p>Для подтверждения работоспособности механизмов подвижных элементов конструкций космических аппаратов (раскрываемых солнечных батарей, антенн), средств разделения элементов конструкций ракет-носителей (отработавших ускорителей, створок головных обтекателей, хвостовых отсеков) обычно не ограничиваются только математическим и компьютерным моделированием, а используют и экспериментальные методы. Например, для экспериментальной отработки системы раскрытия солнечных батарей КА строят сложные многозвеньевые механические системы для компенсации действия на створки солнечной батареи сил веса, имитируя, конечно с погрешностями, в земных условия условия невесомости.  Ниже на фото показана подобная система обезвешивания панели солнечной батареи, состоящей из 5 створок. На фото видны тросы, на которых подвешены створки, прикрепленные к подвижным поперечным балкам, которые могут двигаться с небольшим сопротивлением по направляющим.</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/solar-array.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 1 - Система обезвешивания створок солнечных батарей КА</p>
-
-<p>Перед разработчиком экспериментальной установки стоит задача выбора параметров системы обезвешивания, например длин и жесткостей тросов, и оценки влияния системы обезвешивания на движение отрабатываемой механической системы, чтобы можно было сопоставить результаты испытаний с ожидаемым (расчётным) движением в условиях полета и сделать вывод об успешности прохождения этапа наземной отработки отрабатываемой системы. Очевидно, что модель движения отрабатываемой системы в условиях наземной отработки является более сложной, чем модель исходной системы.</p>
-
-<h2 id="отделение-переходного-отсека">Отделение переходного отсека</h2>
-
-<p>Рассмотрим для примера модель отделения переходного неразрезного отсека орбитального блока. Схема отделения отсека описана в патенте <a href="https://patents.s3.yandex.net/RU2200117C1_20030310.pdf">“УСТРОЙСТВО ДЛЯ ОТДЕЛЕНИЯ ПЕРЕХОДНОГО ОТСЕКА ОТ КОСМИЧЕСКОГО ОБЪЕКТА (RU 2 200 117 C1)”</a>. Отсек отделяется от орбитального блока без разделения на створки, подобно створкам головного обтекателя ракеты-носителя (поэтому его и “прозвали” неразрезной отсек), а съезжает по роликам, установленным на орбитальном блоке. На самом отсеке установлены направляющие, по которым катятся ролики. Такая схема позволяет снизить массу отсека в сравнении с отсеком разделяемым на створки за счёт исключения из конструкции продольных стыков.</p>
-
-<p>Начальную скорость движения отсека относительно орбитального блока после разделения поперечного стыка отсека с орбитальным блоком обеспечивают пружинные толкатели (рисунок 2).</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/op-otsek.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 2 - Отделяемый переходный отсек орбитального блока</p>
-
-<p>При проведении экспериментальной отработки может быть необходимо подтвердить скорость движения отсека относительно орбитального блока, отсутствие “зацепов” отсека за конструкцию орбитального блока (его макета). Если рассматривать только относительное поступательное движение переходного отсека и орбитального блока, то относительную скорость можно определить из закона об изменении кинетической энергии:</p>
-
-\[\Delta V = V_2 - V_1 = \sqrt{\frac{2A}{m^*}}\]
-
-<p>где \(A\) - суммарная работа толкателей отделения, \(m^*\) - приведенная масса определяемая выражением:</p>
-
-\[m^* = \frac{m_{OB} m_{A}}{m_{OB}+m_A}\]
-
-<p>где \(m_{OB}\) – масса орбитального блока, \(m_A\) – масса отделяемого отсека.</p>
-
-<p>Для наземной отработки процесса отделения неразрезного переходного отсека в книге <a href="https://search.rsl.ru/ru/record/01005108584">“Расчёт и проектирование систем разделения ступеней ракет”</a> рекомендуется использовать вертикальную схему обезвешивания, показанную на рисунке 3.</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/eu.jpg" alt="" /></p>
-
-<p class="figcaption">Рисунок 3 - Схема экспериментальной установки (рисунок из книги <a href="https://search.rsl.ru/ru/record/01005108584">“К. С. Колесников, В. В. Кокушкин, С. В. Борзых, Н. В. Панкова Расчёт и проектирование систем разделения ступеней ракет. М.: МГТУ им. Н.Э. Баумана. 2006.”</a>)</p>
-
-<p>Отсек 7 подвешивается в кардановом подвесе при помощи блочно-тросовой системы 2. Вес отсека компенсируется при помощи противовеса 13, масса которого равна массе отсека, массе траверсы 4 и других элементов подвески.</p>
-
-<p>Очевидно, что в этой схеме под действием толкателей отделения 8 после разделения поперечного стыка 9 будет двигаться и отсек и траверса и противовес, т.е. масса минимум в два раза превышающая массу самого отсека, поэтому скорость движения отсека относительно макета орбитального блока 6 (\(\Delta V^{исп}\)) после окончания работы толкателей 8 будет меньше скорости отсека в условиях полета \(\Delta V\):</p>
-
-\[\Delta V^{исп} &lt; \sqrt{\frac{2A}{2 m^*}} = \frac{\Delta V}{\sqrt{2}}\]
-
-<p>Для того чтобы в условиях наземной отработки добиться той же скоростей движения переходного отсека необходимо компенсировать увеличение массы. Для этого используется  дополнительный комплект толкателей противовеса 12 (рисунок 3). Удвоив работу толкателей в системе, можно компенсировать удвоение подвижной массы экспериментальной установки:</p>
-
-\[\Delta V^{исп} = \sqrt{\frac{2\cdot (2 A)}{2 m^*}} = \Delta V\]
-
-<p>Добавление в систему дополнительных толкателей приводит к большему начальному растяжению троса системы обезвешивания. До начала движения отсека трос будет растягиваться весом противовеса 13 и усилием дополнительных толкателей 12. Необходимо проанализировать влияние троса на движение отсека и сравнить это движение с движением в условиях полета.</p>
-
-<p>Для решения это задачи можно использовать среду SimInTech, которая имеет уже готовые блоки библиотеки “Механика” для описания исследуемой системы.</p>
-
-<h2 id="модель-в-simintech">Модель в SimInTech</h2>
-
-<p>Построим упрощенную модель экспериментальной установки, позволяющую проанализировать поступательное движение отсека. Будем учитывать только упругие свойства троса, пренебрегая влиянием на движение отсека его массы. При построении модели также не будет учитываться сопротивление троса при взаимодействии с блоками подвески и влияние самих блоков на движение системы (сопротивление при вращении блоков, их инерционно-массовые характеристики).</p>
-
-<p>В условиях наземной отработки скорость отсека относительно неподвижного макета орбитального блока после окончания работы толкателей отделения будет определяться массой отсека (\(m_A\)) и работой толкателей (обозначим скорость отсека как \(V_A\)):</p>
-
-\[V_A = \sqrt{\frac{2A}{m_A}}\]
-
-<p>Расчётная схема модели приведена на рисунке 4. Справа на рисунке 4 показана эквивалентная схема экспериментальной с учётом принятых допущений. Трос растягивается силами веса отсека (\(G_A\)) и балансировочного груза (\(G_B\)), на отсек действует сила толкателей \(P_A\), на противовес – сила дополнительных толкателей (\(P_B\)).</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/eu-model.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 4 - Схема модели</p>
-
-<p>Схема SimInTech модели показана на рисунке 5 (следует отметить, что по структуре модель подобна модели <a href="/blog/mechanics/cae/2022-11-16-simintech-rsts/">вращающейся тросовой системы</a>). Для сравнения движения отсека в условиях полета и в условиях наземной отработки построены две модели: слева показана модель движения отсека в условиях полета, справа – в условиях наземной отработки. По количеству блоков модель движения отсека в условиях наземной экспериментальной установки в три раза больше.</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/model.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 5 - Схема модели в среде SimInTech</p>
-
-<p>Отсек и противовес представлены в виде материальных точек одинаковой массы. В SimInTech эти тела моделируются при помощи блоков “Масса” библиотеки “Механика”. Силы веса, действующие на отсек и противовес, представлены в виде блоков “Источник силы” подраздела “Механические источники”. Силы веса действуют в противоположные стороны (имеют разные знаки), растягивая трос, соединяющий отсек с противовесом.</p>
-
-<p>Толкатель моделируется при помощи блока <a href="https://help.simintech.ru/?q=/10_biblioteki_blokov/mekhanika/elementy_postupat_dvizh/4223.html">Нелинейная пружина”</a>. В блоке в табличном виде задается закон изменения суммарной силы толкателей отсека от деформации пружины. При отрицательной деформации (пружина сжата), равной ходу толкателя, сила пружины равна суммарному  начальному усилию толкателей $P_0$, при нулевой деформации сила равна конечному усилию толкателей \(P_K\), при дальнейшем увеличении деформации сила пружины равна нулю (рисунок 6). Работа толкателей для примера подобрана так, чтобы после окончания их работы переходный отсек двигался со скоростью 1 м/с.</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/nonlinear-spring.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 6 - Свойства блока “Нелинейная пружина” (модель толкателей отделения переходного отсека)</p>
-
-<p>В новой версии библиотеки “Механика” начальная деформация нелинейной пружины определяется начальным положением тела (“Масса”), поэтому, в параметрах массы, моделирующей отсек, необходимо указать начальное положение (рисунок 7).</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/mass.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 7 - Параметры блока “Масса”, моделирующего переходный отсек</p>
-
-<p>Трос моделируется при помощи блока “Поступательная пружина”. В отличие от Нелинейной пружины, начальная деформация (“Начальное растяжение”) линейной пружины определяется в самом блоке (не вполне понятен различный подход разработчиков к способу определения начальной деформации пружин).</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/tether.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 8 - Свойства блока “Поступательная пружина” (модель троса)</p>
-
-<p>До начала движения трос растянут силой веса переходного отсека и начальным усилием дополнительных толкателей. В этот момент стык переходного отсека с орбитальным блоком еще не раскрылся и удерживается замками, поэтому толкатели отделения отсека не растягивают троса. Предполагается, что в системе обезвешивания используется многожильный трос, эквивалентный по жесткости сплошному стальному тросу диаметром 10 мм и длиной 10 метров – 261.8 кН/м.</p>
-
-<p>Дополнительные толкатели также моделируется при помощи блока “Нелинейная пружина”. Все параметры модели определяются в скрипте инициализации модели:</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">initialization</span>
-	<span class="c1">// Модуль упругости троса
-</span>	<span class="n">YM</span> <span class="p">=</span> <span class="m">200e9</span><span class="p">;</span>
-	<span class="c1">// Диаметр троса
-</span>	<span class="n">tether_d</span>  <span class="p">=</span> <span class="m">0.010</span><span class="p">;</span>
-	<span class="c1">// Длина троса
-</span>	<span class="n">tether_l</span>  <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
-	<span class="c1">// Площадь поперечного сечения троса
-</span>	<span class="n">tether_A</span>  <span class="p">=</span> <span class="n">tether_d</span><span class="p">*</span><span class="n">tether_d</span><span class="p">*</span><span class="n">pi</span><span class="p">/</span><span class="m">4</span><span class="p">;</span>
-	<span class="c1">// Жесткость троса
-</span>	<span class="n">tether_c</span>  <span class="p">=</span> <span class="n">YM</span><span class="p">*</span><span class="n">tether_A</span><span class="p">/</span><span class="n">tether_l</span><span class="p">;</span>	
-	<span class="c1">// Масса переходного отсека
-</span>	<span class="n">O_mass</span> <span class="p">=</span> <span class="m">500</span><span class="p">;</span>
-	<span class="c1">// Масса противовеса
-</span>	<span class="n">B_mass</span> <span class="p">=</span> <span class="m">500</span><span class="p">;</span>
-	<span class="c1">// Ускорение силы тяжести
-</span>	<span class="n">g</span> <span class="p">=</span> <span class="m">9.807</span><span class="p">;</span>  
-	<span class="c1">// Начальное усилие толкателей (суммарное)
-</span>	<span class="n">P0</span> <span class="p">=</span> <span class="m">1800</span><span class="p">;</span>
-	<span class="c1">// Конечное  усилие толкателей (суммарное)
-</span>	<span class="n">PK</span> <span class="p">=</span> <span class="m">700</span><span class="p">;</span>
-	<span class="c1">// Ход толкателей
-</span>	<span class="n">P_stroke</span> <span class="p">=</span> <span class="m">0.2</span><span class="p">;</span>  			
-<span class="k">end</span>
-</code></pre></div></div>
-
-<h2 id="результаты-моделирования">Результаты моделирования</h2>
-
-<p>На рисунке 9 показаны графики изменения скорости отсека в условиях полета и в условиях наземной экспериментальной установки без задействования дополнительных толкателей противовеса. В этом случае скорость отсека в условиях наземной отработки в $\sqrt{2}$ меньше скорости отсека в условиях полёта.</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/velocity1.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 9 - Скорость отделяемого отсека в условиях полета и в условиях наземной отработки (без учёта действия толкателей противовеса)</p>
-
-<p>На рисунке 10 показаны графики изменения скорости отсека в условиях полета и в условиях наземной экспериментальной установки при задействовании дополнительных толкателей. Рисунок иллюстрирует заметное влияние упругих свойств троса на скорость отсека: амплитуда колебаний скорости отсека после окончания работы толкателей составляет около 0,05 м/с (5 % от конечной скорости отсека). Результаты моделирования также показывают, что в течение 0,04 с после разделения стыка переходный отсек в условиях испытаний движется быстрее чем в реальных условиях за счёт начального растяжения троса, вызванного действием дополнительных толкателей противовеса.</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/velocity2.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 10 - Скорость отделяемого отсека в условиях полета и в условиях наземной отработки (с учётом действия толкателей противовеса)</p>
-
-<p>На рисунке 11 показан график изменения силы толкателей, действующей на переходный отсек. Продолжительность работы толкателей переходного отсека составляет около 0.35 с.</p>
-
-<p><img src="/assets/img/blog/simintech-ground-test-model/pusher-force.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 11 - Суммарная сила толкателей, действующая на переходный отсек</p>
-
-<p>Построенная простейшая модель движения отделяемого переходного отсека в условиях наземной экспериментальной отработки позволяет оценить влияние упругих свойств троса на движение отсека.</p>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><summary type="html"><![CDATA[Модель в среде SimInTech наземной экспериментальной установки для отработки процесса отделения переходного отсека от орбитального блока.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/simintech-ground-test-model/slide.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/simintech-ground-test-model/slide.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Раскрытие посадочной опоры многоразовой ступени РН Falcon-9</title><link href="https://classmech.github.io/blog/mechanics/cae/2023-12-07-leg-open/" rel="alternate" type="text/html" title="Раскрытие посадочной опоры многоразовой ступени РН Falcon-9" /><published>2023-12-07T00:00:00-06:00</published><updated>2023-12-07T00:00:00-06:00</updated><id>https://classmech.github.io/blog/mechanics/cae/leg-open</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2023-12-07-leg-open/"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#уравнения-движения" id="markdown-toc-уравнения-движения">Уравнения движения</a>    <ul>
-      <li><a href="#кинетическая-энергия-системы" id="markdown-toc-кинетическая-энергия-системы">Кинетическая энергия системы</a></li>
-      <li><a href="#обобщенная-сила" id="markdown-toc-обобщенная-сила">Обобщенная сила</a></li>
-      <li><a href="#уравнение-движения" id="markdown-toc-уравнение-движения">Уравнение движения</a></li>
-    </ul>
-  </li>
-  <li><a href="#задание" id="markdown-toc-задание">Задание</a></li>
-</ul>
-
-<p>Рассмотрим процесс свободного раскрытия посадочной опоры многоразовой первой ступени РН Falcon-9. Возвращаемая ступень имеет четыре одинаковые посадочные опоры. Опоры раскрываются до касания поверхности земли в процессе работы двигателя торможения. Движение посадочной опоры при раскрытии рассматривается по отношению к корпусу возвращаемой ступени, т.е. по отношению к неинерциальной системе координат движущейся с известным ускорением под действием силы тяги двигателя и силы тяжести. Действие других сил на движение опоры не рассматривается.</p>
-
-<p><img src="/assets/img/blog/landing-gear.jpg" alt="" /></p>
-
-<p class="figcaption">Рисунок 1 - Посадочная опора возвращаемой ступени РН Falcon-9 в раскрытом положении</p>
-
-<p>Посадочную опору представим в виде двух однородных стержней, которые назовем опорный подкос и демпфирующий подкос. Опорный подкос имеет постоянную длину \(OB = l\).  Демпфирующий подкос представляет собой телескопическую конструкцию и его длина \(AB = s\) при раскрытии опоры увеличивается. В первом приближении будем считать, что масса подкоса равномерно распределена по длине. Для анализа процесса раскрытия посадочной опоры используется упрощенная модель, схема которой показана на рисунке 2. Подкос OB представлен однородным стержнем с массой \(m_{OB}=m\), демпфирующий подкос \(AB = s\) представлен однородным стержнем переменной длины AB и массой \(m_{AB}\).</p>
-
-<p><img src="/assets/img/blog/f9-gear-open-1.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 2 - Схема посадочной опоры</p>
-
-<p>В процессе раскрытия опоры возвращаемая ступень движется поступательно с известной вертикальной перегрузкой, определяемой работой двигателя торможения.</p>
-
-<h2 id="уравнения-движения">Уравнения движения</h2>
-
-<p>Для записи уравнений движения посадочной опоры используем формализм Лагранжа. Рассматриваемый механизм имеет одну степень свободы и его положение однозначно определяется углом поворота опорного подкоса относительно корпуса возвращаемой ступени \(\varphi\). Уравнение Лагранжа второго рода имеет вид</p>
-
-\[\frac{d}{dt} \frac{\partial T}{\partial \dot \varphi} - \frac{\partial T}{\partial \varphi} = Q_\varphi\]
-
-<p>где T – кинетическая энергия системы, \(Q_\varphi\) – обобщенная сила.</p>
-
-<h3 id="кинетическая-энергия-системы">Кинетическая энергия системы</h3>
-
-<p>Кинетическая энергия системы \(T\) представляет собой кинетическую энергию движения посадочной опоры относительно корпуса. Эта кинетическая энергия будет складываться из кинетических энергий двух звеньев АВ и ОВ:</p>
-
-\[T = T_{AB} + T_{OB}\]
-
-<p>Как было отмечено выше, подкос OB представлен однородным стержнем с массой \(m_{OB}=m\), а демпфирующий подкос AB представлен однородным стержнем <strong>переменной длины</strong> \(AB=s(t)\) и массой \(m_{AB}\). Кинетическая энергия демпфирующего подкоса определяется с учётом изменения его длины при развороте. Масса демпфирующего подкоса постоянна и равна</p>
-
-\[m_{AB}=k m,\]
-
-<p>где коэффициент k представляет собой отношение массы подкоса АВ к массе подкоса ОВ. Длина s демпфирующего подкоса АВ есть функция угла поворота \(\varphi\), который зависит от времени. Для определения кинетической энергии рассмотрим бесконечно-малый элемент этого стержня, который имеет массу \(dm\). Эту элементарную массу можно представить как произведение погонной массы стержня \(\mu\) на бесконечно-малый участок длины \(dm = \mu ds\) . Погонную массу стержня \(\mu\) определим как отношению его полной массы \(m_{AB}\) к текущей длине, которую обозначим как s:</p>
-
-\[dm = \mu ds=k m/s ds.\]
-
-<p>Элементарная масса \(dm\) совершает сложное движение. Во-первых, она поворачивается, вместе со стержнем вокруг оси А. Назовём эту скорость трансверсальной скоростью \(v_\tau\). Во-вторых, масса \(dm\) движется вдоль стержня вследствие изменения его длины. Это будет радиальная скорость \(v_r\)  (рисунок 3).</p>
-
-<p>Сделаем еще одно допущение о том, что радиальные скорости точек стержня увеличиваются от точки А к точке В линейно от нуля (скорость точки А), до \(V_B= \dot s\). Скорость точки, находящейся на расстоянии \(\xi\) от точки А, будет равна</p>
-
-\[v_r=  \frac{\xi}{s} \dot s\]
-
-<p><img src="/assets/img/blog/f9-gear-open-3.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 3 - К определению кинетической энергии демпфирующего подкоса</p>
-
-<p>Касательная скорость точки также зависит от расстояния до оси вращения А и от угловой скорости вращения стержня АВ:</p>
-
-\[v_\tau = \xi \dot \beta\]
-
-<p>где 	\(\beta\) – угол поворота стержня АВ относительно корпуса. Полная скорость массы \(dm\) определяется выражением:</p>
-
-\[v_{dm}=\sqrt{v_\tau^2+v_r^2}=\sqrt{\frac{ξ^2}{s^2}\dot{s}^2+ξ^2 \dot{\beta}^2}\]
-
-<p>Кинетическую энергию демпфирующего подкоса определим как:</p>
-
-\[T_{AB} = \int_0^s \frac{v_{dm}^2}{2}\frac{km}{s} = \frac{1}{2} \int_0^s (\xi^2 \dot \beta^2 +\frac{\xi^2}{s^2} \dot s^2) \frac{km}{s} d \xi = \frac{1}{6} (s^2 \dot \beta ^2 + \dot s^2 ) m_{AB}.\]
-
-<p>Угол поворота стержня АВ \(\beta\) будет определяться выражением:</p>
-
-\[\cos \beta = \frac{h^2 + s^2 - l^2}{2sh}\]
-
-<p>а длина \(s\) выражением</p>
-
-\[s^2 = l^2 + h^2 - 2 l h \cos \varphi\]
-
-<p>Представим расстояние между шарнирами \(h\) как \(h= \zeta l\), где \(\zeta\) некоторая безразмерная величина \(0 &lt; \zeta &lt; 1\). С учетом этой замены, выражение для угла \(\beta\)  и длины \(s\) примут вид:</p>
-
-\[\cos \beta = \frac{\zeta - \cos \varphi}{\eta}, \quad s = \eta l\]
-
-<p>где \(\eta^2 = 1 + \zeta^2 - 2 \zeta \cos \varphi\)</p>
-
-<p>Продифференцировав последние выражения, получим угловую скорость демпфирующего подкоса и скорость его удлинения</p>
-
-\[\dot \beta = \frac{\eta \cos \varphi-1}{\eta^2} \dot \varphi, \quad \dot s = l \frac{\zeta}{\eta} \dot \varphi \sin \varphi\]
-
-<p>Кинетическая энергия посадочной опоры примет вид:</p>
-
-\[T = \frac{1}{6} (s^2 \dot \beta ^2 + \dot s^2 ) m + \frac{J_{OB} \dot \varphi^2}{2}\]
-
-<p>Подставим в это выражение полученные выше выражения для \(\dot beta\)  ̇и \(\dot s\), получим:</p>
-
-\[T = \frac{1}{6} m_{AB} l^2 \dot \varphi^2 + \frac{J_{OB} \dot \varphi^2}{2}\]
-
-<p>С учетом соотношения масс \(m_{AB}=km\):</p>
-
-\[T = \frac{1}{6} (1+k) m l^2 \dot \varphi^2\]
-
-<h3 id="обобщенная-сила">Обобщенная сила</h3>
-
-<p>Поскольку движение посадочной опоры рассматривается относительно системы координат, связанной с корпусом возвращаемой ступени, которая движется в поле силы тяжести под действием силы тяги двигателя, на посадочные опоры будут действовать переносные силы инерции \(G_{OB}\)  и \(G_{AB}\). При постоянной силе тяги обобщенные силы можно определить, используя выражение для потенциальной энергии посадочной опоры:</p>
-
-\[\Pi = \Pi_{OB}+\Pi_{AB} = m_{OB} g n_x \frac{l_{OB}}{2} \cos \varphi + m_{AB} g n_x \left[ h+\frac{s}{2} \cos (\pi - \beta) \right]\]
-
-<p>где \(n_x\) – перегрузка возвращаемой ступени, вызванная работой двигателя торможения. За нулевой уровень потенциальной энергии принята поперечная плоскость возвращаемой ступени, проходящая через точку О. Для известного выражения потенциальной энергии, обобщенная сила будет определяться выражением:</p>
-
-\[Q_\varphi = - \frac{\partial \Pi}{\partial \varphi} = - \frac{1}{2} g (k+1) l m n_x \sin \varphi\]
-
-<h3 id="уравнение-движения">Уравнение движения</h3>
-
-<p>При принятых допущениях, если движение системы происходит только под действием переносной силы инерции, уравнение движения посадочной работы имеет вид уравнения нелинейного математического маятника и не зависит от масс элементов, а определяется только длиной опорного подкоса и перегрузкой возвращаемой ступени:</p>
-
-\[\ddot \varphi = \frac{3}{2l} g n_x \sin \varphi\]
-
-<p>Это уравнение интегрируется с начальными условиями \(\varphi(0) = 0\), \(\dot{\varphi}(0) = \omega_0\).</p>
-
-<h2 id="задание">Задание</h2>
-
-<ol>
-  <li>Определите угловую скорость опорного подкоса при раскрытии посадочной опоры при следующий параметрах посадочной опоры и начальных условиях:
-    <ul>
-      <li>масса опорного подкоса \(m_{AB} = 250\) кг;</li>
-      <li>масса телескопического подкоса \(m_{ОB} = 150\) кг;</li>
-      <li>длина опорного подкоса \(l =\) м;</li>
-      <li>начальная длина телескопического подкоса \(s_0 =\) м;</li>
-      <li>конечный угол поворота опорного подкоса \(\varphi_k = 120^o\);</li>
-      <li>начальная угловая скорость подкоса \(\dot \varphi(0) = 10^o/c\) (при \(\varphi_0 = 0\));</li>
-      <li>перегрузка \(n_x = 1\).</li>
-    </ul>
-  </li>
-  <li>Определите максимальную силу растяжения телескопического подкоса после раскрытия опоры: считая, что в момент полного раскрытия опоры он имеет жесткость на растяжение \(c = 10^5\) Н/м.</li>
-</ol>
-
-<p><img src="/assets/img/blog/f9-gear-open-4.png" alt="" /></p>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><summary type="html"><![CDATA[Model of the free opening of the landing gear of the Falcon-9 reusable launch vehicle.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/gear-open-image.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/gear-open-image.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Модель контактного взаимодействиях в MSC.ADAMS</title><link href="https://classmech.github.io/blog/mechanics/cae/2023-12-01-adams-friction-model/" rel="alternate" type="text/html" title="Модель контактного взаимодействиях в MSC.ADAMS" /><published>2023-12-01T00:00:00-06:00</published><updated>2023-12-01T00:00:00-06:00</updated><id>https://classmech.github.io/blog/mechanics/cae/adams-friction-model</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2023-12-01-adams-friction-model/"><![CDATA[<p>При контакте двух тел деформация \(\delta\) определяется как длина отрезка \(ab\), соединяющего точки двух поверхностей взаимодействующих тел, которые находятся на минимальном расстоянии от центра масс объема пересечения (общего объема) двух поверхностей \(c\).</p>
-
-<p><img src="/assets/img/mechanics-in-space/pusher-contact.svg" alt="" /></p>
-
-<p class="figcaption">Рисунок 1 - Взаимодействие двух твердых тел</p>
-
-<h3 id="сила-реакции">Сила реакции</h3>
-
-<p>Контактная сила (сила реакции) направлена вдоль отрезка \(ab\). Ее модуль (при \(\delta &gt; 0\)) определяется выражением:</p>
-
-\[R = c \cdot \delta^k + S(\delta, 0, 0, \delta_{max}, d) \cdot \dot \delta\]
-
-<p>где \(c\) – коэффициент жесткости контакта, \(k\) – степень, определяющая характер роста силы реакции в зависимости от \(\delta\), \(d\) – коэффициент демпфирования, \(\delta_{max}\) – деформация, при которой демпфирование достигает максимального значения, \(S(\delta, 0, 0, \delta_{max}, d)\) – функция \(\delta\) равная нулю если \(\delta \leq 0\), равная \(d\), если \(\delta \geq \delta_{max}\), и вычисляемая при помощи полинома \(P_3(x)\) третьего порядка на интервале от 0 до \(\delta_{max}\), коэффициенты которого определяются из условий</p>
-
-\[P_3(0) = 0, \quad P'_3(0) = 0, \quad P_3(\delta_{max}) = d, \quad P'_3(\delta_{max}) = 0\]
-
-<p>где \(P'_3\) – первая производная полинома по своему аргументу. В общем виде функция \(S(x,x_{min},y_{min},x_{max},y_{max})\) равна \(y_{min}\), если \(x&lt;x_{min}\), равна \(y_{max}\), если \(x&gt;x_{max}\), и “плавно” переходит (при помощи полинома третьего порядка) от \(y_{min}\) к \(y_{max}\) при изменении \(x\) от \(x_{min}\) к \(x_{max}\) (рисунок 2).</p>
-
-<p><img src="/assets/img/mechanics-in-space/step-function.svg" alt="" /></p>
-
-<p class="figcaption">Рисунок 2 - Функция \(S(x,x_{min},y_{min},x_{max},y_{max})\)</p>
-
-<h3 id="сила-трения">Сила трения</h3>
-
-<p>При контактном взаимодействии используется упрощенная модель трения. Сила трения зависит от относительной скорости скольжения двух тел \(V_{12}\) и величины реакции \(R\):</p>
-
-\[F = \mu(V_{12}) R\]
-
-<p>где функция \(\mu(V_{12})\) (рисунок 2) имеет вид</p>
-
-\[\mu(V_{12}) = 
-\begin{cases}
-\mu_d &amp; V_{12} \leq -v_d \\
-S(V_{12},-v_d,\mu_d,-v_s,\mu_s) &amp; -v_d &lt; V_{12} &lt; -v_s \\
-S(V_{12},-v_s,\mu_s,v_s,-\mu_s) &amp; -v_s \leq V_{12} \leq v_s \\
-S(V_{12},v_s,-\mu_s,v_d,-\mu_d) &amp; v_s &lt; V_{12} &lt; -v_d \\
--\mu_d &amp; V_{12} \geq v_d \\
-\end{cases}\]
-
-<p>где \(\mu_s\) – коэффициент трения покоя, \(\mu_d\) – коэффициент трения скольжения.</p>
-
-<p><img src="/assets/img/mechanics-in-space/adams-mu-friction.svg" alt="" /></p>
-
-<p class="figcaption">Рисунок 3 - Зависимость коэффициента трения от скорости относительного скольжения взаимодействующих тел \(\mu(V_{12})\)</p>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><summary type="html"><![CDATA[Алгоритм вычисления силы реакции и силы трения в MSC.ADAMS при контактном взаимодействии двух тел]]></summary></entry><entry><title type="html">Модель посадки КА на Луну</title><link href="https://classmech.github.io/blog/mechanics/cae/python/2023-11-03-moon-lander/" rel="alternate" type="text/html" title="Модель посадки КА на Луну" /><published>2023-11-03T00:00:00-05:00</published><updated>2023-11-03T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/python/moon-lander</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/python/2023-11-03-moon-lander/"><![CDATA[<p><a href="/pages/mechanics-in-space/moon-lander/">Посадка на Луну</a></p>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><category term="python" /><summary type="html"><![CDATA[Пример моделирования посадки КА на поверхность Луны в среде Python.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/mechanics-in-space/moon-lander.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/mechanics-in-space/moon-lander.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Модель отделения головного обтекателя ракеты-носителя в SimInTech</title><link href="https://classmech.github.io/blog/mechanics/cae/2023-09-08-fairing-pneumatic/" rel="alternate" type="text/html" title="Модель отделения головного обтекателя ракеты-носителя в SimInTech" /><published>2023-09-08T00:00:00-05:00</published><updated>2023-09-08T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/cae/fairing-pneumatic</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/cae/2023-09-08-fairing-pneumatic/"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#математическая-модель" id="markdown-toc-математическая-модель">Математическая модель</a>    <ul>
-      <li><a href="#уравнения-движения" id="markdown-toc-уравнения-движения">Уравнения движения</a>        <ul>
-          <li><a href="#принятые-допущения" id="markdown-toc-принятые-допущения">Принятые допущения</a></li>
-          <li><a href="#кинематические-соотношения" id="markdown-toc-кинематические-соотношения">Кинематические соотношения</a></li>
-          <li><a href="#силы-и-моменты" id="markdown-toc-силы-и-моменты">Силы и моменты</a></li>
-          <li><a href="#уравнение-движения" id="markdown-toc-уравнение-движения">Уравнение движения</a>            <ul>
-              <li><a href="#первый-этап-движения" id="markdown-toc-первый-этап-движения">Первый этап движения</a></li>
-              <li><a href="#второй-этап-движения" id="markdown-toc-второй-этап-движения">Второй этап движения</a></li>
-            </ul>
-          </li>
-          <li><a href="#изменение-давления-в-полости-толкателя" id="markdown-toc-изменение-давления-в-полости-толкателя">Изменение давления в полости толкателя</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li><a href="#модель-simintech" id="markdown-toc-модель-simintech">Модель SimInTech</a>    <ul>
-      <li><a href="#база-данных-сигналов" id="markdown-toc-база-данных-сигналов">База данных сигналов</a></li>
-      <li><a href="#проект-пневмосистема" id="markdown-toc-проект-пневмосистема">Проект “Пневмосистема”</a></li>
-      <li><a href="#проект-створка-го" id="markdown-toc-проект-створка-го">Проект “Створка ГО”</a></li>
-    </ul>
-  </li>
-  <li><a href="#результаты-моделирования" id="markdown-toc-результаты-моделирования">Результаты моделирования</a></li>
-  <li><a href="#список-источников" id="markdown-toc-список-источников">Список источников</a></li>
-</ul>
-
-<p>Головной обтекатель (ГО) – это элемент конструкции ракеты-носителя (РН), предназначенный для защиты полезного груза от внешних тепловых и аэродинамических нагрузок при транспортировке полностью собранной ракеты-носителя или космической головной части к стартовому столу и во время полёта ракеты-носителя в плотных слоях атмосферы. После прохождения плотных слоев производится сброс ГО, поскольку он становится бесполезной массой.</p>
-
-<p>ГО, как правило, собирается из двух половинок - створок, на которые и он разделяется перед отделением. Для отделения створок используется два способа, отличающиеся характером движения створок: отделение с разворотом створок и отделение без разворота створок. В первом случае каждая створка шарнирно связывается с переходным отсеком РН и после разделения ГО на створки выполняется разворот створок при помощи пружинных или пневматических толкателей. После разворота на некоторый заданный угол створки отделяются от РН. Пример схемы узла вращения, освобождающем створку после разворота на заданный угол приведен в патенте [<a href="https://www.elibrary.ru/item.asp?id=37474498">1</a>]).</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/A96rLYqPfik" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-
-<p class="figcaption">Рисунок 1 - Отделение створок ГО с разворотом</p>
-
-<p>Во втором случае створки отделяются в поперечном направлении также под действием толкателей, но уже без разворота и движутся почти поступательно относительно РН после разделения. Такая схема используется для отделения створок ГО РН “Falcon-9” [<a href="https://www.youtube.com/watch?v=LtI1V624vWM">2</a>].</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LtI1V624vWM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-
-<p class="figcaption">Рисунок 2 - Отделение створок ГО без разворота</p>
-
-<p>Здесь рассматривается первый способ отделения ГО с разворотом створок при помощи пневматических толкателей. Модель построена с использованием материалов патента [<a href="https://www.elibrary.ru/item.asp?id=37474498">1</a>] и учебного пособия [<a href="http://repo.ssau.ru/handle/Uchebnye-posobiya/Analiticheskoe-proektirovanie-mehanicheskih-sistem-Elektronnyi-resurs-ucheb-posobie-54489">5</a>].</p>
-
-<p>На рисунке 3 показана схема рассматриваемого ГО, разделяемого на две створки. Створки соединяются друг с другом по продольным стыкам при помощи замков. Это могут быть, например, рычажные замки, соединенные тягами, как показано в патенте [<a href="https://www.elibrary.ru/item.asp?id=37474498">1</a>] или <a href="https://yandex.ru/patents/doc/RU2369534C1_20091010">линейный удлиненный заряд</a>. К переходному отсеку каждая створка также крепится замками поперечного стыка. После прохождения плотных слоев атмосферы система управления подает команду на раскрытие замков и створки под действием толкателей начинают разворачиваться вокруг узлов вращения. Каждая створка разворачивается при помощи двух пневмотолкателей. Один конец каждого толкателя  шарнирно прикрепляется к створке, а штоки упираются в переходный отсек РН, отталкиваясь от него в процессе разворота створки.</p>
-
-<p><img src="/assets/img/fairing/GO-scheme-2.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 3 - Головной обтекатель</p>
-
-<p>На рисунке 4 показана схема пневмосистемы разворота створки, которая состоит из баллона с рабочим телом, например, сжатым воздухом, пневмоклапана (ПК) и двух пневмотолкателей. Перед отделением створки срабатывает пневмоклапан для подготовки пневмосистемы к работе – заполнения рабочих полостей толкателей, чтобы сразу после срабатывания замков крепления створки начали разворот.</p>
-
-<p><img src="/assets/img/fairing/Pneumatic_system.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 4 - Схема пневмосистемы</p>
-
-<p>Предположим, что в нашей модели в момент \(t = 0 + \Delta t_1\) срабатывает пневмоклапан ПК, показанный на рисунке 3. С этого момента начинается наполнение рабочих полостей толкателей, при этом створка остается неподвижной –  замки крепления, соединяющие её с другой створкой и с переходным отсеком, не позволяют створке вращаться.</p>
-
-<p>В момент времени \(t = 0 + \Delta t_2\) производится срабатывание замков крепления и створка под действием пневмотолкателей начинает разворот. Интервал времени \(t_2 - t_1\) необходим для заполнения пневмосистемы. Фактическое время готовности  пневмосистемы для работы после срабатывания пневмоклапана будет определяться объёмом той части пневмосистемы, что находится после пневмоклапана и проходным сечением пневмоклапана.</p>
-
-<h1 id="математическая-модель">Математическая модель</h1>
-
-<p>Для начала запишем математическую модель движения створок. Важно понять, как будет двигаться створка относительно РН, чтобы убедиться, что это движение будет безударным и створка не столкнется с РН. С этой точки зрения удобней  рассматривать движение створок относительно неинерциальной системы координат, связанной с РН, которая движется с некоторым известным ускорением.</p>
-
-<h2 id="уравнения-движения">Уравнения движения</h2>
-
-<h3 id="принятые-допущения">Принятые допущения</h3>
-
-<p>Модель движения створки ГО будет строится с учетом следующих допущений:</p>
-
-<ol>
-  <li>Створка – абсолютно-твердое тело постоянного состава.</li>
-  <li>Движение створок не оказывает влияния на движение РН.</li>
-  <li>РН движется поступательно с постоянной продольной перегрузкой.</li>
-  <li>Масса толкателя мала по сравнению с массой створки.</li>
-  <li>Процесс в пневмосистеме толкателя разворота створки адиабатный (без обмена энергией с внешней средой).</li>
-  <li>Моменты сопротивления в точках (шарнирах) крепления толкателя к створке пренебрежимо малы.</li>
-  <li>Трение в узлах вращения створки, соединяющих её с РН, также отсутствует.</li>
-  <li>Отделение створок происходит в разреженных слоях атмосферы, поэтому действие аэродинамических сил на движение створки считается малым и не учитывается.</li>
-  <li>Рассматривается плоское движение створки.</li>
-</ol>
-
-<p>С учетом принятых допущений о плоском движении и абсолютной твердости створки можно упростить модель пневмосистемы, заменив действие двух пневмотолкателей одним с удвоенной площадью штока. Эти допущения позволяют рассматривать движение двух створок независимо друг от друга, т.е. достаточно рассмотреть движение одной створки.</p>
-
-<p>На рисунке 5 показана схема рассматриваемой механической системы. В неинерциальной системе координат движение створки происходит под действием силы толкателей \(\mathbf P\) и переносной силы инерции \(\mathbf G\), определяемой движением РН с некоторой перегрузкой.</p>
-
-<h3 id="кинематические-соотношения">Кинематические соотношения</h3>
-
-<p>Сила, создаваемая толкателем, будет зависеть от перемещения его штока. Перемещение штока определяет объём рабочей полости толкателя. С увеличением этого объёма давление в рабочей полости будет падать, приводя к уменьшению силы. Длину толкателя определим из теоремы косинусов, записанной для треугольника osp (рисунок 5):</p>
-
-\[l_{sp}^2 = l^2 = y_p^2 + \rho_p^2 - 2 y_p \rho_p \cos (\varphi + \psi_p)\]
-
-<p>где \(\rho_p = op\) – расстояние от оси вращения створки до оси вращения шарнира точки крепления толкателя на створке; \(\rho_c = oc\) – расстояние от оси вращения створки до её центра масс. Полученное выражение позволяет найти связь между изменением длины толкателя и изменением угла поворота створки, а также между угловой скоростью створки и скоростью выдвижения штока толкателя. Продифференцировав последнее выражение, получим</p>
-
-\[\dot{l} = y_p \rho_p \frac{\sin(\varphi + \psi_p)}{l} \dot{\varphi}\]
-
-<p><img src="/assets/img/fairing/GO-scheme.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 5 - Схема системы</p>
-
-<p>Запишем уравнение в вариациях:</p>
-
-\[\delta l = y_p \rho_p \frac{\sin(\varphi + \gamma_p)}{l} \delta \varphi\]
-
-<h3 id="силы-и-моменты">Силы и моменты</h3>
-
-<p>Уравнение в вариациях можно использовать для определения момента, создаваемого силой толкателя относительно оси вращения не проводя дополнительных геометрических построений. В соответствии с <a href="https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF_%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D1%8B%D1%85_%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B9">принципом виртуальных перемещений</a></p>
-
-\[\delta A_p = P \delta l = M_p \delta \varphi,\]
-
-<p>следовательно момент, создаваемый толкателем относительно оси вращения створки будет определяться следующим образом:</p>
-
-\[M_p = \frac{\delta l}{\delta \varphi} P = y_p \rho_p \frac{\sin(\varphi + \gamma_p)}{l} P\]
-
-<p>Момент переносной силы инерции относительно оси вращения определяется как:</p>
-
-\[M_\Phi = (x_c \sin \varphi - y_c \cos \varphi) m g n_x\]
-
-<p>где \(n_x\) – продольная перегрузка РН, \(m\) - масса створки, \(g\) – ускорение свободного падения.</p>
-
-<h3 id="уравнение-движения">Уравнение движения</h3>
-
-<p>Движение створки при отделении можно разделить на два этапа: этап разворота створки и этап свободного движения относительно РН после потери механической связи створки с переходным отсеком.</p>
-
-<h4 id="первый-этап-движения">Первый этап движения</h4>
-
-<p>Движение створки относительно РН на этапе вращения описывается одним дифференциальным уравнением:</p>
-
-\[J_o \ddot{\varphi} = M_p + M_\Phi\]
-
-<p>где \(J_o\) – момент инерции створки относительно оси вращения. При известном поперечном моменте инерции створки относительно оси, проходящей через центр масс, момент инерции относительно оси, проходящей через ось вращения створки может быть определен по <a href="https://ru.wikipedia.org/wiki/%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0_%D0%93%D1%8E%D0%B9%D0%B3%D0%B5%D0%BD%D1%81%D0%B0_%E2%80%94_%D0%A8%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D0%B0">теореме Штейнера</a></p>
-
-\[J_o = J_c + m (x_c+y_c)^2 = J_c + m \rho_c^2\]
-
-<p>Подставляя выражения для моментов сил, получим:</p>
-
-\[J_o \ddot{\varphi} = y_p \rho_p \frac{\sin(\varphi + \gamma_p)}{l} P + (x_c \sin \varphi - y_c \cos \varphi) m g n_x\]
-
-<h4 id="второй-этап-движения">Второй этап движения</h4>
-
-<p>После того, как створка достигнет угла отделения (угол потери связи) её <strong>относительное движение</strong>, т.е. движение по отношению к РН, будет равноускоренным вдоль продольной оси РН (x), равномерным вдоль поперечной оси (y) и также равномерным будет вращение створки вокруг центра масс:</p>
-
-\[x = x_k + V_{xk} t + \frac{n_x g t^2}{2}, \quad y = y_k + V_{yk} t, \quad \varphi = \varphi_{k} + \omega_k t\]
-
-<p>где \(x_k\), \(y_k\) – координаты центра масс створки на момент потери механической связи в шарнире, \(V_{xk}\), \(V_{yk}\) – скорости центра масс на момент потери механической связи, \(\varphi_{k}\), \(\omega_k\) – угол и угловая скорость створки на момент потери механической связи.</p>
-
-<h3 id="изменение-давления-в-полости-толкателя">Изменение давления в полости толкателя</h3>
-
-<p>Для записи дифференциального уравнения изменения давления в рабочей полости толкателя можно воспользоваться готовыми “рецептами”, например, из справочника <a href="https://lib-bkm.ru/load/23-1-0-432">Герц Е.В., Крейнин Г.В. “Расчет пневмоприводов” (1975)</a>.</p>
-
-<p>Мы же воспользуемся возможностями системы <a href="https://simintech.ru/">SimInTech</a> и построим модель пневмосистемы, используя блоки из разделов “Пневмомашины и пневмоавтоматика” и “Механика” для построения модели пневмосистемы.</p>
-
-<h1 id="модель-simintech">Модель SimInTech</h1>
-
-<p>Модель в <a href="https://simintech.ru/">SimInTech</a> построим с использованием пакета проектов: построим отдельную модель пневмосистемы и модель движения створки, которые объединим в рамках одного <a href="https://help.simintech.ru/?q=/4_nachalo_raboty/sozdanie_kompleksnoj_modeli/teplogidravlicheskaya_model/vvedenie_v_sredy_part_1/kompleksnaya_model/DAT_sozdanie_paketa.html">пакета проектов</a>. Обмениваться данными модели будут при помощи общей <a href="https://help.simintech.ru/?q=/8_baza_dannyh_signalov/baza_dannyh_signalov_SDB.html">базы данных сигналов</a>. Структура комплексной модели или пакета показана на рисунке 6.</p>
-
-<p><img src="/assets/img/fairing/simintech-packet-structure.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 6 - Схема проекта “Пневмосистема”</p>
-
-<p>Модель пневмосистемы, “зная” положение штока пневмотолкателя и его скорость будет определять силу, которую создает толкатель. Модель створки, получив значение силы, будет определять кинематические параметры створки и вычислять перемещение и скорость штока, которые определяются положением и угловой скоростью створки.</p>
-
-<p>На рисунке 7 показан пакет проектов “Отделение_ГО.pak”, который включает в свой состав проекты “Пневмосистема.prt” и “Створка_ГО.prt”.</p>
-
-<p><img src="/assets/img/fairing/simintech-packet.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 7 - Схема проекта “Пневмосистема”</p>
-
-<h2 id="база-данных-сигналов">База данных сигналов</h2>
-
-<p>На рисунке 8 показана <a href="https://help.simintech.ru/index.html?q=/8_baza_dannyh_signalov/baza_dannyh_signalov_SDB.html">база сигналов</a>.</p>
-
-<p><img src="/assets/img/fairing/simintech-signals.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 8 - Схема проекта “Пневмосистема”</p>
-
-<p><a href="https://help.simintech.ru/index.html?q=/8_baza_dannyh_signalov/baza_dannyh_signalov_SDB.html">Сигналы</a> разделены на три категории:</p>
-<ul>
-  <li>Пневмосистема</li>
-  <li>Тела</li>
-  <li>Команды</li>
-</ul>
-
-<p class="note">Описываемая структура сигналов не является единственно возможной. Структура была создана в процесса изучения SimInTech и вряд ли лишена недостатков.</p>
-
-<p>В первой категории собраны <a href="https://help.simintech.ru/index.html?q=/8_baza_dannyh_signalov/baza_dannyh_signalov_SDB.html">сигналы</a>, связанные с работой пневмосистемы. В этой категории три группы сигналов</p>
-<ul>
-  <li>FAIRING_VALVE</li>
-  <li>FAIRING_PN</li>
-  <li>FAIRING_PUSHER</li>
-</ul>
-
-<p>В группе FAIRING_VALVE только один сигнал, управляющий состоянием пневмоклапана 1-открыт, 0-закрыт.</p>
-
-<p>В группе FAIRING_PN собраны сигналы, характеризующие состояние пневмосистемы:</p>
-<ul>
-  <li>FAIRING_PN_PRESSURE_PUSHER - давление в рабочей полости пневмотолкателя,</li>
-  <li>FAIRING_PN_PRESSURE_TANK - давление в баллоне пневмосистемы.</li>
-</ul>
-
-<p>В группе FAIRING_PUSHER собраны сигналы, характеризующие работу толкателя:</p>
-<ul>
-  <li>FAIRING_PUSHER_P - сила, создаваемая толкателем,</li>
-  <li>FAIRING_PUSHER_STROKE - максимальное перемещение штока толкателя или его “ход” (константа).</li>
-  <li>FAIRING_PUSHER_S - фактическое перемещение штока толкателя.</li>
-  <li>FAIRING_PUSHER_V - скорость штока толкателя.</li>
-</ul>
-
-<p>В категории Тела одна группа сигналов FAIRING c сигналами</p>
-<ul>
-  <li>FAIRING_PHI - угол поворота створки;</li>
-  <li>FAIRING_W - угловая скорость створки.</li>
-</ul>
-
-<p>В категории Команды также только одна группа FAIRING_COM c сигналом FAIRING_COM_SEP определяющим начало движения створки – раскрытие замков.</p>
-
-<p>Сигналы связываются с параметрами состояния элементов модели при помощи <a href="https://help.simintech.ru/?q=/9_grafika_i_animaciya/5_animacionnaya_sistema/redaktor_sviazey.html">редактора связей</a>.</p>
-
-<p><img src="/assets/img/fairing/simintech-links.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 9 - Редактор связей</p>
-
-<h2 id="проект-пневмосистема">Проект “Пневмосистема”</h2>
-
-<p>Схема проекта “Пневмосистема” приведена на рисунке 10. Проект состоит из субмодели, которая будет описана далее, на вход которой подаются значения сигналов из общей базы данных проекта: перемещение штока и скорость штока. Также в этом проекте формируется сигнал открытия пневмоклапана, который также подается на вход субмодели. Выходы субмодели (усилие толкателя и состояние пневмоклапана) записываются в <a href="https://help.simintech.ru/index.html?q=/8_baza_dannyh_signalov/baza_dannyh_signalov_SDB.html">базу сигналов проекта</a>.</p>
-
-<p><img src="/assets/img/fairing/Pneumo-1.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 10 - Схема проекта “Пневмосистема”</p>
-
-<p>Субмодель “Пневмосистема” состоит из двух <a href="https://help.simintech.ru/?q=/10_biblioteki_blokov/gidro_i_pnevmosistemy/spravka_po_blokam/Polosti/3908.html">полостей постоянного объема</a>, которые имитируют объемы пневмосистемы до и после пневмоклапана, самого пнемоклапана (Пневмоклапан 1), разделяющего две части пневмосистемы, пневмотолкателя и дросселя моделирующего вход в пневмотолкатель (штуцер).</p>
-
-<p>При открытии пневмоклапана ПК1, показанного на рисунке 11, газ из баллона заполняет часть пневмосистемы от ПК1 до рабочей полости пневмотолкателей. Клапан ПК1 открывается при подаче управляющего сигнала с уровнем “1” на вход субмодели “Пневмоклапан (1-открыт, 0-закрыт)”.</p>
-
-<p><img src="/assets/img/fairing/Pneumo-2.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 11 - Схема пневмосистемы</p>
-
-<p>Сила создаваемая толкателем будет определяться давлением в рабочей полости толкателя и положением штока, от которого это давление будет зависеть. Для моделирования толкателя используется блок “ПневмотолкательГПС - Пневмоцилиндр одностороннего действия (базовый)”. Этот блок имеет имеет один двунаправленный порт, по которому передается “скорость” и “сила”. Входом для пневмотолкателя является скорость штока.</p>
-
-<p>В субмодели пневмосистемы реализована логика прекращения работы толкателя. Когда шток толкателя достигнет своего максимального выдвинутого положения действие на створку силы толкателя прекращается. В блоке <a href="https://simintech.ru/">SimInTech</a> в модели пневмотолкателя реализовано ограничение перемещение штока при помощи контактной силы, зависящей от перемещения и скорости штока (модель “упора”): в параметрах толкателя можно задать коэффициент жесткости упора штока и их коэффициент демпфирования.</p>
-
-<p><img src="/assets/img/fairing/pusher-prop.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 12 - Параметры пневмотолкателя</p>
-
-<p>Когда шток достигает своего крайнего  положения и останавливается под действием контактной силы упора на выходной порт толкателя передается и сила, создаваемая давлением в рабочей полости, и контактная сила от взаимодействия с упором. Для того, чтобы эта сила противодействия упора не действовала на створку при помощи блока <a href="https://help.simintech.ru/?q=/10_biblioteki_blokov/avtomatika/Substruktury/3014.html">“Двунаправленная шина (выход)”</a> двунаправленный сигнал разделяется на два математических сигнала “F” (сила - выход) и “V” (скорость - вход). Выходной сигнал “Сила” в рассматриваемом случае будет вектором, содержащим значение силы пневмотолкателя, создаваемой давлением и силой воздействия упора на шток толкателя. Из массива этих двух величин при помощи блоков <a href="https://help.simintech.ru/?q=/10_biblioteki_blokov/avtomatika/Vektornye/0020.html">Демультиплексор</a> и <a href="https://help.simintech.ru/?q=/10_biblioteki_blokov/avtomatika/Vektornye/0019.html">Мультиплексор</a> извлекается сила, создаваемая давлением в рабочей полости. Далее в соответствии со схемой значение силы умножается на значение признака достижения штоком выдвинутого положения. Результат подается на выходной порт “Усилие толкателя”.</p>
-
-<p class="note">Приведенный здесь способ “извлечения” нужного элемента из двунаправленной шины при помощи пары Демультиплексор/Мультиплексора не выглядит  изящным, однако на момент подготовки этой статьи другого менее громоздкого решения автор не нашел.</p>
-
-<p>Когда шток полностью выдвинется, на выходе “Сила толкателя” будет нулевой сигнал (толкатель не совершает работу). Сигнал со входа “Скорость штока” также будет обнуляться (в модели движения створки). В результате после полного выдвижения штока на створку ГО прекратит действие сила толкателя, а сам шток толкателя будет оставаться неподвижным.</p>
-
-<h2 id="проект-створка-го">Проект “Створка ГО”</h2>
-
-<p>Модель движения створки в проекте “Створка ГО” (рисунок 13) считывает из базы сигналов силу, создаваемую толкателем и перемещение его штока. Перемещение штока пневмотолкателя используется для того, чтобы контролировать момент окончания его работы.</p>
-
-<p>Уравнения движения створки интегрируются в блоке типа <a href="https://help.simintech.ru/index.html?q=/13_priemy_raboty/3_razrabotka_blokov/1_sredstvami_simintech/sozdanie_svoego_bloka.html">“Субмодель”</a>. На вход блока подаются значение силы толкателя, перемещение штока толкателя и признак открытия замков крепления створки (1 - замки открыты, 0 - замки закрыты, створка неподвижна). На выходе субмодели формируются скорость штока, угловая скорость створки, угол поворота створки, которые записываются в <a href="https://help.simintech.ru/index.html?q=/8_baza_dannyh_signalov/baza_dannyh_signalov_SDB.html">базу данных сигналов</a>.</p>
-
-<p>В модели также формируется сигнал на открытие замков, удерживающих створку (изменяется состояние сигнала FAIRING_COM_SEP с 0 на 1), после чего начинается ее разворот. Сигнал формируется при помощи блока <a href="https://help.simintech.ru/index.html?q=/10_biblioteki_blokov/avtomatika/Istochniki/0001.html">“Ступенька”</a>.</p>
-
-<p><img src="/assets/img/fairing/Leaf-model-1.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 13 - Схема проекта “Створка_ГО”</p>
-
-<p>Субмодель “Движение створки ГО” состоит из двух основных блоков “Дифференциальное уравнение движения створки” и “Кинематическое уравнения” (рисунок 14).</p>
-
-<p><img src="/assets/img/fairing/Leaf-model-2.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 14 - Модель разворота створки</p>
-
-<p>Блок “Дифференциальное уравнения движения створки” (блока типа “Язык программирования”) содержит следующий код:</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Вход:  Угол поворота створки и сила толкателей
-</span><span class="n">input</span>  <span class="n">phi</span><span class="p">,</span> <span class="n">pusher_force</span><span class="p">;</span>
-<span class="c1">// Выход: Угловое ускорение створки
-</span><span class="n">output</span> <span class="n">d2phi</span><span class="p">;</span>
-
-<span class="c1">// Длина толкателя
-</span><span class="n">pusher_length</span> <span class="p">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">yp</span><span class="p">^</span><span class="m">2</span><span class="p">+</span><span class="n">rp</span><span class="p">^</span><span class="m">2</span><span class="p">-</span><span class="m">2</span><span class="p">*</span><span class="n">yp</span><span class="p">*</span><span class="n">rp</span><span class="p">*</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">+</span><span class="n">gamma_p</span><span class="p">));</span>
-<span class="c1">// Момент, создаваемый толкателями относительно оси вращения створки
-</span><span class="n">Mp</span> <span class="p">=</span> <span class="n">yp</span><span class="p">*</span><span class="n">rp</span><span class="p">*</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">+</span><span class="n">gamma_p</span><span class="p">)*</span><span class="n">pusher_force</span><span class="p">/</span><span class="n">pusher_length</span><span class="p">;</span>
-<span class="c1">// Момент от переносной силы инерции
-</span><span class="n">Mg</span> <span class="p">=</span> <span class="p">(</span><span class="n">xc</span><span class="p">*</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)-</span><span class="n">yc</span><span class="p">*</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">))*</span><span class="n">m</span><span class="p">*</span><span class="m">9.807</span><span class="p">*</span><span class="n">nx</span><span class="p">;</span> 
-<span class="c1">// Угловое ускорение створки
-</span><span class="n">d2phi</span> <span class="p">=</span> <span class="p">(</span><span class="n">Mp</span><span class="p">+</span><span class="n">Mg</span><span class="p">)/</span><span class="n">Jo</span><span class="p">;</span>		
-</code></pre></div></div>
-
-<p>В блоке определяется угловое ускорение створки по углу поворота створки и силы, действующей на створку.</p>
-
-<p>В блоке “Кинематическое уравнение” определяется скорость выдвижения штока. С выхода этого блока сигнал скорости штока перемножается с признаком достижения штоком предельного (выдвинутого) положения. Если шток достиг предельного положения, то на выходной порт “Скорость штока” подается ноль, означающий неподвижность штока (рисунок 14).</p>
-
-<div class="language-pascal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">input</span>  <span class="n">phi</span><span class="p">,</span> <span class="n">dphi</span><span class="p">;</span>
-<span class="n">output</span> <span class="n">dl</span><span class="p">;</span>
-
-<span class="c1">// Длина
-</span><span class="n">pusher_length</span> <span class="p">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">yp</span><span class="p">^</span><span class="m">2</span><span class="p">+</span><span class="n">rp</span><span class="p">^</span><span class="m">2</span><span class="p">-</span><span class="m">2</span><span class="p">*</span><span class="n">yp</span><span class="p">*</span><span class="n">rp</span><span class="p">*</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">+</span><span class="n">gamma_p</span><span class="p">));</span>
-<span class="c1">// Скорость выдвижения штока
-</span><span class="n">dl</span> <span class="p">=</span> <span class="n">yp</span><span class="p">*</span><span class="n">rp</span><span class="p">*</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">+</span><span class="n">gamma_p</span><span class="p">)*</span><span class="n">dphi</span><span class="p">/</span><span class="n">pusher_length</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>Интегрирование уравнений движения производится при помощи метода Гира (Gear51).</p>
-
-<p><img src="/assets/img/fairing/simintech-proj-settings.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 15 - Настройки проектов</p>
-
-<h1 id="результаты-моделирования">Результаты моделирования</h1>
-
-<p>Результаты моделирования были экспортированы в текстовый файл при помощи блоков <a href="https://help.simintech.ru/?q=/4_nachalo_raboty/sozdanie_kompleksnoj_modeli/teplogidravlicheskaya_model/vvedenie_v_sredy_part_2/sozdanie_indnvid_algoritma/DAT_sozdanie_individ_algoritma3.html">“Выход алгоритма”</a> и <a href="https://help.simintech.ru/?q=/10_biblioteki_blokov/avtomatika/Vyvod_dannyh/0016.html">“В файл”</a>. Графики построены при помощи библиотеки matplotlib в среде Python.</p>
-
-<p><img src="/assets/img/fairing/simintech-export.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 16 - Экспорт результатов моделирования в текстовый файл</p>
-
-<p>На рисунке 17 показан график изменения давления в рабочей полости толкателя и в баллоне пневмосистемы. После срабатывания пневмоклапана давление в полостях баллона и пневмотолкателя выравниваются (пневмосистема заполняется). После начала движения створки давление в рабочей полости толкателя падет  вследствие увеличения её объема при развороте створки и выдвижения штока.</p>
-
-<p><img src="/assets/img/fairing/simintech-fairing-pressure.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 17 - Модель разворота створки</p>
-
-<p>На рисунках 18 и 19 приведены графики изменения угла поворота створки и ее угловой скорости. На графике изменения угловой скорости створки виден этап движения створки под действием момента, создаваемого пневмотолкателем, и этап движения “по инерции”, когда створка по отношению к РН движется только под действием переносной силы инерции. На втором этапе угловая скорость створки уменьшается до тех пор пока её центр масс не достигнет максимальной высоты над поперечным стыком створки с переходным отсеком. После этого переносная сила инерции будет создавать момент, “помогающий” створке разворачиваться и угловая скорость будет увеличиваться.</p>
-
-<p><img src="/assets/img/fairing/simintech-fairing-angle.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 18 - Угол поворота створки</p>
-
-<p><img src="/assets/img/fairing/simintech-fairing-w.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 19 - Угловая скорость створки</p>
-
-<p>На рисунке 20 показан график перемещения штока пневмотолкателя. График иллюстрирует ограничение перемещения штока толкателя.</p>
-
-<p><img src="/assets/img/fairing/simintech-fairing-s.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 20 - Перемещение штока толкателя</p>
-
-<p>На рисунке 21 приведен график изменения силы толкателя, действующей на створку. После открытия пневмоклапана по мере заполнения полости толкателя рабочим телом сила увеличивается и достигает максимального значения. После начала движения створки сила уменьшается вследствие увеличения объема рабочей полости толкателя и становится равной нулю после того, как шток толкателя выдвинется на максимальное расстояние.</p>
-
-<p><img src="/assets/img/fairing/simintech-fairing-force.png" alt="" /></p>
-
-<p class="figcaption">Рисунок 21 - Сила толкателя, действующая на створку</p>
-
-<h1 id="список-источников">Список источников</h1>
-
-<ol>
-  <li><a href="https://www.elibrary.ru/item.asp?id=37474498">Патент № 2424953 C1 Российская Федерация, МПК B64G 1/00, F42B 15/36. Отделяемый крупногабаритный головной обтекатель ракеты-носителя : № 2010125721/11 : заявл. 24.06.2010 : опубл. 27.07.2011 / Н. Е. Гребнев, Г. Е. Круглов, В. Н. Новиков [и др.] ; заявитель Федеральное государственное унитарное предприятие “Государственный научно-производственный ракетно-космический центр “ЦСКБ-Прогресс” (ФГУП “ГНПРКЦ “ЦСКБ-Прогресс”), Российская Федерация, от имени которой выступает Министерство обороны Российской Федерации.</a></li>
-  <li><a href="https://www.youtube.com/watch?v=LtI1V624vWM">SpaceX Fairing Separation Test</a></li>
-  <li><a href="https://www.youtube.com/watch?time_continue=15&amp;v=A96rLYqPfik&amp;embeds_referring_euri=https%3A%2F%2Fwww.google.com%2F&amp;source_ve_path=MjM4NTE&amp;feature=emb_title">Fairing Separation</a></li>
-  <li><a href="https://youtu.be/kxmAW6aGc58?t=51">Technology Insights: Fairing Separation Test</a></li>
-  <li><a href="http://repo.ssau.ru/handle/Uchebnye-posobiya/Analiticheskoe-proektirovanie-mehanicheskih-sistem-Elektronnyi-resurs-ucheb-posobie-54489">Круглов, Г. Е. Аналитическое проектирование механических систем [Электронный ресурс] : учеб. пособие / Г. Е. Круглов ; Самар. гос. аэрокосм. ун-т им. С. П. Королева (СГАУ). - Самара, 2000. - on-line</a></li>
-</ol>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><summary type="html"><![CDATA[SimInTech complex model of the separation process of the fairing leaves of the launch vehicle.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/fairing/fairing-frontpage.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/fairing/fairing-frontpage.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Определение момента сопротивления в шарнире физического маятника</title><link href="https://classmech.github.io/blog/mechanics/python/2023-04-21-friction-torque/" rel="alternate" type="text/html" title="Определение момента сопротивления в шарнире физического маятника" /><published>2023-04-21T00:00:00-05:00</published><updated>2023-04-21T00:00:00-05:00</updated><id>https://classmech.github.io/blog/mechanics/python/friction-torque</id><content type="html" xml:base="https://classmech.github.io/blog/mechanics/python/2023-04-21-friction-torque/"><![CDATA[<p>Оценка постоянного момента сопротивления в оси вращения физического маятника по продолжительности его колебаний из некоторого начального положения до полной остановки. Численное интегрирование движения физического маятника в среде Python.</p>
-
-<h2 id="постановка-задачи">Постановка задачи</h2>
-
-<p>Рассмотрим движение физического маятника с известной массой \(m\), моментом инерции относительно оси вращения \(J\) и расстоянием от оси вращения до центра масс \(l\). Маятник совершает плоские колебания в вертикальной плоскости. В оси вращения маятника «О» действует малый <strong>постоянный</strong> момент сопротивления \(M\).</p>
-
-<p><img src="/assets/img/blog/pendulum-friction.svg" alt="" /></p>
-
-<p>Предположим, что нам неизвестен момент сопротивления \(M\) и этот момент необходимо определить из эксперимента, оценив продолжительность затухания колебаний маятника при движении и заданного начального положения, определяемого углом \(\varphi_0\).</p>
-
-<h2 id="уравнения-движения">Уравнения движения</h2>
-
-<p>Запишем уравнение малых колебаний маятника:</p>
-
-\[J \ddot{\varphi} = - m g l \varphi - M \text{sgn} (\varphi)\]
-
-<p>Рассмотрим движение маятника в течение половины периода из начального положения \(\varphi = \varphi_0 &lt; 0\) при \(\dot \varphi &gt; 0\). На этом интервале направление действия момента сопротивления не изменяется, поэтому уравнение движения можно записать в следующем виде:</p>
-
-\[\ddot \varphi = -k^2  \varphi - f,\]
-
-<p>где</p>
-
-\[k^2 = \frac{mgl}{J}, \quad f = \frac{M}{J}\]
-
-<p>Решение этого линейного неоднородного уравнения определяется как:</p>
-
-\[\varphi =  \left(\frac{f}{k^2} + \varphi_0\right) \cos ⁡kt - \frac{f}{k^2}\]
-
-<p>Зная период колебаний маятника:</p>
-
-\[T = \frac{2 \pi}{k} = 2 \pi \sqrt{\frac{J}{mgl}},\]
-
-<p>определим угол поворота маятника через половину периода:</p>
-
-\[\varphi(T/2) = \varphi(\pi/k) = - \varphi_0 - 2 \frac{f}{k^2}\]
-
-<p>Учитывая, что в начальный момент \(\varphi_0 &lt; 0\), амплитуда колебаний маятника за половину периода уменьшится на \(\Delta A(T/2)= 2f/k^2\), а за весь период – на \(\Delta A(T) = 4f/k^2\). Средняя скорость уменьшения амплитуды колебаний равна:</p>
-
-\[\frac{\Delta A(T)}{T} = \frac{4f}{k^2 T}\]
-
-<p>Теперь можно оценить продолжительность затухания колебаний маятника:</p>
-
-\[t_d = \frac{\varphi_0}{\Delta A(T)} T = \frac{\varphi_0 k^2}{4f} T = \frac{\sqrt{mglJ}}{2M} \pi \varphi_0\]
-
-<p>Постоянный момент сопротивления \(M\) в шарнире при известной продолжительности затухания колебаний:</p>
-
-\[M = \frac{\sqrt{mglJ}}{2t_d} \pi \varphi_0.\]
-
-<h2 id="численное-интегрирование-и-проверка-формулы">Численное интегрирование и “проверка” формулы</h2>
-
-<p>Численно проинтегрируем в среде <a href="https://scipy.org/">Python</a> уравнение движения нелинейного маятника (без допущения о малости его колебаний) для проверки полученной формулы.</p>
-
-<p>Подключаемые библиотеки:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">solve_ivp</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-</code></pre></div></div>
-
-<p>Объявляем гладкую функцию для аппроксимации функции модуля, которая в малой окрестности нуля (“малость” этого интервала зависит от параметра n) плавно изменяется от минус 1 до 1:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s">'__iter__'</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,)</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">sign</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="p">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">2.0</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">*</span><span class="n">xi</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">xi</span><span class="o">*</span><span class="n">xi</span><span class="p">)))</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-</code></pre></div></div>
-
-<p>Функция правых частей дифференциальных уравнений</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">dqdt</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>  
-    <span class="n">phi</span>  <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">dphi</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">d2phi</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">m</span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">g</span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">l</span><span class="o">/</span><span class="n">p</span><span class="p">.</span><span class="n">J</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span><span class="p">.</span><span class="n">M</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">sign</span><span class="p">(</span><span class="n">dphi</span><span class="p">)</span><span class="o">/</span><span class="n">p</span><span class="p">.</span><span class="n">J</span>
-    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">dphi</span><span class="p">,</span><span class="n">d2phi</span><span class="p">])</span>
-</code></pre></div></div>
-
-<p>Объявляем тип на основе <a href="https://docs.python.org/3/library/dataclasses.html">dataclass</a> для хранения параметров системы:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
-<span class="k">class</span> <span class="nc">Data</span><span class="p">:</span>
-    <span class="c1"># Масса маятника
-</span>    <span class="n">m</span> <span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-    <span class="c1"># Расстояние от точки подвески до центра масс (от оси вращения)
-</span>    <span class="n">l</span> <span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="c1"># Момент инерции маятника относительно оси вращения
-</span>    <span class="n">J</span> <span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>  <span class="mi">100</span><span class="o">*</span><span class="mf">0.5</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span>    
-    <span class="c1"># Момент сопротивления
-</span>    <span class="n">M</span> <span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">3</span>
-    <span class="c1"># Ускорение свободного падения
-</span>    <span class="n">g</span> <span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">9.807</span>
-
-<span class="c1"># Создаем экземпляр класса Data (объект)
-</span><span class="n">p</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
-</code></pre></div></div>
-
-<p><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html">Численно интегрируем</a> уравнение движения маятника методом <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html#r179348322575-1">Рунге-Кутты</a> с начальным углом отклонения маятника 20 градусов:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q0</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">sol</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">:</span> <span class="n">dqdt</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">p</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">13</span><span class="p">],</span> <span class="n">q0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'RK45'</span><span class="p">,</span> <span class="n">rtol</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>Построим график изменения угла поворота маятника:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="p">.</span><span class="n">t</span><span class="p">,</span><span class="n">np</span><span class="p">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">sol</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s">':'</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'t, c'</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Угол поворота, градус'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p><img src="/assets/files/python/pendulum-phi.svg" alt="" class="lead" width="600" /></p>
-
-<p>Из графика следует, что колебания затухают приблизительно через 11,5 секунд. Оценим момент трения по выведенной ранее формуле:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">m</span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">g</span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">l</span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">J</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">*</span><span class="n">q0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mf">11.5</span><span class="p">)</span>
-
-<span class="o">&gt;</span> <span class="mf">3.047837910536908</span>
-</code></pre></div></div>
-
-<p>Получилось 3.05 Нм. Эта оценка отличается от значения, заданного при интегрировании (3 Нм) менее чем на 2 %.</p>
-
-<h2 id="литература">Литература</h2>
-
-<ol>
-  <li>Гладков Сергей Октябринович, Богданова Софья Борисовна <a href="https://cyberleninka.ru/article/n/k-voprosu-ucheta-sily-soprotivleniya-v-sharnirnoy-tochke-krepleniya-fizicheskogo-mayatnika-i-ee-vliyanie-na-dinamiku-dvizheniya">К вопросу учета силы сопротивления в шарнирной точке крепления физического маятника и ее влияние на динамику движения</a> // Известия вузов. ПНД. 2019. №1.</li>
-  <li>Mungan C. E., Lipscombe T. C. <a href="https://www.usna.edu/Users/physics/mungan/_files/documents/Publications/EJP34.pdf">Simple pendulum with speed-independent bearing friction</a> //European Journal of Physics. – 2022. – Т. 43. – №. 4. – С. 045001. DOI 10.1088/1361-6404/ac646a.</li>
-</ol>]]></content><author><name></name></author><category term="mechanics" /><category term="python" /><summary type="html"><![CDATA[Determining the friction torque in the pivot point of a physical pendulum through measuring the time it takes to swing from an initial angle until it comes to a halt. Implementing numerical methods to simulate the dynamics of a physical pendulum in Python.]]></summary></entry></feed>
+<p>График иллюстрирует сохранение полной энергии системы, что свидетельствует о корректности построенной модели механической системы с двумя степенями свободны.</p>]]></content><author><name></name></author><category term="mechanics" /><category term="cae" /><summary type="html"><![CDATA[Пример интегрирования в среде Python уравнений движения механической системы с двумя степенями свободы на примере курсовой работы "Исследование движения точки и механической системы" курса теоретической механики Самарского университета]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://classmech.github.io/assets/img/blog/two-dof-mech-python.png" /><media:content medium="image" url="https://classmech.github.io/assets/img/blog/two-dof-mech-python.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
